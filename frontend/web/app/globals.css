@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Accent */
+    --primary: 252 75% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Neutrals */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 12%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --border: 240 6% 90%;
+
+    /* Semantic */
+    --success: 142 71% 40%;
+    --warning: 38 92% 50%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Structure (sharp 4px radius per design.md §4) */
+    --radius: 0.25rem;
+  }
+
+  .dark {
+    --background: 240 10% 8%;
+    --foreground: 0 0% 96%;
+    --muted: 240 6% 16%;
+    --muted-foreground: 240 5% 65%;
+    --border: 240 6% 20%;
+    --primary: 252 80% 68%;
+    --primary-foreground: 240 10% 8%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlh" 1, "cv02", "cv03", "cv04";
+  }
+}

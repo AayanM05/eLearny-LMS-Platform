@@ -1,0 +1,50 @@
+// Typed fetch wrapper for the Spring Boot API (/api/v1/...)
+
+import type { ApiErrorResponse } from '@elearny/types';
+
+export class ApiClient {
+  private baseUrl: string;
+  private tokenGetter?: () => string | null;
+
+  constructor(baseUrl: string, tokenGetter?: () => string | null) {
+    this.baseUrl = baseUrl.replace(/\/$/, '');
+    this.tokenGetter = tokenGetter;
+  }
+
+  async fetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const url = `${this.baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options.headers as Record<string, string>),
+    };
+
+    const token = this.tokenGetter ? this.tokenGetter() : null;
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, { ...options, headers });
+
+    if (!response.ok) {
+      let errorBody: ApiErrorResponse;
+      try {
+        errorBody = await response.json();
+      } catch {
+        errorBody = {
+          timestamp: new Date().toISOString(),
+          status: response.status,
+          error: 'HTTP_ERROR',
+          message: response.statusText || 'An unexpected error occurred',
+          path: endpoint,
+        };
+      }
+      throw errorBody;
+    }
+
+    if (response.status === 24 || response.headers.get('content-length') === '0') {
+      return {} as T;
+    }
+
+    return response.json();
+  }
+}
