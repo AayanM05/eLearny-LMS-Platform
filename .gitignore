@@ -9,6 +9,8 @@ frontend/web/out/
 # Expo / React Native
 frontend/mobile/.expo/
 frontend/mobile/dist/
+frontend/mobile/android/
+frontend/mobile/ios/
 
 # Turbo
 .turbo/

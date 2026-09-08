@@ -18,6 +18,9 @@
   },
   "overrides": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "expo-linking": "6.3.1",
+    "expo-constants": "16.0.2",
+    "expo-updates": "0.25.27"
   }
 }
