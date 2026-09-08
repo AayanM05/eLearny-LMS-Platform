@@ -1,4 +1,7 @@
 {
   "extends": "@elearny/config/tsconfig.base.json",
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

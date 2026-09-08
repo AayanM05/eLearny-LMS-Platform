@@ -15,10 +15,11 @@ is more process than a solo project needs at this stage. Add a separate
 staging environment later if the team or user base grows enough that
 testing directly against the live environment becomes risky.
 
-| Environment | Purpose | Where |
-|---|---|---|
-| **Local** | Day-to-day development | Your machine — IntelliJ (backend), Next.js dev server, Expo dev client |
-| **Live** | Continuous testing on real infrastructure, and eventually real users | Vercel (web) + Render (backend) + Supabase (database) + EAS (mobile) |
+| Environment | Purpose | Where | Live URLs / Config |
+|---|---|---|---|
+| **Local** | Day-to-day development | Your machine — IntelliJ (backend), Next.js dev server, Expo dev client | `localhost:8080` (API), `localhost:3000` (Web) |
+| **Live** | Continuous testing on real infrastructure | Vercel (web) + Render (backend) + Supabase (database) + EAS (mobile) | Web: `https://elearny-web.vercel.app`<br>API: `https://elearny-lms-platform.onrender.com/api/v1`<br>DB: Supabase (Session Pooler) |
+
 
 **On deploying early, per your explicit ask:** don't wait until Phase 13
 to deploy anything. Get the "Live" environment stood up once Phase 1

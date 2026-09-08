@@ -18,11 +18,18 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.aayanm05.elearnymobile",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
-    "scheme": "elearny"
+    "scheme": "elearny",
+    "extra": {
+      "eas": {
+        "projectId": "801554b0-6b31-4e33-85a2-f4dee18f8ee4"
+      }
+    },
+    "owner": "aayanm05"
   }
 }
