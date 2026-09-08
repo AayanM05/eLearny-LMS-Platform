@@ -56,16 +56,54 @@ export default function StudentDashboard() {
           <Text style={styles.statLabel}>Learning Time</Text>
         </View>
 
-        <View style={styles.statCard}>
+        <TouchableOpacity style={styles.statCard} onPress={() => router.push('/(student)/certificates')}>
           <MaterialCommunityIcons name="certificate-outline" size={20} color="#d97706" />
           <Text style={styles.statNumber}>1</Text>
           <Text style={styles.statLabel}>Certificate</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.statCard}>
+        <TouchableOpacity style={styles.statCard} onPress={() => router.push('/(student)/leaderboard')}>
           <Feather name="flame" size={20} color="#dc2626" />
           <Text style={styles.statNumber}>5 Days</Text>
           <Text style={styles.statLabel}>Daily Streak</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Quick Access Hub Navigation */}
+      <View style={{ marginBottom: 24, gap: 10 }}>
+        <Text style={styles.sectionTitle}>Learning & Practice Hub</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
+          <TouchableOpacity
+            style={{ width: '48%', backgroundColor: '#fafafa', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 4, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            onPress={() => router.push('/(student)/practice')}
+          >
+            <Feather name="code" size={18} color="#7c3aed" />
+            <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#0f172a' }}>Practice Hub</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ width: '48%', backgroundColor: '#fafafa', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 4, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            onPress={() => router.push('/(student)/community')}
+          >
+            <Feather name="message-square" size={18} color="#7c3aed" />
+            <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#0f172a' }}>Q&A Community</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ width: '48%', backgroundColor: '#fafafa', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 4, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            onPress={() => router.push('/(student)/certificates')}
+          >
+            <Feather name="award" size={18} color="#d97706" />
+            <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#0f172a' }}>Certificates</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ width: '48%', backgroundColor: '#fafafa', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 4, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            onPress={() => router.push('/(student)/leaderboard')}
+          >
+            <Feather name="zap" size={18} color="#dc2626" />
+            <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#0f172a' }}>Leaderboard</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
