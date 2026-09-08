@@ -10,12 +10,18 @@ export default function UpdateCheckModal() {
   useEffect(() => {
     async function checkForUpdates() {
       try {
-        // Safe check for expo-updates in production build
-        const Updates = require('expo-updates');
-        if (__DEV__) return; // Skip automatic popup during active local Expo development
+        if (__DEV__) return;
+        let Updates;
+        try {
+          Updates = require('expo-updates');
+        } catch (e) {
+          return;
+        }
+
+        if (!Updates || !Updates.isEnabled) return;
 
         const update = await Updates.checkForUpdateAsync();
-        if (update.isAvailable) {
+        if (update && update.isAvailable) {
           await Updates.fetchUpdateAsync();
           setUpdateAvailable(true);
         }
