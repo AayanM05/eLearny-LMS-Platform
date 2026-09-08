@@ -77,6 +77,22 @@ export default function LoginScreen() {
     }
   };
 
+  const handleInstantDemoLogin = async (role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN') => {
+    setErrorMessage(null);
+    setLoading(true);
+    const mockUser = {
+      id: role === 'ADMIN' ? 'demo-admin-id' : role === 'INSTRUCTOR' ? 'demo-inst-id' : 'demo-stud-id',
+      email: role === 'ADMIN' ? 'admin@elearny.com' : role === 'INSTRUCTOR' ? 'instructor@elearny.com' : 'student@elearny.com',
+      fullName: role === 'ADMIN' ? 'System Administrator' : role === 'INSTRUCTOR' ? 'Dr. Sarah Jenkins' : 'Alex Rivera',
+      role: role,
+      createdAt: new Date().toISOString(),
+    };
+    await setAuthSession(mockUser, 'demo_access_token_jwt', 'demo_refresh_token');
+    setLoading(false);
+    redirectUser(role);
+  };
+
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.mainWrapper}>
       {/* Header */}
@@ -91,7 +107,26 @@ export default function LoginScreen() {
       <View style={styles.card}>
         <View style={styles.titleContainer}>
           <Text style={styles.brandTitle}>eLearny Mobile</Text>
-          <Text style={styles.subtitle}>Enter your credentials to access your workspace</Text>
+          <Text style={styles.subtitle}>Enter credentials or tap Instant Demo for 0ms access</Text>
+        </View>
+
+        {/* Instant Demo Quick Access Bar */}
+        <View style={styles.demoBox}>
+          <View style={styles.demoHeader}>
+            <Feather name="zap" size={13} color="#7c3aed" />
+            <Text style={styles.demoTitle}>Instant Demo Access</Text>
+          </View>
+          <View style={styles.demoButtonsRow}>
+            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('STUDENT')}>
+              <Text style={styles.demoChipText}>Student</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('INSTRUCTOR')}>
+              <Text style={styles.demoChipText}>Instructor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('ADMIN')}>
+              <Text style={styles.demoChipText}>Admin</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {errorMessage && (
@@ -133,7 +168,7 @@ export default function LoginScreen() {
                 <ActivityIndicator color="#fff" />
               ) : (
                 <View style={styles.buttonContent}>
-                  <Text style={styles.buttonText}>Sign In</Text>
+                  <Text style={styles.buttonText}>Sign In with Backend</Text>
                   <Feather name="arrow-right" size={16} color="#ffffff" style={styles.buttonIconRight} />
                 </View>
               )}
@@ -173,6 +208,7 @@ export default function LoginScreen() {
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   mainWrapper: {
@@ -218,7 +254,45 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#64748b',
   },
+  demoBox: {
+    backgroundColor: '#f5f3ff',
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+    borderRadius: 4,
+    padding: 12,
+    marginBottom: 16,
+  },
+  demoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  demoTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#7c3aed',
+    marginLeft: 6,
+  },
+  demoButtonsRow: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  demoChip: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#c4b5fd',
+    paddingVertical: 6,
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  demoChipText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#6d28d9',
+  },
   errorBox: {
+
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fef2f2',

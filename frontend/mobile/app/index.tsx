@@ -1,9 +1,32 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAuth } from '../lib/auth';
 
 export default function App() {
+  const router = useRouter();
+  const { setAuthSession } = useAuth();
+
+  const handleInstantDemoLogin = async (role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN') => {
+    const mockUser = {
+      id: role === 'ADMIN' ? 'demo-admin-id' : role === 'INSTRUCTOR' ? 'demo-inst-id' : 'demo-stud-id',
+      email: role === 'ADMIN' ? 'admin@elearny.com' : role === 'INSTRUCTOR' ? 'instructor@elearny.com' : 'student@elearny.com',
+      fullName: role === 'ADMIN' ? 'System Administrator' : role === 'INSTRUCTOR' ? 'Dr. Sarah Jenkins' : 'Alex Rivera',
+      role: role,
+      createdAt: new Date().toISOString(),
+    };
+    await setAuthSession(mockUser, 'demo_access_token_jwt', 'demo_refresh_token');
+
+    if (role === 'ADMIN') {
+      router.replace('/(admin)/applications');
+    } else if (role === 'INSTRUCTOR') {
+      router.replace('/(instructor)/analytics');
+    } else {
+      router.replace('/(student)/dashboard');
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.mainWrapper}>
       {/* Header */}
@@ -14,7 +37,7 @@ export default function App() {
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>eLearny</Text>
           <View style={styles.versionChip}>
-            <Text style={styles.versionChipText}>v1.0</Text>
+            <Text style={styles.versionChipText}>v1.0 Pro</Text>
           </View>
         </View>
       </View>
@@ -22,8 +45,8 @@ export default function App() {
       {/* Hero Card */}
       <View style={styles.heroCard}>
         <View style={styles.pillBadge}>
-          <Feather name="sparkles" size={12} color="#7c3aed" />
-          <Text style={styles.pillBadgeText}>Next-Gen Learning Platform</Text>
+          <Feather name="zap" size={12} color="#7c3aed" />
+          <Text style={styles.pillBadgeText}>Next-Gen LMS Platform</Text>
         </View>
 
         <Text style={styles.heroTitle}>Master Engineering with Production Rigor</Text>
@@ -46,9 +69,29 @@ export default function App() {
             <Text style={styles.featureItemText}>QR Certifications</Text>
           </View>
           <View style={styles.featureItem}>
-            <Feather name="shield-check" size={18} color="#7c3aed" />
+            <Feather name="shield" size={18} color="#7c3aed" />
             <Text style={styles.featureItemText}>Proctored Exams</Text>
           </View>
+        </View>
+      </View>
+
+      {/* Instant Demo Login Bar */}
+      <View style={styles.demoCard}>
+        <View style={styles.demoCardHeader}>
+          <Feather name="zap" size={14} color="#7c3aed" />
+          <Text style={styles.demoCardTitle}>Instant Demo Access (0ms Delay)</Text>
+        </View>
+        <Text style={styles.demoCardSubtitle}>Tap any role to immediately test the workspace</Text>
+        <View style={styles.demoButtonRow}>
+          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('STUDENT')}>
+            <Text style={styles.demoRoleButtonText}>Student</Text>
+          </Pressable>
+          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('INSTRUCTOR')}>
+            <Text style={styles.demoRoleButtonText}>Instructor</Text>
+          </Pressable>
+          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('ADMIN')}>
+            <Text style={styles.demoRoleButtonText}>Admin</Text>
+          </Pressable>
         </View>
       </View>
 
@@ -63,7 +106,7 @@ export default function App() {
 
         <Link href="/(public)/login" asChild>
           <Pressable style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>Sign In to Account</Text>
+            <Text style={styles.secondaryButtonText}>Sign In with Backend Credentials</Text>
           </Pressable>
         </Link>
       </View>
@@ -84,14 +127,13 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: 55,
     paddingBottom: 40,
-    justifyContent: 'between',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   logoBadge: {
     width: 36,
@@ -136,7 +178,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 4,
     padding: 20,
-    marginBottom: 28,
+    marginBottom: 16,
   },
   pillBadge: {
     flexDirection: 'row',
@@ -155,16 +197,16 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   heroTitle: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '800',
     color: '#0f172a',
-    lineHeight: 32,
+    lineHeight: 30,
     marginBottom: 10,
   },
   heroSubtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#64748b',
-    lineHeight: 20,
+    lineHeight: 18,
     marginBottom: 20,
   },
   featuresGrid: {
@@ -183,13 +225,55 @@ const styles = StyleSheet.create({
     color: '#334155',
     marginLeft: 10,
   },
+  demoCard: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+    borderRadius: 4,
+    padding: 16,
+    marginBottom: 20,
+  },
+  demoCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  demoCardTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#7c3aed',
+    marginLeft: 6,
+  },
+  demoCardSubtitle: {
+    fontSize: 11,
+    color: '#64748b',
+    marginBottom: 12,
+  },
+  demoButtonRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  demoRoleButton: {
+    flex: 1,
+    backgroundColor: '#f5f3ff',
+    borderWidth: 1,
+    borderColor: '#c4b5fd',
+    paddingVertical: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  demoRoleButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#6d28d9',
+  },
   buttonContainer: {
-    gap: 12,
-    marginBottom: 32,
+    gap: 10,
+    marginBottom: 28,
   },
   primaryButton: {
     backgroundColor: '#7c3aed',
-    paddingVertical: 15,
+    paddingVertical: 14,
     borderRadius: 4,
     flexDirection: 'row',
     alignItems: 'center',
@@ -197,7 +281,7 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
   },
   buttonIcon: {
@@ -205,7 +289,7 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: '#f8fafc',
-    paddingVertical: 15,
+    paddingVertical: 14,
     borderRadius: 4,
     alignItems: 'center',
     borderWidth: 1,
@@ -213,7 +297,7 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     color: '#0f172a',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
   footer: {
@@ -227,3 +311,4 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
 });
+

@@ -23,28 +23,52 @@ export class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, { ...options, headers });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
 
-    if (!response.ok) {
-      let errorBody: ApiErrorResponse;
-      try {
-        errorBody = await response.json();
-      } catch {
-        errorBody = {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        let errorBody: ApiErrorResponse;
+        try {
+          errorBody = await response.json();
+        } catch {
+          errorBody = {
+            timestamp: new Date().toISOString(),
+            status: response.status,
+            error: 'HTTP_ERROR',
+            message: response.statusText || 'An unexpected server error occurred',
+            path: endpoint,
+          };
+        }
+        throw errorBody;
+      }
+
+      if (response.status === 204 || response.headers.get('content-length') === '0') {
+        return {} as T;
+      }
+
+      return await response.json();
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        throw {
           timestamp: new Date().toISOString(),
-          status: response.status,
-          error: 'HTTP_ERROR',
-          message: response.statusText || 'An unexpected error occurred',
+          status: 408,
+          error: 'REQUEST_TIMEOUT',
+          message: 'Server response timed out (backend may be sleeping or unreachable). Try Instant Demo login below.',
           path: endpoint,
         };
       }
-      throw errorBody;
+      throw err;
     }
-
-    if (response.status === 24 || response.headers.get('content-length') === '0') {
-      return {} as T;
-    }
-
-    return response.json();
   }
 }
+
