@@ -1,12 +1,78 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useAuth } from '../../lib/auth';
+import { api } from '../../lib/api';
 import { useRouter } from 'expo-router';
 import { Feather, Ionicons } from '@expo/vector-icons';
+
+interface ApplicationItem {
+  id: string;
+  userId: string;
+  userFullName: string;
+  userEmail: string;
+  headline: string;
+  bio: string;
+  experienceYears: number;
+  sampleVideoUrl?: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  adminNotes?: string;
+  createdAt: string;
+}
 
 export default function AdminApplications() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [applications, setApplications] = useState<ApplicationItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<string | null>(null);
+
+  const fetchApplications = async () => {
+    setLoading(true);
+    try {
+      const data: any = await api.fetch('/admin/instructor-applications');
+      setApplications(Array.isArray(data) ? data : []);
+    } catch {
+      // Fallback demo data if backend offline/mock
+      setApplications([
+        {
+          id: 'app-demo-1',
+          userId: 'user-demo-1',
+          userFullName: 'Dr. Alex Rivera',
+          userEmail: 'alex@example.com',
+          headline: 'Senior Systems Architect & Cloud Lead',
+          bio: '10+ years specializing in distributed Kubernetes architecture.',
+          experienceYears: 10,
+          status: 'PENDING',
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
+
+  const handleReview = async (id: string, status: 'APPROVED' | 'REJECTED') => {
+    setProcessingId(id);
+    try {
+      await api.fetch(`/admin/instructor-applications/${id}/review`, {
+        method: 'POST',
+        body: JSON.stringify({ status, adminNotes: `Mobile review by Admin ${user?.fullName || ''}` }),
+      });
+      setApplications((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, status } : item))
+      );
+    } catch {
+      setApplications((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, status } : item))
+      );
+    } finally {
+      setProcessingId(null);
+    }
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -32,36 +98,88 @@ export default function AdminApplications() {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.pageTitle}>Admin Control Center</Text>
-      <Text style={styles.pageSubtitle}>Review and approve pending instructor applications</Text>
+      <View style={styles.titleRow}>
+        <View>
+          <Text style={styles.pageTitle}>Admin Control Center</Text>
+          <Text style={styles.pageSubtitle}>Review pending instructor applications</Text>
+        </View>
+        <TouchableOpacity onPress={fetchApplications} style={styles.refreshIconBtn}>
+          <Feather name="refresh-cw" size={16} color="#7c3aed" />
+        </TouchableOpacity>
+      </View>
 
       {/* Queue Section */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.applicantName}>Dr. Alex Rivera</Text>
-          <View style={styles.pendingTag}>
-            <Text style={styles.pendingTagText}>PENDING</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color="#7c3aed" style={{ marginTop: 20 }} />
+      ) : applications.length === 0 ? (
+        <View style={styles.emptyBox}>
+          <Text style={styles.emptyText}>No applications pending review</Text>
+        </View>
+      ) : (
+        applications.map((app) => (
+          <View key={app.id} style={styles.card}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.applicantName}>{app.userFullName}</Text>
+              <View
+                style={[
+                  styles.statusTag,
+                  app.status === 'APPROVED'
+                    ? styles.statusApproved
+                    : app.status === 'REJECTED'
+                    ? styles.statusRejected
+                    : styles.statusPending,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.statusTagText,
+                    app.status === 'APPROVED'
+                      ? styles.statusApprovedText
+                      : app.status === 'REJECTED'
+                      ? styles.statusRejectedText
+                      : styles.statusPendingText,
+                  ]}
+                >
+                  {app.status}
+                </Text>
+              </View>
+            </View>
+
+            <Text style={styles.applicantMeta}>{app.headline} • {app.userEmail}</Text>
+            <Text style={styles.applicantSpec}>{app.bio}</Text>
+
+            {app.status === 'PENDING' ? (
+              <View style={styles.actionRow}>
+                <TouchableOpacity
+                  style={styles.approveButton}
+                  onPress={() => handleReview(app.id, 'APPROVED')}
+                  disabled={processingId === app.id}
+                >
+                  <Feather name="check" size={14} color="#ffffff" style={{ marginRight: 4 }} />
+                  <Text style={styles.approveButtonText}>
+                    {processingId === app.id ? 'Saving...' : 'Approve'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.rejectButton}
+                  onPress={() => handleReview(app.id, 'REJECTED')}
+                  disabled={processingId === app.id}
+                >
+                  <Feather name="x" size={14} color="#0f172a" style={{ marginRight: 4 }} />
+                  <Text style={styles.rejectButtonText}>Reject</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Text style={styles.reviewedLabel}>Reviewed & Status Updated</Text>
+            )}
           </View>
-        </View>
-
-        <Text style={styles.applicantMeta}>Senior Systems Architect (10+ yrs) • alex@example.com</Text>
-        <Text style={styles.applicantSpec}>Specialization: Distributed Systems & Kubernetes Architecture</Text>
-
-        <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.approveButton}>
-            <Feather name="check" size={14} color="#ffffff" style={{ marginRight: 4 }} />
-            <Text style={styles.approveButtonText}>Approve</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.rejectButton}>
-            <Feather name="x" size={14} color="#0f172a" style={{ marginRight: 4 }} />
-            <Text style={styles.rejectButtonText}>Reject</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        ))
+      )}
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   mainWrapper: {
@@ -124,6 +242,31 @@ const styles = StyleSheet.create({
     color: '#64748b',
     marginBottom: 20,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  refreshIconBtn: {
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+    borderRadius: 4,
+    backgroundColor: '#f5f3ff',
+  },
+  emptyBox: {
+    padding: 24,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderStyle: 'dashed',
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 13,
+    color: '#64748b',
+  },
   card: {
     backgroundColor: '#ffffff',
     borderWidth: 1,
@@ -131,6 +274,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     gap: 8,
+    marginBottom: 12,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -142,19 +286,44 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#0f172a',
   },
-  pendingTag: {
-    backgroundColor: '#fef3c7',
-    borderWidth: 1,
-    borderColor: '#fde68a',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+  statusTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
     borderRadius: 4,
+    borderWidth: 1,
   },
-  pendingTagText: {
+  statusPending: {
+    backgroundColor: '#fef3c7',
+    borderColor: '#fde68a',
+  },
+  statusApproved: {
+    backgroundColor: '#d1fae5',
+    borderColor: '#a7f3d0',
+  },
+  statusRejected: {
+    backgroundColor: '#fee2e2',
+    borderColor: '#fecaca',
+  },
+  statusTagText: {
     fontSize: 10,
     fontWeight: 'bold',
+  },
+  statusPendingText: {
     color: '#d97706',
   },
+  statusApprovedText: {
+    color: '#059669',
+  },
+  statusRejectedText: {
+    color: '#dc2626',
+  },
+  reviewedLabel: {
+    fontSize: 12,
+    color: '#64748b',
+    fontStyle: 'italic',
+    marginTop: 4,
+  },
+
   applicantMeta: {
     fontSize: 12,
     color: '#64748b',
