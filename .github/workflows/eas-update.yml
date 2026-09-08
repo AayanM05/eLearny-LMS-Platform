@@ -1,0 +1,35 @@
+name: Automated Expo OTA Update
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/mobile/**'
+      - 'packages/**'
+
+jobs:
+  update:
+    name: Publish EAS Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Expo & EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Monorepo Dependencies
+        run: npm ci
+
+      - name: Publish OTA Update to Expo Cloud
+        working-directory: frontend/mobile
+        run: eas update --branch production --auto --non-interactive
