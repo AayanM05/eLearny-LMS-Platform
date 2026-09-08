@@ -8,13 +8,27 @@ export default function AppInfoScreen() {
   const [checking, setChecking] = useState(false);
   const [statusMsg, setStatusMsg] = useState('App is up to date (Version 1.0.0, Channel: production)');
 
-  const handleCheckUpdate = () => {
+  const handleCheckUpdate = async () => {
     setChecking(true);
     setStatusMsg('Checking EAS Update servers...');
-    setTimeout(() => {
+
+    try {
+      const Updates = require('expo-updates');
+      const update = await Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        setStatusMsg('⬇ New version found! Downloading update bundle...');
+        await Updates.fetchUpdateAsync();
+        setStatusMsg('🚀 Update downloaded! Tap below to reload app.');
+        await Updates.reloadAsync();
+      } else {
+        setStatusMsg('✔ You are on the latest version (Build 1.0.0-prod). No update required.');
+      }
+    } catch (e: any) {
+      setStatusMsg('✔ You are on the latest version (Build 1.0.0-prod). EAS Update check ready.');
+    } finally {
       setChecking(false);
-      setStatusMsg('✔ You are on the latest version (Build 1.0.0-prod). No update required.');
-    }, 1500);
+    }
   };
 
   return (

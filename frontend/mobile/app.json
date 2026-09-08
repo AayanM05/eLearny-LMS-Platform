@@ -25,6 +25,14 @@
       }
     },
     "scheme": "elearny",
+    "updates": {
+      "url": "https://u.expo.dev/801554b0-6b31-4e33-85a2-f4dee18f8ee4",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "extra": {
       "eas": {
         "projectId": "801554b0-6b31-4e33-85a2-f4dee18f8ee4"
