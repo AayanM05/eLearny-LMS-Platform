@@ -1,0 +1,12 @@
+# Ignore backend and web frontend from EAS mobile build upload
+backend/
+frontend/web/
+.git/
+.next/
+dist/
+build/
+target/
+
+# Include workspace packages and mobile app
+!packages/
+!frontend/mobile/

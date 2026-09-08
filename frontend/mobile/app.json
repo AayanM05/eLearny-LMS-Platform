@@ -26,18 +26,18 @@
     },
     "scheme": "elearny",
     "updates": {
-      "url": "https://u.expo.dev/801554b0-6b31-4e33-85a2-f4dee18f8ee4",
+      "url": "https://u.expo.dev/83ecf014-24ef-439f-9a4e-4a20cc72ce0d",
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
+    "owner": "aayanm05",
     "extra": {
       "eas": {
-        "projectId": "801554b0-6b31-4e33-85a2-f4dee18f8ee4"
+        "projectId": "83ecf014-24ef-439f-9a4e-4a20cc72ce0d"
       }
-    },
-    "owner": "aayanm05"
+    }
   }
 }
