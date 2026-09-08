@@ -16,4 +16,12 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ];
 
+config.resolver.disableHierarchicalLookup = true;
+
+// Force Metro to load pre-compiled main/module JS distributions instead of uncompiled src/index.tsx
+config.resolver.resolverMainFields = ['browser', 'main', 'module'];
+
 module.exports = config;
+
+
+
