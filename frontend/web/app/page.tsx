@@ -17,24 +17,29 @@ import {
   Phone,
   Mail,
   Clock,
-  Search,
   ChevronDown,
   ChevronRight,
   Layers,
   Star,
   Send,
-  HelpCircle,
-  Activity
+  Activity,
+  Monitor,
+  Cpu,
+  GraduationCap,
+  Terminal,
+  FileCheck,
+  TrendingUp
 } from 'lucide-react';
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [activeTab, setActiveTab] = useState<'all' | 'backend' | 'ai' | 'cloud'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'backend' | 'ai' | 'cloud' | 'systems'>('all');
+  const [demoTab, setDemoTab] = useState<'stream' | 'code' | 'proctor' | 'cert'>('stream');
 
   const faqs = [
     {
       q: 'How does automated exam proctoring work on eLearny?',
-      a: 'eLearny monitors browser integrity by enforcing full-screen mode, logging window blur/tab switches with timestamps, and disabling copy-paste during attempts. Server-side grading evaluates submissions instantly without trusting client scores.',
+      a: 'eLearny monitors browser integrity by enforcing full-screen mode, logging window blur/tab switches with server timestamps, and disabling copy-paste during attempts. Server-side grading evaluates submissions instantly without trusting client scores.',
     },
     {
       q: 'Are certificates verifiable by third-party employers?',
@@ -42,7 +47,7 @@ export default function Home() {
     },
     {
       q: 'How does the embedded code playground execute code?',
-      a: 'Code exercises run in isolated, secure sandboxes powered by a self-hosted Judge0 execution engine. Students write code directly in the lesson view and get real-time compiler feedback.',
+      a: 'Code exercises run in isolated, secure sandboxes powered by a self-hosted Judge0 execution engine. Students write Python, Java, Rust, or C++ directly in the lesson view and receive instant unit test results.',
     },
     {
       q: 'Can instructors manage courses and pricing independently?',
@@ -52,7 +57,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary">
-      {/* 1. Top Utility Info Bar (Porto Utility Header Pattern) */}
+      {/* 1. Top Utility Info Bar */}
       <div className="bg-secondary text-white text-xs py-2 border-b border-white/10 hidden md:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center space-x-6">
@@ -72,19 +77,19 @@ export default function Home() {
 
           <div className="flex items-center space-x-4">
             <Link href="/certificates/verify/demo" className="hover:text-primary transition-colors flex items-center space-x-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
+              <ShieldCheck className="w-3.5 h-3.5 text-primary" />
               <span>Verify Certificate</span>
             </Link>
             <span className="opacity-40">|</span>
-            <div className="flex items-center space-x-1 font-semibold text-emerald-400">
-              <Activity className="w-3.5 h-3.5" />
+            <div className="flex items-center space-x-1.5 font-semibold text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span>Spring Boot REST API v1.0</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Main Sticky Header (Porto Shrink & Navigation Architecture) */}
+      {/* 2. Main Navigation Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           {/* Logo */}
@@ -100,11 +105,11 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Navigation Links with Porto Active Line Indicator */}
+          {/* Navigation Links with Active Underline Indicator */}
           <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold text-foreground/80">
             <Link href="#features" className="nav-link-indicator hover:text-primary transition-colors py-1">Features</Link>
             <Link href="#disciplines" className="nav-link-indicator hover:text-primary transition-colors py-1">Disciplines</Link>
-            <Link href="#proctoring" className="nav-link-indicator hover:text-primary transition-colors py-1">Proctoring</Link>
+            <Link href="#demo" className="nav-link-indicator hover:text-primary transition-colors py-1">Live Preview</Link>
             <Link href="#faq" className="nav-link-indicator hover:text-primary transition-colors py-1">FAQ</Link>
           </nav>
 
@@ -128,17 +133,17 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        {/* 3. Hero Section with SVG Stroke Line Accents (Porto Parallax & Animation Pattern) */}
+        {/* 3. Hero Section with SVG Vector Accents */}
         <section className="relative pt-16 pb-28 md:pt-24 md:pb-36 bg-gradient-to-b from-muted/50 via-background to-background border-b border-border overflow-hidden">
-          {/* Animated Background Watermark */}
+          {/* Animated Watermark Background */}
           <div className="absolute top-10 left-1/2 -translate-x-1/2 text-[120px] sm:text-[180px] font-display font-black text-foreground/[0.03] select-none pointer-events-none tracking-widest">
             ELEARNY
           </div>
 
-          {/* Background Gradient Glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-primary/10 blur-[130px] rounded-full pointer-events-none -z-10 animate-pulse-slow" />
+          {/* Radial Glow */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-primary/10 blur-[140px] rounded-full pointer-events-none -z-10 animate-pulse-slow" />
 
-          {/* SVG Vector Stroke Accents (Porto SVG Stroke Animation) */}
+          {/* SVG Vector Stroke Lines */}
           <svg className="absolute top-0 right-0 w-96 h-96 opacity-20 pointer-events-none hidden md:block" viewBox="0 0 400 400" fill="none">
             <path d="M50 200 C 150 100, 250 300, 350 200" stroke="currentColor" strokeWidth="3" className="text-primary animate-svg-stroke" />
             <circle cx="200" cy="150" r="6" fill="currentColor" className="text-primary" />
@@ -147,23 +152,23 @@ export default function Home() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-4xl mx-auto space-y-6">
-              {/* Badge Pill */}
+              {/* Pill Badge */}
               <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Porto-Inspired Master Architecture • v1.0 Release</span>
+                <span>Next-Generation Enterprise Learning Management System</span>
               </div>
 
-              {/* Title with Porto Highlight Box */}
+              {/* Headline */}
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-foreground leading-[1.08]">
-                Master High-Scale Engineering with <span className="custom-highlight-box">Production Rigor</span>
+                Master Software Engineering with <span className="custom-highlight-box">Production Rigor</span>
               </h1>
 
               {/* Subtitle */}
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                An API-first learning platform built for modern developers. Stream HD video lectures, write code in Judge0 sandboxes, pass proctored exams, and earn QR-verifiable certificates.
+                An API-first learning platform built for modern developers. Stream HD video lectures, execute code in Judge0 sandboxes, pass proctored exams, and earn QR-verifiable certificates.
               </p>
 
-              {/* Action CTAs */}
+              {/* CTAs */}
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/register"
@@ -186,7 +191,7 @@ export default function Home() {
               <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-muted-foreground">
                 <span className="flex items-center space-x-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>Razorpay One-Click Commerce</span>
+                  <span>Razorpay One-Click Checkout</span>
                 </span>
                 <span className="flex items-center space-x-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -201,7 +206,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Porto Overlapping Callback/Quick Quote Card Pattern */}
+        {/* 4. Porto Overlapping Quick Advisor Form Card */}
         <section className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 sm:-mt-24 mb-16">
           <div className="glass-card rounded-lg p-6 sm:p-8 shadow-xl border border-border bg-card/95">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
@@ -223,7 +228,7 @@ export default function Home() {
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Target Role</label>
                   <select className="w-full px-3 py-2 text-sm border border-border rounded bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary">
-                    <option>Full-Stack Engineer</option>
+                    <option>Full-Stack Web Engineer</option>
                     <option>Spring Boot Microservices Architect</option>
                     <option>AI & Machine Learning Specialist</option>
                     <option>Cloud Security Engineer</option>
@@ -243,7 +248,139 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. Porto 4-Column Trust Badge Divider */}
+        {/* 5. Interactive Demo Showcase Container */}
+        <section id="demo" className="py-16 border-b border-border bg-muted/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+              <span className="text-xs font-bold text-primary uppercase tracking-widest">Interactive Experience</span>
+              <h2 className="text-3xl font-display font-bold">Explore Platform Capabilities</h2>
+            </div>
+
+            {/* Demo Selector Tabs */}
+            <div className="flex items-center justify-center space-x-2 sm:space-x-4 mb-8 overflow-x-auto pb-2">
+              {[
+                { id: 'stream', label: 'HD Video Streaming', icon: PlayCircle },
+                { id: 'code', label: 'Judge0 Sandbox', icon: Code },
+                { id: 'proctor', label: 'Anti-Cheat Exams', icon: ShieldCheck },
+                { id: 'cert', label: 'QR Certificate', icon: Award },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setDemoTab(item.id as any)}
+                  className={`px-4 py-2 rounded text-xs font-bold transition-all flex items-center space-x-2 ${
+                    demoTab === item.id 
+                      ? 'bg-primary text-primary-foreground shadow-md' 
+                      : 'bg-card border border-border text-foreground hover:border-primary'
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Interactive Tab View Card */}
+            <div className="max-w-4xl mx-auto rounded-lg border border-border bg-card p-6 shadow-xl">
+              {demoTab === 'stream' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div className="flex items-center space-x-2">
+                      <PlayCircle className="w-5 h-5 text-primary" />
+                      <span className="font-display font-bold text-base">Progressive Video Player (R2 Signed URLs)</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">1080p 60fps</span>
+                  </div>
+                  <div className="aspect-video rounded bg-zinc-950 flex flex-col items-center justify-center text-white relative overflow-hidden group">
+                    <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform cursor-pointer">
+                      <PlayCircle className="w-8 h-8 text-white ml-1" />
+                    </div>
+                    <p className="text-xs text-zinc-400 mt-4 font-mono">Lecture 14: Building High-Throughput Microservices with Spring Boot 3.2</p>
+                    <div className="absolute bottom-4 left-4 right-4 bg-zinc-900/80 backdrop-blur-md p-3 rounded flex items-center justify-between text-xs font-mono">
+                      <span>07:42 / 24:15</span>
+                      <div className="flex items-center space-x-4">
+                        <span>Speed: 1.25x</span>
+                        <span>Bookmark Note +</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {demoTab === 'code' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div className="flex items-center space-x-2">
+                      <Terminal className="w-5 h-5 text-emerald-600" />
+                      <span className="font-display font-bold text-base">Judge0 Code Execution Environment</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Execution Time: 42ms</span>
+                  </div>
+                  <div className="rounded bg-zinc-950 p-4 font-mono text-xs text-emerald-400 space-y-2 border border-zinc-800">
+                    <p className="text-zinc-500">// Task: Implement JWT Verification Filter</p>
+                    <p><span className="text-purple-400">public class</span> <span className="text-yellow-400">JwtProvider</span> &#123;</p>
+                    <p className="pl-4"><span className="text-purple-400">public boolean</span> <span className="text-blue-400">validateToken</span>(String token) &#123;</p>
+                    <p className="pl-8">Jwts.parser().verifyWith(key).build().parseSignedClaims(token);</p>
+                    <p className="pl-8"><span className="text-purple-400">return true</span>;</p>
+                    <p className="pl-4">&#125;</p>
+                    <p>&#125;</p>
+                    <div className="pt-3 border-t border-zinc-800 flex items-center justify-between text-zinc-300">
+                      <span className="text-emerald-400 font-bold">✓ Test Cases Passed (4/4)</span>
+                      <button className="bg-emerald-600 text-white font-sans px-3 py-1 rounded text-xs">Run Tests</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {demoTab === 'proctor' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div className="flex items-center space-x-2">
+                      <ShieldCheck className="w-5 h-5 text-indigo-500" />
+                      <span className="font-display font-bold text-base">Automated Exam Proctoring Log</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">Full-Screen Enforced</span>
+                  </div>
+                  <div className="space-y-3 text-xs">
+                    <div className="p-3 rounded border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between">
+                      <span className="font-semibold text-emerald-700">Full-Screen Lock Active</span>
+                      <span className="font-mono text-emerald-600">0 Violations Detected</span>
+                    </div>
+                    <div className="p-3 rounded border border-border bg-muted/40 space-y-1">
+                      <p className="font-semibold">Question 3 of 15: Explain Spring Security SessionCreationPolicy.STATELESS</p>
+                      <p className="text-muted-foreground">Server-side timer: 14 mins remaining</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {demoTab === 'cert' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div className="flex items-center space-x-2">
+                      <Award className="w-5 h-5 text-amber-500" />
+                      <span className="font-display font-bold text-base">Apache PDFBox Verified Certificate</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">QR Verified</span>
+                  </div>
+                  <div className="p-6 rounded border-2 border-dashed border-amber-500/40 bg-amber-500/5 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-600 mx-auto flex items-center justify-center">
+                      <FileCheck className="w-6 h-6" />
+                    </div>
+                    <h4 className="font-display font-bold text-lg text-foreground">Certificate of Completion</h4>
+                    <p className="text-xs text-muted-foreground max-w-md mx-auto">
+                      Issued to <span className="font-bold text-foreground">Alex Morgan</span> for completing <span className="font-bold text-foreground">Spring Boot Microservices & Security</span>.
+                    </p>
+                    <div className="inline-block px-3 py-1 rounded bg-background border border-border font-mono text-xs text-primary font-bold">
+                      VERIFICATION ID: ELR-2026-9048-SEC
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Porto 4-Column Trust Badge Divider */}
         <section className="py-8 bg-muted/40 border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -271,7 +408,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Porto Feature Boxes Grid (.feature-box.feature-box-style-2) */}
+        {/* 7. Porto Feature Boxes Grid (.feature-box.feature-box-style-2) */}
         <section id="features" className="py-20 border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
@@ -352,7 +489,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 7. Disciplines & Filterable Course Showcase */}
+        {/* 8. Disciplines & Filterable Course Showcase */}
         <section id="disciplines" className="py-20 border-b border-border bg-muted/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -363,7 +500,7 @@ export default function Home() {
 
               {/* Filter Tabs */}
               <div className="flex items-center space-x-2 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0">
-                {(['all', 'backend', 'ai', 'cloud'] as const).map((tab) => (
+                {(['all', 'backend', 'ai', 'cloud', 'systems'] as const).map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -373,7 +510,7 @@ export default function Home() {
                         : 'bg-background border border-border text-foreground hover:border-primary'
                     }`}
                   >
-                    {tab === 'all' ? 'All Disciplines' : tab === 'backend' ? 'Backend' : tab === 'ai' ? 'AI & ML' : 'Cloud & DevOps'}
+                    {tab === 'all' ? 'All Disciplines' : tab === 'backend' ? 'Backend' : tab === 'ai' ? 'AI & ML' : tab === 'cloud' ? 'Cloud & DevOps' : 'Systems'}
                   </button>
                 ))}
               </div>
@@ -385,7 +522,7 @@ export default function Home() {
                 { title: 'Full-Stack Next.js 14 & React Masterclass', level: 'Intermediate', lessons: '38 Lessons', category: 'all', rating: '4.91' },
                 { title: 'Large Language Models & Agentic Engineering', level: 'Featured', lessons: '29 Lessons', category: 'ai', rating: '4.98' },
                 { title: 'Cloud Infrastructure & Kubernetes Security', level: 'Advanced', lessons: '35 Lessons', category: 'cloud', rating: '4.89' },
-                { title: 'High-Performance Rust Systems Programming', level: 'Hardcore', lessons: '50 Lessons', category: 'backend', rating: '4.96' },
+                { title: 'High-Performance Rust Systems Programming', level: 'Hardcore', lessons: '50 Lessons', category: 'systems', rating: '4.96' },
                 { title: 'PostgreSQL Database Optimization & Tuning', level: 'Core', lessons: '24 Lessons', category: 'backend', rating: '4.92' },
               ]
               .filter(item => activeTab === 'all' || item.category === activeTab)
@@ -421,7 +558,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 8. Porto Modern Accordion FAQ Section */}
+        {/* 9. Porto Modern Accordion FAQ Section */}
         <section id="faq" className="py-20 border-b border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 space-y-2">
@@ -450,7 +587,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 9. Porto CTA Section & Porto Ribbon Footer */}
+        {/* 10. Porto CTA Section & Porto Ribbon Footer */}
         <section className="py-20 bg-primary/5 border-b border-border">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold">Ready to Build Production-Grade Apps?</h2>

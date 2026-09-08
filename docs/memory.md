@@ -21,10 +21,9 @@
 *(Overwrite this section every session — it should always reflect right now, not history)*
 
 - **Active phase:** Phase 2 — Instructor Approval & Course Authoring (in progress)
-- **Currently working on:** Phase 1 (Auth & Roles) is 100% complete end to end. Starting Phase 2 Unit 1: InstructorApplication entity & Flyway migration V3__instructor_applications.sql.
+- **Currently working on:** Phase 0 & Phase 1 are 100% complete end-to-end and deployed live. Full UI/UX Pro Max overhaul across Web & Mobile complete (Porto template architecture, Google Fonts `Space Grotesk` + `Inter`, interactive tab showcase, Judge0 sandbox terminal view, proctoring log mockup, PDFBox verification preview, light-first design, vector icons, SVG animations). Next: Starting Phase 2 Unit 1 (`InstructorApplication` entity & Flyway migration `V3__instructor_applications.sql`).
 - **Last updated:** 2026-09-08
-- **Blockers:** None. Two open decisions exist (see below) but neither
-  blocks Phase 2.
+- **Blockers:** None.
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
@@ -208,4 +207,4 @@ of how you got there.)*
 - **2026-09-08** — Phase 1 Unit 6 completed: Created Expo mobile auth infrastructure (`lib/storage.ts` with `expo-secure-store`, `lib/api.ts`, `lib/auth.tsx`), `/login` and `/register` screens with 2FA verification flow, and role-gated screen shells (`(student)`, `(instructor)`, `(admin)`). Approved by user.
 - **2026-09-08** — Phase 1 Unit 7 completed: Created production deployment blueprints (`backend/render.yaml`, `frontend/web/vercel.json`, `frontend/mobile/eas.json`). Phase 1 — Auth & Roles is now 100% complete end to end. Approved by user.
 - **2026-09-08** — Live production deployment verified end-to-end: Supabase PostgreSQL (Session-mode connection pooler), Render Spring Boot backend (`/api/v1/health` returning 200 OK), Vercel Next.js web frontend (`https://elearny-web.vercel.app`, CORS configured). Registered a live student user (`Aayan`) through the web UI and confirmed successful registration and authentication into the Student Dashboard shell. Phase 1 live deployment checklist item is 100% complete and approved by user.
-
+- **2026-09-08** — UI/UX Pro Max Overhaul across Web & Mobile: Integrated Google Fonts (`Space Grotesk` & `Inter`) via `next/font/google` in `frontend/web/app/layout.tsx`. Implemented Porto multipurpose template architecture from `porto-template-guide` skill: top utility bar, sticky shrink header, SVG vector stroke animations (`animate-svg-stroke`), overlapping course advisor card (`-mt-24`), interactive tabbed demo showcase (HD Video Stream, Judge0 Sandbox terminal, Anti-Cheat proctoring log, PDFBox certificate QR preview), feature boxes grid, filterable course categories, Porto modern FAQ accordions, and ribbon footer. Redesigned Mobile App (`frontend/mobile`) with `@expo/vector-icons`, Light-first design system (`#ffffff` bg, crisp 4px corners, indigo brand accent `#7c3aed`), hero card, feature chips, 2FA challenge modal, and role dashboards. Fixed Expo Metro monorepo resolution with `config.resolver.disableHierarchicalLookup = true;` in `frontend/mobile/metro.config.js`. Production build verified clean with 0 errors via `npx turbo run build`. Git commit `ui update` created and pushed to GitHub `main` branch (`b915a42`).
