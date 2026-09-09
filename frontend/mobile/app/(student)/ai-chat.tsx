@@ -1,158 +1,284 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-export default function MobileAiChat() {
+export default function AiChatScreen() {
   const router = useRouter();
-  const [inputMsg, setInputMsg] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'ai'; text: string }>>([
+  const [inputText, setInputText] = useState('');
+  const [messages, setMessages] = useState([
     {
-      role: 'ai',
-      text: 'Hi! I am your eLearny AI Tutor 🤖. Ask me any question about your courses, code debugging, or tech concepts!',
+      id: '1',
+      sender: 'AI',
+      text: 'Hello Alex! I am your 24/7 AI Code & System Design Tutor. How can I help you with your Java, Spring Boot, or React Native studies today?',
+      time: '10:00 AM',
+    },
+    {
+      id: '2',
+      sender: 'USER',
+      text: 'How does Resilience4j Circuit Breaker handle state transitions from CLOSED to OPEN?',
+      time: '10:02 AM',
+    },
+    {
+      id: '3',
+      sender: 'AI',
+      text: 'Resilience4j uses a sliding window (count-based or time-based) to track request outcomes.\n\n1. CLOSED: All requests pass through normally while calculating failure rate.\n2. OPEN: When failure rate exceeds threshold (e.g. 50%), circuit opens and immediately throws CallNotPermittedException.\n3. HALF-OPEN: After waitDurationInOpenState, it allows a limited number of test calls to check if downstream service recovered.',
+      time: '10:02 AM',
     },
   ]);
 
-  const handleSend = () => {
-    if (!inputMsg.trim() || loading) return;
+  const quickPrompts = [
+    'Explain Spring Security JWT',
+    'Debug my code',
+    'Generate MCQ Quiz',
+    'What is Circuit Breaker?',
+  ];
 
-    const userText = inputMsg;
-    setMessages((prev) => [...prev, { role: 'user', text: userText }]);
-    setInputMsg('');
-    setLoading(true);
+  const handleSendMessage = (textToSend?: string) => {
+    const messageText = textToSend || inputText;
+    if (!messageText.trim()) return;
+
+    const userMsg = {
+      id: Date.now().toString(),
+      sender: 'USER',
+      text: messageText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setInputText('');
 
     setTimeout(() => {
-      setLoading(false);
-      let reply = 'I am your eLearny AI Tutor. What concept would you like to explore today?';
-      const q = userText.toLowerCase();
-      if (q.includes('spring') || q.includes('java')) {
-        reply = 'Spring Boot 3 & Java 21 Tip:\n- Use @RestController for Spring Web endpoints.\n- Flyway manages database migrations seamlessly.';
-      } else if (q.includes('react') || q.includes('next') || q.includes('expo')) {
-        reply = 'React & Expo Tip:\n- Expo Router v3 provides fast, file-based mobile navigation for iOS & Android.';
-      }
-      setMessages((prev) => [...prev, { role: 'ai', text: reply }]);
-    }, 1000);
+      const aiReply = {
+        id: (Date.now() + 1).toString(),
+        sender: 'AI',
+        text: `Here is a detailed explanation for: "${messageText}"\n\nIn enterprise microservices, ensuring high availability and fault isolation is key. Let me know if you need code examples!`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, aiReply]);
+    }, 800);
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.mainWrapper} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <Feather name="arrow-left" size={20} color="#0f172a" />
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+          <Feather name="arrow-left" size={20} color="#ffffff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>eLearny AI Tutor 🤖</Text>
+        <View style={styles.headerTitleCol}>
+          <Text style={styles.headerTitle}>AI Assistant Tutor</Text>
+          <Text style={styles.headerSubtitle}>24/7 AI Code Debugger & Prompt Tutor</Text>
+        </View>
+        <View style={styles.aiBadge}>
+          <Feather name="cpu" size={14} color="#a78bfa" />
+        </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.chatScroll}>
-        {messages.map((m, idx) => (
-          <View
-            key={idx}
-            style={[styles.msgBubble, m.role === 'user' ? styles.userBubble : styles.aiBubble]}
-          >
-            <Text style={[styles.msgText, m.role === 'user' ? styles.userText : styles.aiText]}>
-              {m.text}
-            </Text>
+      {/* Messages Scroll Area */}
+      <ScrollView contentContainerStyle={styles.messagesContainer} showsVerticalScrollIndicator={false}>
+        {messages.map((msg) => (
+          <View key={msg.id} style={[styles.msgRow, msg.sender === 'USER' ? styles.userRow : styles.aiRow]}>
+            {msg.sender === 'AI' && (
+              <View style={styles.aiAvatar}>
+                <Feather name="cpu" size={14} color="#ffffff" />
+              </View>
+            )}
+
+            <View style={[styles.msgBubble, msg.sender === 'USER' ? styles.userBubble : styles.aiBubble]}>
+              <Text style={[styles.msgText, msg.sender === 'USER' ? styles.userMsgText : styles.aiMsgText]}>
+                {msg.text}
+              </Text>
+              <Text style={[styles.msgTime, msg.sender === 'USER' ? styles.userTime : styles.aiTime]}>
+                {msg.time}
+              </Text>
+            </View>
           </View>
         ))}
-
-        {loading && <Text style={styles.loadingText}>AI Tutor is thinking...</Text>}
       </ScrollView>
 
-      <View style={styles.inputBar}>
+      {/* Quick Prompts Bar */}
+      <View style={styles.promptsBar}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {quickPrompts.map((prompt) => (
+            <TouchableOpacity
+              key={prompt}
+              style={styles.promptPill}
+              onPress={() => handleSendMessage(prompt)}
+            >
+              <Feather name="zap" size={12} color="#7c3aed" style={{ marginRight: 4 }} />
+              <Text style={styles.promptPillText}>{prompt}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* Input Bar */}
+      <View style={styles.inputContainer}>
         <TextInput
-          style={styles.textInput}
-          value={inputMsg}
-          onChangeText={setInputMsg}
-          placeholder="Ask AI tutor a question..."
+          placeholder="Ask AI Tutor a question..."
           placeholderTextColor="#94a3b8"
+          value={inputText}
+          onChangeText={setInputText}
+          style={styles.textInput}
         />
-        <TouchableOpacity style={styles.sendBtn} onPress={handleSend} disabled={loading || !inputMsg.trim()}>
+        <TouchableOpacity style={styles.sendBtn} onPress={() => handleSendMessage()}>
           <Ionicons name="send" size={16} color="#ffffff" />
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainWrapper: {
     flex: 1,
-    paddingTop: 50,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#0f172a',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 16,
+    backgroundColor: '#1e293b',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    borderBottomColor: '#334155',
   },
   backBtn: {
     padding: 6,
-    marginRight: 10,
+  },
+  headerTitleCol: {
+    flex: 1,
+    marginLeft: 12,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#0f172a',
+    color: '#ffffff',
   },
-  chatScroll: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    gap: 12,
+  headerSubtitle: {
+    fontSize: 11,
+    color: '#a78bfa',
+  },
+  aiBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(167, 139, 250, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  messagesContainer: {
+    padding: 16,
+    paddingBottom: 20,
+    gap: 14,
+  },
+  msgRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  userRow: {
+    justifyContent: 'flex-end',
+  },
+  aiRow: {
+    justifyContent: 'flex-start',
+  },
+  aiAvatar: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#7c3aed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
   },
   msgBubble: {
-    padding: 12,
-    borderRadius: 8,
-    maxWidth: '85%',
-  },
-  aiBubble: {
-    backgroundColor: '#f1f5f9',
-    alignSelf: 'flex-start',
+    maxWidth: '80%',
+    padding: 14,
+    borderRadius: 12,
   },
   userBubble: {
     backgroundColor: '#7c3aed',
-    alignSelf: 'flex-end',
+    borderBottomRightRadius: 2,
+  },
+  aiBubble: {
+    backgroundColor: '#1e293b',
+    borderWidth: 1,
+    borderColor: '#334155',
+    borderBottomLeftRadius: 2,
   },
   msgText: {
     fontSize: 13,
     lineHeight: 18,
   },
-  aiText: {
-    color: '#0f172a',
-  },
-  userText: {
+  userMsgText: {
     color: '#ffffff',
   },
-  loadingText: {
-    fontSize: 11,
-    color: '#64748b',
-    fontStyle: 'italic',
+  aiMsgText: {
+    color: '#e2e8f0',
   },
-  inputBar: {
-    flexDirection: 'row',
-    padding: 16,
+  msgTime: {
+    fontSize: 9,
+    marginTop: 6,
+    alignSelf: 'flex-end',
+  },
+  userTime: {
+    color: '#ddd6fe',
+  },
+  aiTime: {
+    color: '#64748b',
+  },
+  promptsBar: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: '#1e293b',
     borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
-    gap: 10,
+    borderTopColor: '#334155',
+  },
+  promptPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#312e81',
+    borderWidth: 1,
+    borderColor: '#6366f1',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginRight: 8,
+  },
+  promptPillText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: '#c7d2fe',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#0f172a',
+    borderTopWidth: 1,
+    borderTopColor: '#334155',
+    gap: 8,
   },
   textInput: {
     flex: 1,
-    backgroundColor: '#fafafa',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    borderRadius: 6,
-    paddingHorizontal: 12,
+    backgroundColor: '#1e293b',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    color: '#ffffff',
     fontSize: 13,
-    color: '#0f172a',
+    borderWidth: 1,
+    borderColor: '#334155',
   },
   sendBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#7c3aed',
-    paddingHorizontal: 16,
-    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 6,
+    justifyContent: 'center',
   },
 });
