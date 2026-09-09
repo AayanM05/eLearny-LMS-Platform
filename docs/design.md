@@ -1,6 +1,6 @@
 # eLearny — Design Document (design.md)
 
-> Status: **v0.1.** Governs visual identity — color, typography, spacing,
+> Status: **v0.2.** Governs visual identity — color, typography, spacing,
 > component styling philosophy. `rules.md` section 11 governs *how* this
 > gets implemented in code (icon library, animation discipline, when the
 > `frontend-design` skill applies); this document governs *what* the
@@ -169,10 +169,90 @@ tipping into playful (avoiding pinks/oranges keeps it professional).
 
 ---
 
-## 8. Change Log
+## 8. UI/UX Reference & Interaction Quality Bar
+
+**Reference apps, and an explicit note on a real conflict.** Zomato/Swiggy
+(mobile reference) and Hostinger/Dreamhost (web reference) are both
+visually **rounded and soft** — pill buttons, heavy rounded cards, bright
+saturated color use. That directly conflicts with §1's explicit rejection
+of rounded/soft aesthetics. Resolution: borrow their **interaction
+quality** — animation polish, imagery richness, information density,
+motion choreography — not their literal corner radius or color exuberance.
+Every component still uses this document's sharp-radius token system
+(§4) and indigo/violet palette (§2). If that trade-off is wrong, the fix
+is a one-line change to `--radius` in §2's token file, not abandoning
+this section's interaction guidance.
+
+### 8.1 Mobile reference: Zomato/Swiggy-level polish
+What to actually borrow:
+- **Card-based content with real imagery**, not placeholder icons — course cards, article cards, and practice-problem cards should feel image-rich and browsable, the way a food-delivery app's restaurant cards do
+- **Skeleton loading states**, not bare spinners — content-shaped placeholders that resolve into real content
+- **Micro-interactions on every interactive element** — a button press, a card tap, a completed action all get a small, deliberate animation response (via `react-native-reanimated`/Moti-equivalent, per `rules.md`) — nothing should feel inert
+- **Pull-to-refresh** on list/feed screens (Home, Browse, Notifications)
+- **Bottom tab navigation** with icon + label, persistent across the app's primary sections (Home, Browse, My Courses/Learning, Notifications, Profile) — this is the actual mechanism for "the app should feel like a real app," not a web page in a native wrapper
+- **Smooth screen-transition animations** between navigation states — no jarring instant cuts
+
+### 8.2 Web reference: Hostinger/Dreamhost-level marketing polish
+What to actually borrow (applies to public-facing pages — landing, course
+detail, article pages — not internal dashboards, which should stay dense
+and functional per §5):
+- **A real hero section** — actual imagery/illustration and a clear value
+  proposition, not empty whitespace with a headline floating alone
+- **Feature grids with icons and short copy**, not walls of paragraph text
+- **Trust signals** — real stats *only once they're real* (see the
+  critical note below), reviews, instructor credibility markers
+- **Clear visual hierarchy and section rhythm** — alternating content
+  density/background treatment between sections so a long page doesn't
+  feel monotonous
+- **Generous but purposeful whitespace** — full-width sections with
+  properly constrained inner content (per §8.3), not content awkwardly
+  shrunk into a corner of the viewport
+
+### 8.3 Layout rule — fills the screen properly (fixes the "thin pages" problem)
+This directly addresses a real problem found in the last build pass —
+pages rendering as small, unstyled content islands rather than actual
+screens:
+- **Every page's outer container fills the viewport** (`w-full`,
+  appropriate `min-h-screen` on web; `flex: 1` on mobile) — the page
+  background and structural chrome always extend edge to edge
+- **Content width is a deliberate choice, not an accident**: dashboards
+  and data views use the full available width in a grid/table layout;
+  reading content (articles, course descriptions) uses a constrained
+  max-width (e.g. `max-w-3xl`) *centered* within the full-width page, for
+  readability — never the whole page rendering at a cramped default width
+- **No orphaned content** — a form, a card, or a message should never sit
+  alone in an unstyled box in the top-left corner of an otherwise empty
+  page. Every page has a deliberate layout: header/nav context, main
+  content area sized to its content type, appropriate padding
+
+### 8.4 Critical honesty rule — no fabricated content
+**Never place placeholder statistics, fake testimonials, invented phone
+numbers/support emails, or claims about features that don't yet work
+into any page, "for now" or "to make it look complete."** A landing page
+claiming "15,000+ students enrolled" or a support number that doesn't
+exist is not a UI/UX choice — it is a deceptive design defect and is 
+never acceptable, including on a work-in-progress build. Where a
+real number/testimonial doesn't exist yet, the honest options are: omit
+the section entirely, use a clearly-marked placeholder in a
+non-production build, or show the section once the real data exists.
+This applies regardless of how visually convincing the fabricated version
+looks.
+
+---
+
+## 9. Change Log
 - **v0.1** — Initial design direction: Modern/Minimal + Bold/Vibrant +
   Professional, explicitly rejecting rounded/soft aesthetics. Indigo/violet
   primary. CSS-custom-property token architecture so the entire color
   scheme can be changed by editing one file. Inter + Space Grotesk
   typography. Small, sharp border radius. Light-first with dark mode
   toggle.
+- **v0.2** — Added a UI/UX Reference & Interaction Quality Bar section:
+  Zomato/Swiggy as the mobile polish reference, Hostinger/Dreamhost as the
+  web marketing-polish reference — with an explicit note that both
+  references are visually rounded/soft, conflicting with §1's stated
+  direction, resolved by borrowing interaction quality (motion, imagery,
+  density) rather than their literal corner radius or color exuberance.
+  Added a full-screen layout rule to directly address thin/orphaned page
+  content found in a build review, and a critical rule against fabricated
+  stats/testimonials/content appearing anywhere in the product.

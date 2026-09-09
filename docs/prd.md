@@ -1,7 +1,9 @@
 # eLearny — Product Requirements Document (prd.md)
 
-> Status: **v0.5 — living document.** Every feature listed below is
-> **committed scope** — it will be built, not shelved. This document does
+> Status: **v0.6 — living document.** Every feature listed below is
+> **committed scope** — it will be built, not shelved (one explicit,
+> user-requested exception: §3.20 Live Sessions — see its entry and the
+> v0.6 changelog for why). This document does
 > not decide *when* something gets built (that's `phases.md`'s job); it
 > only decides *what* eLearny includes. New features still get added here
 > explicitly, with a version bump — nothing gets silently dropped either.
@@ -33,12 +35,13 @@ forgotten because of that ordering.
 
 ## 2. Targeted Users
 
-**Pure B2C**, matching Udemy's model. Three roles:
+**Pure B2C**, matching Udemy's model. Four roles:
 
 | Role | Description |
 |---|---|
 | **Student** | Browses, purchases/enrolls in courses, tracks progress, takes quizzes, earns certificates, leaves reviews. |
-| **Instructor** | Creates and manages courses, quizzes, and pricing/coupons. **Must be approved by an Admin** before any instructor-level action is permitted. Views revenue/analytics for own courses. |
+| **Instructor** | Creates and manages courses, quizzes, and pricing/coupons. **Must be approved by an Admin** before any instructor-level action is permitted. Views revenue/analytics for own courses. Can invite Teaching Assistants to their own courses. |
+| **Teaching Assistant** | Invited by a specific Instructor to one or more of that instructor's courses (not platform-wide, not self-registered). Can grade assignments and moderate discussion on the courses they're assigned to. Cannot create courses, set pricing, or access revenue data — narrower than Instructor by design. Accepts or declines an invitation before gaining any access. |
 | **Admin** | Platform-wide management: instructor approval, content moderation, user management, category/taxonomy management, revenue oversight. |
 
 **Out of scope (a deliberate design boundary, not a deferral):**
@@ -160,6 +163,37 @@ Two capabilities, both committed, with different infra profiles:
 - AI-driven personalization of recommendations beyond rule-based matching, once there's enough usage data for it to outperform rule-based matching
 - Same free-tier LLM dependency and honest cost note as 3.15
 
+### 3.17 Teaching Assistant Role
+- Instructors can invite a Teaching Assistant (by email) to one or more of their own specific courses — not platform-wide, not self-registered
+- TA accepts/declines the invitation before gaining any access
+- TA permissions (per assigned course only): grade assignments, moderate discussion/Q&A (3.9)
+- TA cannot: create courses, set pricing, access revenue data, or act on courses they weren't invited to
+- Reuses the existing RBAC/role infrastructure from §2 — a fourth role, not a parallel permission system
+
+### 3.18 Account Security Hardening
+- Account lockout after repeated failed login attempts, with a clear unlock path (time-based or admin-assisted)
+- Session-expiry handling: a clear, non-jarring re-authentication prompt when a JWT expires mid-use, not a silent failure
+
+### 3.19 Trust, Support & Governance Pages
+- Student-initiated refund requests (student submits a request; admin reviews it — extends the existing refund flow in §3.6, which was previously admin-initiated only)
+- Admin-facing communication log (record of transactional emails/notifications actually sent, for support/debugging)
+- Admin-facing audit log (record of admin actions — approvals, moderation, refunds — for accountability)
+- Public legal pages: Terms of Use, Privacy Policy
+- Help & Support page, and a "What's New" release-notes page
+
+### 3.20 Live Sessions — explicitly deferred (not committed scope right now)
+Real-time video sessions (instructor-led live classes, scheduling,
+attendance). **This entry is a deliberate exception to this document's
+"nothing is deferred" rule in §1 — the user explicitly requested deferring
+this one feature to a future phase**, after reviewing the real
+infrastructure cost: live video requires either self-hosting a WebRTC
+SFU (LiveKit/Jitsi — real DevOps burden: TURN servers, recording
+pipeline, scaling) or a managed API billed per participant-minute once
+free credits run out (LiveKit Cloud, Daily) — neither fits the platform's
+free-tier constraint at real usage. Revisit this as its own dedicated
+planning pass when the platform is ready to take on that cost, rather
+than folding it into the current build.
+
 ---
 
 ## 4. Change Log
@@ -184,3 +218,13 @@ Two capabilities, both committed, with different infra profiles:
   Every feature in this document is now committed scope. Build order (what
   gets built in what sequence) moves entirely to `phases.md`; this document
   no longer mixes scope decisions with sequencing decisions.
+- **v0.6** — Added a fourth role, Teaching Assistant (§2, §3.17), invited
+  per-course by an Instructor with narrower permissions than Instructor.
+  Added Account Security Hardening (§3.18: lockout, session-expiry
+  handling), Trust/Support/Governance pages (§3.19: student-initiated
+  refund requests, communication log, audit log, legal pages, help/support,
+  what's-new). Added Live Sessions (§3.20) as a **deliberate, user-requested
+  exception** to this doc's "nothing deferred" policy — real-time video
+  needs infrastructure (self-hosted WebRTC SFU or per-minute-billed managed
+  API) that doesn't fit the free-tier constraint yet; explicitly deferred
+  rather than committed, at the user's direction, not shrunk silently.
