@@ -45,10 +45,22 @@ export default function App() {
           </View>
 
           <View style={styles.versionTag}>
-            <Text style={styles.versionTagText}>v1.0 PRO</Text>
+            <Text style={styles.versionTagText}>v1.1 OTA LIVE ⚡</Text>
           </View>
         </View>
 
+        {/* OTA Update Highlight Banner */}
+        <View style={styles.otaNoticeCard}>
+          <View style={styles.otaNoticeHeader}>
+            <Ionicons name="sparkles" size={18} color="#7c3aed" />
+            <Text style={styles.otaNoticeTitle}>What's New in v1.1 Update</Text>
+          </View>
+          <Text style={styles.otaNoticeBody}>
+            • Live Instant OTA Updates active!{'\n'}
+            • Integrated Judge0 Cloud Code Execution Engine.{'\n'}
+            • New Dark Mode & Enhanced Analytics Dashboard.
+          </Text>
+        </View>
 
         {/* Hero Banner Card */}
         <View style={styles.heroCard}>
@@ -202,6 +214,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#7c3aed',
     letterSpacing: 0.5,
+  },
+  otaNoticeCard: {
+    backgroundColor: '#f5f3ff',
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 16,
+  },
+  otaNoticeHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  otaNoticeTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#6d28d9',
+    marginLeft: 6,
+  },
+  otaNoticeBody: {
+    fontSize: 12,
+    color: '#4c1d95',
+    lineHeight: 18,
   },
   heroCard: {
     backgroundColor: '#fafafa',
