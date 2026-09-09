@@ -35,8 +35,8 @@ export default function BottomNavigation() {
     },
   ];
 
-  // Don't show bottom nav on auth screens
-  if (pathname.includes('/login') || pathname.includes('/register') || pathname === '/') {
+  // Don't show bottom nav on non-student routes or unhydrated router state
+  if (!pathname || typeof pathname !== 'string' || !pathname.includes('(student)')) {
     return null;
   }
 
