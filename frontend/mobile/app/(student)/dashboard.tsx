@@ -59,6 +59,15 @@ export default function StudentDashboard() {
 
         {/* Main Content Area */}
         <View style={styles.contentBody}>
+          {/* Live v1.1 Update Announcement Banner */}
+          <View style={{ backgroundColor: '#f3e8ff', borderWidth: 1, borderColor: '#ddd6fe', borderRadius: 10, padding: 14, marginBottom: 16, flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name="sparkles" size={20} color="#7c3aed" style={{ marginRight: 10 }} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#6d28d9' }}>v1.1 OTA Live Update Verified! 🎉</Text>
+              <Text style={{ fontSize: 11, color: '#5b21b6', marginTop: 2 }}>Student Dashboard enhanced with instant AI Assistant FAB & Live Judge0 practice links.</Text>
+            </View>
+          </View>
+
           {/* Quick Stats Grid */}
           <View style={styles.statsGrid}>
             <View style={[styles.statCard, { backgroundColor: '#fef3c7', borderColor: '#fde68a' }]}>

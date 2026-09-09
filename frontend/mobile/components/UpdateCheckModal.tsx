@@ -1,36 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, ActivityIndicator, AppState, AppStateStatus } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 export default function UpdateCheckModal() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [newVersionLabel, setNewVersionLabel] = useState('v1.0.1');
+  const [isDownloading, setIsDownloading] = useState(false);
+  const appState = useRef(AppState.currentState);
+
+  const checkAndPrepareUpdate = async () => {
+    try {
+      let Updates;
+      try {
+        Updates = require('expo-updates');
+      } catch (e) {
+        return;
+      }
+
+      if (!Updates || !Updates.isEnabled) return;
+
+      const update = await Updates.checkForUpdateAsync();
+      if (update && update.isAvailable) {
+        setUpdateAvailable(true); // Lock app screen immediately with popup
+        setIsDownloading(true);
+        
+        await Updates.fetchUpdateAsync();
+        setIsDownloading(false);
+      }
+    } catch (e) {
+      console.log('EAS Update Check Error:', e);
+      setIsDownloading(false);
+    }
+  };
 
   useEffect(() => {
-    async function checkForUpdates() {
-      try {
-        if (__DEV__) return;
-        let Updates;
-        try {
-          Updates = require('expo-updates');
-        } catch (e) {
-          return;
-        }
+    // 1. Initial check on mount
+    checkAndPrepareUpdate();
 
-        if (!Updates || !Updates.isEnabled) return;
+    // 2. Poll every 10 seconds while app is active
+    const interval = setInterval(() => {
+      checkAndPrepareUpdate();
+    }, 10000);
 
-        const update = await Updates.checkForUpdateAsync();
-        if (update && update.isAvailable) {
-          await Updates.fetchUpdateAsync();
-          setUpdateAvailable(true);
-        }
-      } catch (e) {
-        // Ignored in dev client or offline mode
+    // 3. Re-check whenever app returns to foreground
+    const subscription = AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        checkAndPrepareUpdate();
       }
-    }
+      appState.current = nextAppState;
+    });
 
-    checkForUpdates();
+    return () => {
+      clearInterval(interval);
+      subscription.remove();
+    };
   }, []);
 
   const handleApplyUpdate = async () => {
@@ -40,39 +63,57 @@ export default function UpdateCheckModal() {
       await Updates.reloadAsync();
     } catch (e) {
       setIsUpdating(false);
-      setUpdateAvailable(false);
     }
   };
 
   if (!updateAvailable) return null;
 
   return (
-    <Modal transparent animationType="fade" visible={updateAvailable}>
+    <Modal
+      transparent
+      animationType="fade"
+      visible={updateAvailable}
+      onRequestClose={() => {
+        // Prevent closing modal via Android physical back button (Mandatory Update)
+      }}
+    >
       <View style={styles.overlay}>
         <View style={styles.dialogCard}>
           <View style={styles.iconCircle}>
-            <MaterialIcons name="system-update" size={32} color="#7c3aed" />
+            <MaterialIcons name="system-update" size={36} color="#7c3aed" />
           </View>
 
-          <Text style={styles.title}>New Version Available 🚀</Text>
+          <Text style={styles.title}>Mandatory Update Required ⚡</Text>
           <Text style={styles.subtitle}>
-            A new version of eLearny LMS ({newVersionLabel}) has been downloaded. Tap below to reload and apply the update.
+            A new update of eLearny LMS has been published. To continue using the app and access updated features, you must reload now.
           </Text>
 
-          <TouchableOpacity
-            style={styles.updateBtn}
-            onPress={handleApplyUpdate}
-            disabled={isUpdating}
-          >
-            {isUpdating ? (
-              <ActivityIndicator color="#ffffff" size="small" />
-            ) : (
-              <>
-                <Feather name="refresh-cw" size={16} color="#ffffff" style={{ marginRight: 6 }} />
-                <Text style={styles.updateBtnText}>Update & Reload Now</Text>
-              </>
-            )}
-          </TouchableOpacity>
+          {isDownloading ? (
+            <View style={styles.loadingBox}>
+              <ActivityIndicator color="#7c3aed" size="small" style={{ marginRight: 8 }} />
+              <Text style={styles.loadingText}>Downloading latest update package...</Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={styles.updateBtn}
+              onPress={handleApplyUpdate}
+              disabled={isUpdating}
+              activeOpacity={0.8}
+            >
+              {isUpdating ? (
+                <ActivityIndicator color="#ffffff" size="small" />
+              ) : (
+                <>
+                  <Feather name="refresh-cw" size={18} color="#ffffff" style={{ marginRight: 8 }} />
+                  <Text style={styles.updateBtnText}>Update & Reload Now</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          )}
+
+          <Text style={styles.lockNotice}>
+            🔒 App features are locked until update is applied.
+          </Text>
         </View>
       </View>
     </Modal>
@@ -82,58 +123,87 @@ export default function UpdateCheckModal() {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.7)',
+    backgroundColor: 'rgba(15, 23, 42, 0.85)',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
   },
   dialogCard: {
     width: '100%',
     backgroundColor: '#ffffff',
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 24,
     alignItems: 'center',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
+    elevation: 12,
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
   },
   iconCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: '#f3e8ff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '800',
     color: '#0f172a',
-    marginBottom: 6,
+    marginBottom: 8,
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   subtitle: {
     fontSize: 13,
-    color: '#64748b',
+    color: '#475569',
     textAlign: 'center',
-    lineHeight: 18,
+    lineHeight: 19,
     marginBottom: 20,
+  },
+  loadingBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f3e8ff',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#7c3aed',
   },
   updateBtn: {
     backgroundColor: '#7c3aed',
     width: '100%',
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: 14,
+    borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 4,
   },
   updateBtnText: {
     color: '#ffffff',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  lockNotice: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#94a3b8',
+    marginTop: 14,
+    textAlign: 'center',
   },
 });
