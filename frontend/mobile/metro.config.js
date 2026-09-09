@@ -16,4 +16,12 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ];
 
+// 3. Force singletons for core React Native dependencies in monorepo
+config.resolver.extraNodeModules = {
+  'react': path.resolve(projectRoot, 'node_modules/react'),
+  'react-native': path.resolve(projectRoot, 'node_modules/react-native'),
+  'expo': path.resolve(projectRoot, 'node_modules/expo'),
+  'expo-router': path.resolve(projectRoot, 'node_modules/expo-router'),
+};
+
 module.exports = config;

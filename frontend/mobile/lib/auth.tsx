@@ -22,11 +22,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const storedUser = await getSecureItem('elearny_user');
         const token = await getSecureItem('elearny_access_token');
         if (storedUser && token) {
-          setUser(JSON.parse(storedUser));
-          updateApiToken(token);
+          try {
+            setUser(JSON.parse(storedUser));
+            updateApiToken(token);
+          } catch (_) {
+            setUser(null);
+          }
         }
       } catch (e) {
-        await removeSecureItem('elearny_user');
+        try {
+          await removeSecureItem('elearny_user');
+        } catch (_) {}
       } finally {
         setIsLoading(false);
       }
