@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ScrollView, StatusBar, Image } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../lib/auth';
@@ -31,12 +31,14 @@ export default function App() {
     <View style={styles.mainWrapper}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Horizontal Brand Logo Bar */}
+        {/* Horizontal Brand Logo Bar with App Icon Image */}
         <View style={styles.header}>
           <View style={styles.logoHorizontalGroup}>
-            <View style={styles.logoBadgeContainer}>
-              <Ionicons name="school" size={20} color="#ffffff" />
-            </View>
+            <Image 
+              source={require('../assets/icon.png')} 
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <Text style={styles.logoTitleText}>
               eLearny<Text style={styles.logoTitleAccent}>.LMS</Text>
             </Text>
@@ -46,6 +48,7 @@ export default function App() {
             <Text style={styles.versionTagText}>v1.0 PRO</Text>
           </View>
         </View>
+
 
         {/* Hero Banner Card */}
         <View style={styles.heroCard}>
@@ -170,19 +173,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoBadgeContainer: {
-    width: 38,
-    height: 38,
-    borderRadius: 8,
-    backgroundColor: '#7c3aed',
-    alignItems: 'center',
-    justifyContent: 'center',
+  logoImage: {
+    width: 36,
+    height: 36,
     marginRight: 10,
-    shadowColor: '#7c3aed',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 3,
+    borderRadius: 8,
   },
   logoTitleText: {
     fontSize: 22,
