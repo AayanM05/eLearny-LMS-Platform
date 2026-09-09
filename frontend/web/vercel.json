@@ -1,5 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "next build",
+  "buildCommand": "NEXT_IGNORE_INCORRECT_LOCKFILE=1 next build",
   "outputDirectory": ".next"
 }
+
