@@ -25,11 +25,6 @@
       }
     },
     "scheme": "elearny",
-    "updates": {
-      "url": "https://u.expo.dev/83ecf014-24ef-439f-9a4e-4a20cc72ce0d",
-      "checkAutomatically": "ON_ERROR_RECOVERY",
-      "fallbackToCacheTimeout": 30000
-    },
     "runtimeVersion": "1.0.0",
     "owner": "aayanm05",
     "extra": {
