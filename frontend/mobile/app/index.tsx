@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ScrollView, StatusBar } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../lib/auth';
@@ -28,95 +28,124 @@ export default function App() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.mainWrapper}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.logoBadge}>
-          <Text style={styles.logoBadgeText}>e</Text>
-        </View>
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>eLearny</Text>
-          <View style={styles.versionChip}>
-            <Text style={styles.versionChipText}>v1.0 Pro</Text>
+    <View style={styles.mainWrapper}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        {/* Horizontal Brand Logo Bar */}
+        <View style={styles.header}>
+          <View style={styles.logoHorizontalGroup}>
+            <View style={styles.logoBadgeContainer}>
+              <Ionicons name="school" size={20} color="#ffffff" />
+            </View>
+            <Text style={styles.logoTitleText}>
+              eLearny<Text style={styles.logoTitleAccent}>.LMS</Text>
+            </Text>
+          </View>
+
+          <View style={styles.versionTag}>
+            <Text style={styles.versionTagText}>v1.0 PRO</Text>
           </View>
         </View>
-      </View>
 
-      {/* Hero Card */}
-      <View style={styles.heroCard}>
-        <View style={styles.pillBadge}>
-          <Feather name="zap" size={12} color="#7c3aed" />
-          <Text style={styles.pillBadgeText}>Next-Gen LMS Platform</Text>
+        {/* Hero Banner Card */}
+        <View style={styles.heroCard}>
+          <View style={styles.pillBadge}>
+            <Feather name="zap" size={12} color="#7c3aed" />
+            <Text style={styles.pillBadgeText}>Next-Gen Enterprise LMS</Text>
+          </View>
+
+          <Text style={styles.heroTitle}>Master Software Engineering with Production Rigor</Text>
+          <Text style={styles.heroSubtitle}>
+            Interactive HD video courses, live code sandboxes, anti-cheat proctored exams, and QR verifiable certificates.
+          </Text>
+
+          {/* Feature Highlights Grid */}
+          <View style={styles.featuresGrid}>
+            <View style={styles.featureItem}>
+              <View style={styles.featureIconBox}>
+                <Ionicons name="play-circle-outline" size={16} color="#7c3aed" />
+              </View>
+              <Text style={styles.featureItemText}>HD Video Streaming</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <View style={styles.featureIconBox}>
+                <Feather name="code" size={16} color="#7c3aed" />
+              </View>
+              <Text style={styles.featureItemText}>Judge0 Code Runner</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <View style={styles.featureIconBox}>
+                <MaterialCommunityIcons name="certificate-outline" size={16} color="#7c3aed" />
+              </View>
+              <Text style={styles.featureItemText}>QR Certifications</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <View style={styles.featureIconBox}>
+                <Feather name="shield" size={16} color="#7c3aed" />
+              </View>
+              <Text style={styles.featureItemText}>Anti-Cheat Integrity</Text>
+            </View>
+          </View>
         </View>
 
-        <Text style={styles.heroTitle}>Master Engineering with Production Rigor</Text>
-        <Text style={styles.heroSubtitle}>
-          Interactive video courses, live code sandboxes, anti-cheat exams, and instant verifiable certificates.
-        </Text>
+        {/* Instant Demo Sandbox Access */}
+        <View style={styles.demoCard}>
+          <View style={styles.demoCardHeader}>
+            <Feather name="play-circle" size={16} color="#7c3aed" />
+            <Text style={styles.demoCardTitle}>Instant Demo Mode (0ms Delay)</Text>
+          </View>
+          <Text style={styles.demoCardSubtitle}>Tap a role to immediately enter the live workspace:</Text>
+          
+          <View style={styles.demoButtonRow}>
+            <Pressable 
+              style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
+              onPress={() => handleInstantDemoLogin('STUDENT')}
+            >
+              <Ionicons name="person" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              <Text style={styles.demoRoleButtonText}>Student</Text>
+            </Pressable>
 
-        {/* Feature Highlights */}
-        <View style={styles.featuresGrid}>
-          <View style={styles.featureItem}>
-            <Ionicons name="play-circle-outline" size={18} color="#7c3aed" />
-            <Text style={styles.featureItemText}>HD Video Streaming</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <Feather name="code" size={18} color="#7c3aed" />
-            <Text style={styles.featureItemText}>Code Playgrounds</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <MaterialCommunityIcons name="certificate-outline" size={18} color="#7c3aed" />
-            <Text style={styles.featureItemText}>QR Certifications</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <Feather name="shield" size={18} color="#7c3aed" />
-            <Text style={styles.featureItemText}>Proctored Exams</Text>
+            <Pressable 
+              style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
+              onPress={() => handleInstantDemoLogin('INSTRUCTOR')}
+            >
+              <Ionicons name="briefcase" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              <Text style={styles.demoRoleButtonText}>Instructor</Text>
+            </Pressable>
+
+            <Pressable 
+              style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
+              onPress={() => handleInstantDemoLogin('ADMIN')}
+            >
+              <Ionicons name="shield-checkmark" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              <Text style={styles.demoRoleButtonText}>Admin</Text>
+            </Pressable>
           </View>
         </View>
-      </View>
 
-      {/* Instant Demo Login Bar */}
-      <View style={styles.demoCard}>
-        <View style={styles.demoCardHeader}>
-          <Feather name="zap" size={14} color="#7c3aed" />
-          <Text style={styles.demoCardTitle}>Instant Demo Access (0ms Delay)</Text>
+        {/* Action Buttons */}
+        <View style={styles.buttonContainer}>
+          <Link href="/(public)/register" asChild>
+            <Pressable style={({ pressed }) => [styles.primaryButton, pressed && styles.buttonPressed]}>
+              <Text style={styles.primaryButtonText}>Create Account Free</Text>
+              <Feather name="arrow-right" size={18} color="#ffffff" style={styles.buttonIcon} />
+            </Pressable>
+          </Link>
+
+          <Link href="/(public)/login" asChild>
+            <Pressable style={({ pressed }) => [styles.secondaryButton, pressed && styles.buttonPressed]}>
+              <Text style={styles.secondaryButtonText}>Sign In with Credentials</Text>
+            </Pressable>
+          </Link>
         </View>
-        <Text style={styles.demoCardSubtitle}>Tap any role to immediately test the workspace</Text>
-        <View style={styles.demoButtonRow}>
-          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('STUDENT')}>
-            <Text style={styles.demoRoleButtonText}>Student</Text>
-          </Pressable>
-          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('INSTRUCTOR')}>
-            <Text style={styles.demoRoleButtonText}>Instructor</Text>
-          </Pressable>
-          <Pressable style={styles.demoRoleButton} onPress={() => handleInstantDemoLogin('ADMIN')}>
-            <Text style={styles.demoRoleButtonText}>Admin</Text>
-          </Pressable>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Feather name="check-circle" size={14} color="#059669" />
+          <Text style={styles.footerText}>Powered by Spring Boot & Next.js Architecture</Text>
         </View>
-      </View>
-
-      {/* Actions */}
-      <View style={styles.buttonContainer}>
-        <Link href="/(public)/register" asChild>
-          <Pressable style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Get Started Free</Text>
-            <Feather name="arrow-right" size={18} color="#ffffff" style={styles.buttonIcon} />
-          </Pressable>
-        </Link>
-
-        <Link href="/(public)/login" asChild>
-          <Pressable style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>Sign In with Backend Credentials</Text>
-          </Pressable>
-        </Link>
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Feather name="check-circle" size={14} color="#059669" />
-        <Text style={styles.footerText}>Powered by Spring Boot & Next.js Architecture</Text>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -127,56 +156,63 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingTop: 55,
+    paddingTop: 50,
     paddingBottom: 40,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 24,
+    paddingVertical: 4,
   },
-  logoBadge: {
-    width: 36,
-    height: 36,
-    borderRadius: 4,
+  logoHorizontalGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logoBadgeContainer: {
+    width: 38,
+    height: 38,
+    borderRadius: 8,
     backgroundColor: '#7c3aed',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  logoBadgeText: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  logoTitleText: {
+    fontSize: 22,
+    fontWeight: '800',
     color: '#0f172a',
-    marginRight: 8,
+    letterSpacing: -0.5,
   },
-  versionChip: {
-    backgroundColor: '#f1f5f9',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  versionChipText: {
-    fontSize: 10,
-    fontWeight: '600',
+  logoTitleAccent: {
     color: '#7c3aed',
+    fontWeight: '800',
+  },
+  versionTag: {
+    backgroundColor: '#f3e8ff',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+  },
+  versionTagText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#7c3aed',
+    letterSpacing: 0.5,
   },
   heroCard: {
     backgroundColor: '#fafafa',
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    borderRadius: 4,
+    borderRadius: 8,
     padding: 20,
     marginBottom: 16,
   },
@@ -197,46 +233,60 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   heroTitle: {
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: '800',
     color: '#0f172a',
     lineHeight: 30,
     marginBottom: 10,
+    letterSpacing: -0.3,
   },
   heroSubtitle: {
     fontSize: 13,
     color: '#64748b',
-    lineHeight: 18,
+    lineHeight: 19,
     marginBottom: 20,
   },
   featuresGrid: {
     borderTopWidth: 1,
     borderTopColor: '#e2e8f0',
     paddingTop: 16,
-    gap: 10,
+    gap: 12,
   },
   featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  featureIconBox: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    backgroundColor: '#f3e8ff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
   featureItemText: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: '600',
     color: '#334155',
-    marginLeft: 10,
   },
   demoCard: {
     backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: '#ddd6fe',
-    borderRadius: 4,
+    borderRadius: 8,
     padding: 16,
     marginBottom: 20,
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
   },
   demoCardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   demoCardTitle: {
     fontSize: 13,
@@ -255,34 +305,41 @@ const styles = StyleSheet.create({
   },
   demoRoleButton: {
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: '#f5f3ff',
     borderWidth: 1,
     borderColor: '#c4b5fd',
-    paddingVertical: 8,
-    borderRadius: 4,
+    paddingVertical: 10,
+    borderRadius: 6,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   demoRoleButtonText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#6d28d9',
   },
   buttonContainer: {
     gap: 10,
-    marginBottom: 28,
+    marginBottom: 24,
   },
   primaryButton: {
     backgroundColor: '#7c3aed',
-    paddingVertical: 14,
-    borderRadius: 4,
+    paddingVertical: 15,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
   },
   primaryButtonText: {
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   buttonIcon: {
     marginLeft: 8,
@@ -290,15 +347,19 @@ const styles = StyleSheet.create({
   secondaryButton: {
     backgroundColor: '#f8fafc',
     paddingVertical: 14,
-    borderRadius: 4,
+    borderRadius: 8,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: '#cbd5e1',
   },
   secondaryButtonText: {
     color: '#0f172a',
     fontSize: 14,
     fontWeight: '600',
+  },
+  buttonPressed: {
+    opacity: 0.85,
+    transform: [{ scale: 0.99 }],
   },
   footer: {
     flexDirection: 'row',

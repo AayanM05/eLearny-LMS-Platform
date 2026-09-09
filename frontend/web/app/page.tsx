@@ -13,22 +13,19 @@ import {
   CheckCircle2, 
   Zap, 
   PlayCircle, 
-  Lock,
   Phone,
   Mail,
   Clock,
   ChevronDown,
   ChevronRight,
-  Layers,
   Star,
   Send,
-  Activity,
-  Monitor,
-  Cpu,
-  GraduationCap,
   Terminal,
   FileCheck,
-  TrendingUp
+  Globe,
+  Cpu,
+  Layers,
+  GraduationCap
 } from 'lucide-react';
 
 export default function Home() {
@@ -58,26 +55,26 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/20 selection:text-primary">
       {/* 1. Top Utility Info Bar */}
-      <div className="bg-secondary text-white text-xs py-2 border-b border-white/10 hidden md:block">
+      <div className="bg-slate-950 text-slate-300 text-xs py-2 border-b border-slate-800 hidden md:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-1.5 opacity-90">
-              <Clock className="w-3.5 h-3.5 text-primary" />
+              <Clock className="w-3.5 h-3.5 text-violet-400" />
               <span>Mon - Sat 8:00 AM - 8:00 PM EST</span>
             </div>
             <div className="flex items-center space-x-1.5 opacity-90">
-              <Phone className="w-3.5 h-3.5 text-primary" />
+              <Phone className="w-3.5 h-3.5 text-violet-400" />
               <a href="tel:+18005550199" className="hover:underline">+1 (800) 555-ELEARNY</a>
             </div>
             <div className="flex items-center space-x-1.5 opacity-90">
-              <Mail className="w-3.5 h-3.5 text-primary" />
+              <Mail className="w-3.5 h-3.5 text-violet-400" />
               <a href="mailto:support@elearny.com" className="hover:underline">support@elearny.com</a>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link href="/certificates/verify/demo" className="hover:text-primary transition-colors flex items-center space-x-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+            <Link href="/certificates/verify/demo" className="hover:text-violet-400 transition-colors flex items-center space-x-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-violet-400" />
               <span>Verify Certificate</span>
             </Link>
             <span className="opacity-40">|</span>
@@ -92,20 +89,20 @@ export default function Home() {
       {/* 2. Main Navigation Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo Horizontal */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded bg-primary text-primary-foreground flex items-center justify-center font-display font-extrabold text-2xl shadow-md group-hover:scale-105 transition-transform">
-              e
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-500 text-white flex items-center justify-center font-display font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
+              <GraduationCap className="w-6 h-6" />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight">
-                eLearny<span className="text-primary">.LMS</span>
+              <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">
+                eLearny<span className="text-violet-600 dark:text-violet-400">.LMS</span>
               </span>
               <span className="text-[10px] text-muted-foreground font-mono -mt-1 tracking-widest uppercase">Enterprise Platform</span>
             </div>
           </Link>
 
-          {/* Navigation Links with Active Underline Indicator */}
+          {/* Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-8 text-sm font-semibold text-foreground/80">
             <Link href="#features" className="nav-link-indicator hover:text-primary transition-colors py-1">Features</Link>
             <Link href="#disciplines" className="nav-link-indicator hover:text-primary transition-colors py-1">Disciplines</Link>
@@ -113,7 +110,7 @@ export default function Home() {
             <Link href="#faq" className="nav-link-indicator hover:text-primary transition-colors py-1">FAQ</Link>
           </nav>
 
-          {/* Actions */}
+          {/* Header Actions */}
           <div className="flex items-center space-x-3">
             <Link 
               href="/login"
@@ -123,7 +120,7 @@ export default function Home() {
             </Link>
             <Link 
               href="/register"
-              className="text-sm font-bold bg-primary text-primary-foreground px-5 py-2.5 rounded shadow-sm hover:opacity-90 transition-all flex items-center space-x-2"
+              className="text-sm font-bold bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all flex items-center space-x-2"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4" />
@@ -133,34 +130,27 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        {/* 3. Hero Section with SVG Vector Accents */}
-        <section className="relative pt-16 pb-28 md:pt-24 md:pb-36 bg-gradient-to-b from-muted/50 via-background to-background border-b border-border overflow-hidden">
-          {/* Animated Watermark Background */}
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 text-[120px] sm:text-[180px] font-display font-black text-foreground/[0.03] select-none pointer-events-none tracking-widest">
+        {/* 3. Hero Section with Glow Accents */}
+        <section className="relative pt-16 pb-28 md:pt-24 md:pb-36 bg-gradient-to-b from-violet-500/5 via-background to-background border-b border-border overflow-hidden">
+          {/* Watermark Background */}
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 text-[120px] sm:text-[180px] font-display font-black text-foreground/[0.02] select-none pointer-events-none tracking-widest">
             ELEARNY
           </div>
 
           {/* Radial Glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-primary/10 blur-[140px] rounded-full pointer-events-none -z-10 animate-pulse-slow" />
-
-          {/* SVG Vector Stroke Lines */}
-          <svg className="absolute top-0 right-0 w-96 h-96 opacity-20 pointer-events-none hidden md:block" viewBox="0 0 400 400" fill="none">
-            <path d="M50 200 C 150 100, 250 300, 350 200" stroke="currentColor" strokeWidth="3" className="text-primary animate-svg-stroke" />
-            <circle cx="200" cy="150" r="6" fill="currentColor" className="text-primary" />
-            <circle cx="300" cy="220" r="4" fill="currentColor" className="text-primary" />
-          </svg>
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[380px] bg-violet-500/10 blur-[140px] rounded-full pointer-events-none -z-10 animate-pulse-slow" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-4xl mx-auto space-y-6">
-              {/* Pill Badge */}
-              <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">
-                <Sparkles className="w-3.5 h-3.5" />
+              {/* Badge Chip */}
+              <div className="inline-flex items-center space-x-2 bg-violet-500/10 border border-violet-500/20 px-4 py-1.5 rounded-full text-xs font-bold text-violet-600 dark:text-violet-400 shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-violet-500" />
                 <span>Next-Generation Enterprise Learning Management System</span>
               </div>
 
-              {/* Headline */}
+              {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-foreground leading-[1.08]">
-                Master Software Engineering with <span className="custom-highlight-box">Production Rigor</span>
+                Master Software Engineering with <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600">Production Rigor</span>
               </h1>
 
               {/* Subtitle */}
@@ -168,11 +158,11 @@ export default function Home() {
                 An API-first learning platform built for modern developers. Stream HD video lectures, execute code in Judge0 sandboxes, pass proctored exams, and earn QR-verifiable certificates.
               </p>
 
-              {/* CTAs */}
+              {/* Action Buttons */}
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/register"
-                  className="w-full sm:w-auto bg-primary text-primary-foreground font-bold px-8 py-3.5 rounded shadow-md hover:opacity-95 transition-all flex items-center justify-center space-x-2.5 text-base"
+                  className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-bold px-8 py-3.5 rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2.5 text-base"
                 >
                   <BookOpen className="w-5 h-5" />
                   <span>Start Learning Free</span>
@@ -180,9 +170,9 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/login"
-                  className="w-full sm:w-auto bg-background border border-border text-foreground font-bold px-8 py-3.5 rounded hover:bg-muted transition-colors flex items-center justify-center space-x-2.5 text-base shadow-sm"
+                  className="w-full sm:w-auto bg-background border border-border text-foreground font-bold px-8 py-3.5 rounded-lg hover:bg-muted transition-colors flex items-center justify-center space-x-2.5 text-base shadow-sm"
                 >
-                  <PlayCircle className="w-5 h-5 text-primary" />
+                  <PlayCircle className="w-5 h-5 text-violet-600" />
                   <span>Instructor Studio</span>
                 </Link>
               </div>
@@ -206,12 +196,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Porto Overlapping Quick Advisor Form Card */}
+        {/* 4. Quick Advisor Learning Plan Card */}
         <section className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 sm:-mt-24 mb-16">
-          <div className="glass-card rounded-lg p-6 sm:p-8 shadow-xl border border-border bg-card/95">
+          <div className="glass-card rounded-xl p-6 sm:p-8 shadow-xl border border-border bg-card/95">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
               <div className="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-border pb-4 lg:pb-0 lg:pr-6">
-                <span className="text-xs font-bold text-primary uppercase tracking-wider">Quick Advisor</span>
+                <span className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-wider">Quick Advisor</span>
                 <h3 className="text-xl font-display font-bold text-foreground mt-1">Request Learning Plan</h3>
                 <p className="text-xs text-muted-foreground mt-1">Get a tailored course roadmap from our engineering team.</p>
               </div>
@@ -222,12 +212,12 @@ export default function Home() {
                   <input 
                     type="text" 
                     placeholder="Alex Morgan" 
-                    className="w-full px-3 py-2 text-sm border border-border rounded bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                    className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-violet-500"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Target Role</label>
-                  <select className="w-full px-3 py-2 text-sm border border-border rounded bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary">
+                  <select className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-violet-500">
                     <option>Full-Stack Web Engineer</option>
                     <option>Spring Boot Microservices Architect</option>
                     <option>AI & Machine Learning Specialist</option>
@@ -237,7 +227,7 @@ export default function Home() {
                 <div className="flex items-end">
                   <button 
                     type="submit" 
-                    className="w-full bg-primary text-primary-foreground font-bold py-2 px-4 rounded hover:opacity-90 transition-opacity text-sm flex items-center justify-center space-x-1.5 shadow-sm"
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors text-sm flex items-center justify-center space-x-1.5 shadow-sm"
                   >
                     <Send className="w-4 h-4" />
                     <span>Get Free Roadmap</span>
@@ -252,7 +242,7 @@ export default function Home() {
         <section id="demo" className="py-16 border-b border-border bg-muted/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-              <span className="text-xs font-bold text-primary uppercase tracking-widest">Interactive Experience</span>
+              <span className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest">Interactive Experience</span>
               <h2 className="text-3xl font-display font-bold">Explore Platform Capabilities</h2>
             </div>
 
@@ -267,10 +257,10 @@ export default function Home() {
                 <button
                   key={item.id}
                   onClick={() => setDemoTab(item.id as any)}
-                  className={`px-4 py-2 rounded text-xs font-bold transition-all flex items-center space-x-2 ${
+                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center space-x-2 ${
                     demoTab === item.id 
-                      ? 'bg-primary text-primary-foreground shadow-md' 
-                      : 'bg-card border border-border text-foreground hover:border-primary'
+                      ? 'bg-violet-600 text-white shadow-md' 
+                      : 'bg-card border border-border text-foreground hover:border-violet-500'
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
@@ -280,22 +270,22 @@ export default function Home() {
             </div>
 
             {/* Interactive Tab View Card */}
-            <div className="max-w-4xl mx-auto rounded-lg border border-border bg-card p-6 shadow-xl">
+            <div className="max-w-4xl mx-auto rounded-xl border border-border bg-card p-6 shadow-xl">
               {demoTab === 'stream' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between border-b border-border pb-3">
                     <div className="flex items-center space-x-2">
-                      <PlayCircle className="w-5 h-5 text-primary" />
+                      <PlayCircle className="w-5 h-5 text-violet-600" />
                       <span className="font-display font-bold text-base">Progressive Video Player (R2 Signed URLs)</span>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">1080p 60fps</span>
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">1080p 60fps</span>
                   </div>
-                  <div className="aspect-video rounded bg-zinc-950 flex flex-col items-center justify-center text-white relative overflow-hidden group">
-                    <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform cursor-pointer">
+                  <div className="aspect-video rounded-lg bg-zinc-950 flex flex-col items-center justify-center text-white relative overflow-hidden group">
+                    <div className="w-16 h-16 rounded-full bg-violet-600/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform cursor-pointer">
                       <PlayCircle className="w-8 h-8 text-white ml-1" />
                     </div>
                     <p className="text-xs text-zinc-400 mt-4 font-mono">Lecture 14: Building High-Throughput Microservices with Spring Boot 3.2</p>
-                    <div className="absolute bottom-4 left-4 right-4 bg-zinc-900/80 backdrop-blur-md p-3 rounded flex items-center justify-between text-xs font-mono">
+                    <div className="absolute bottom-4 left-4 right-4 bg-zinc-900/80 backdrop-blur-md p-3 rounded-lg flex items-center justify-between text-xs font-mono">
                       <span>07:42 / 24:15</span>
                       <div className="flex items-center space-x-4">
                         <span>Speed: 1.25x</span>
@@ -313,9 +303,9 @@ export default function Home() {
                       <Terminal className="w-5 h-5 text-emerald-600" />
                       <span className="font-display font-bold text-base">Judge0 Code Execution Environment</span>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Execution Time: 42ms</span>
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Execution Time: 42ms</span>
                   </div>
-                  <div className="rounded bg-zinc-950 p-4 font-mono text-xs text-emerald-400 space-y-2 border border-zinc-800">
+                  <div className="rounded-lg bg-zinc-950 p-4 font-mono text-xs text-emerald-400 space-y-2 border border-zinc-800">
                     <p className="text-zinc-500">// Task: Implement JWT Verification Filter</p>
                     <p><span className="text-purple-400">public class</span> <span className="text-yellow-400">JwtProvider</span> &#123;</p>
                     <p className="pl-4"><span className="text-purple-400">public boolean</span> <span className="text-blue-400">validateToken</span>(String token) &#123;</p>
@@ -325,7 +315,7 @@ export default function Home() {
                     <p>&#125;</p>
                     <div className="pt-3 border-t border-zinc-800 flex items-center justify-between text-zinc-300">
                       <span className="text-emerald-400 font-bold">✓ Test Cases Passed (4/4)</span>
-                      <button className="bg-emerald-600 text-white font-sans px-3 py-1 rounded text-xs">Run Tests</button>
+                      <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-sans px-3 py-1 rounded text-xs">Run Tests</button>
                     </div>
                   </div>
                 </div>
@@ -338,14 +328,14 @@ export default function Home() {
                       <ShieldCheck className="w-5 h-5 text-indigo-500" />
                       <span className="font-display font-bold text-base">Automated Exam Proctoring Log</span>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">Full-Screen Enforced</span>
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">Full-Screen Enforced</span>
                   </div>
                   <div className="space-y-3 text-xs">
-                    <div className="p-3 rounded border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between">
+                    <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between">
                       <span className="font-semibold text-emerald-700">Full-Screen Lock Active</span>
                       <span className="font-mono text-emerald-600">0 Violations Detected</span>
                     </div>
-                    <div className="p-3 rounded border border-border bg-muted/40 space-y-1">
+                    <div className="p-3 rounded-lg border border-border bg-muted/40 space-y-1">
                       <p className="font-semibold">Question 3 of 15: Explain Spring Security SessionCreationPolicy.STATELESS</p>
                       <p className="text-muted-foreground">Server-side timer: 14 mins remaining</p>
                     </div>
@@ -360,9 +350,9 @@ export default function Home() {
                       <Award className="w-5 h-5 text-amber-500" />
                       <span className="font-display font-bold text-base">Apache PDFBox Verified Certificate</span>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">QR Verified</span>
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">QR Verified</span>
                   </div>
-                  <div className="p-6 rounded border-2 border-dashed border-amber-500/40 bg-amber-500/5 text-center space-y-3">
+                  <div className="p-6 rounded-lg border-2 border-dashed border-amber-500/40 bg-amber-500/5 text-center space-y-3">
                     <div className="w-12 h-12 rounded-full bg-amber-500/10 text-amber-600 mx-auto flex items-center justify-center">
                       <FileCheck className="w-6 h-6" />
                     </div>
@@ -370,7 +360,7 @@ export default function Home() {
                     <p className="text-xs text-muted-foreground max-w-md mx-auto">
                       Issued to <span className="font-bold text-foreground">Alex Morgan</span> for completing <span className="font-bold text-foreground">Spring Boot Microservices & Security</span>.
                     </p>
-                    <div className="inline-block px-3 py-1 rounded bg-background border border-border font-mono text-xs text-primary font-bold">
+                    <div className="inline-block px-3 py-1 rounded-md bg-background border border-border font-mono text-xs text-violet-600 font-bold">
                       VERIFICATION ID: ELR-2026-9048-SEC
                     </div>
                   </div>
@@ -380,17 +370,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Porto 4-Column Trust Badge Divider */}
-        <section className="py-8 bg-muted/40 border-y border-border">
+        {/* 6. Trust Metrics Banner */}
+        <section className="py-10 bg-muted/40 border-y border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div className="flex flex-col items-center space-y-1 p-3">
-                <Users className="w-6 h-6 text-primary" />
+                <Users className="w-6 h-6 text-violet-600" />
                 <span className="text-2xl font-display font-extrabold text-foreground">15,000+</span>
                 <span className="text-xs text-muted-foreground font-medium">Active Engineers Enrolled</span>
               </div>
               <div className="flex flex-col items-center space-y-1 p-3">
-                <BookOpen className="w-6 h-6 text-primary" />
+                <BookOpen className="w-6 h-6 text-violet-600" />
                 <span className="text-2xl font-display font-extrabold text-foreground">450+</span>
                 <span className="text-xs text-muted-foreground font-medium">Production-Grade Courses</span>
               </div>
@@ -408,11 +398,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 7. Porto Feature Boxes Grid (.feature-box.feature-box-style-2) */}
+        {/* 7. Platform Core Feature Grid */}
         <section id="features" className="py-20 border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-              <span className="text-xs font-bold text-primary uppercase tracking-widest">Platform Core Features</span>
+              <span className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest">Platform Core Features</span>
               <h2 className="text-3xl sm:text-4xl font-display font-bold">Engineered for Technical Mastery</h2>
               <p className="text-muted-foreground text-base">
                 eLearny delivers high-performance learning components modeled after top software engineering environments.
@@ -420,9 +410,9 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Feature Box 1 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 1 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <PlayCircle className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">HD Progressive Video Player</h3>
@@ -431,9 +421,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Feature Box 2 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 2 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">Automated Anti-Cheat Exams</h3>
@@ -442,9 +432,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Feature Box 3 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 3 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <Award className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">QR Verifiable PDF Certification</h3>
@@ -453,9 +443,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Feature Box 4 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 4 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <Code className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">Judge0 Code Execution Sandbox</h3>
@@ -464,9 +454,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Feature Box 5 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 5 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">Razorpay One-Click Checkout</h3>
@@ -475,9 +465,9 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Feature Box 6 */}
-              <div className="p-6 rounded border border-border bg-card hover:border-primary transition-all group space-y-4 shadow-sm">
-                <div className="w-12 h-12 rounded bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {/* Feature 6 */}
+              <div className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all group space-y-4 shadow-sm hover:shadow-md">
+                <div className="w-12 h-12 rounded-lg bg-violet-500/10 text-violet-600 flex items-center justify-center group-hover:bg-violet-600 group-hover:text-white transition-colors">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-display font-bold">AI Study & Recommendation Assistant</h3>
@@ -489,12 +479,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 8. Disciplines & Filterable Course Showcase */}
+        {/* 8. Course Disciplines Filterable Showcase */}
         <section id="disciplines" className="py-20 border-b border-border bg-muted/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
               <div>
-                <span className="text-xs font-bold text-primary uppercase tracking-widest">Curriculum Categories</span>
+                <span className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest">Curriculum Categories</span>
                 <h2 className="text-3xl font-display font-bold text-foreground mt-1">Explore High-Demand Disciplines</h2>
               </div>
 
@@ -504,10 +494,10 @@ export default function Home() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-1.5 rounded text-xs font-bold transition-all uppercase tracking-wider ${
+                    className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all uppercase tracking-wider ${
                       activeTab === tab 
-                        ? 'bg-primary text-primary-foreground shadow-sm' 
-                        : 'bg-background border border-border text-foreground hover:border-primary'
+                        ? 'bg-violet-600 text-white shadow-sm' 
+                        : 'bg-background border border-border text-foreground hover:border-violet-500'
                     }`}
                   >
                     {tab === 'all' ? 'All Disciplines' : tab === 'backend' ? 'Backend' : tab === 'ai' ? 'AI & ML' : tab === 'cloud' ? 'Cloud & DevOps' : 'Systems'}
@@ -527,10 +517,10 @@ export default function Home() {
               ]
               .filter(item => activeTab === 'all' || item.category === activeTab)
               .map((course, idx) => (
-                <div key={idx} className="p-6 rounded border border-border bg-card hover:border-primary transition-all flex flex-col justify-between space-y-4 shadow-sm group">
+                <div key={idx} className="p-6 rounded-xl border border-border bg-card hover:border-violet-500 transition-all flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md group">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20">
+                      <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-violet-500/10 text-violet-600 border border-violet-500/20">
                         {course.level}
                       </span>
                       <div className="flex items-center space-x-1 text-xs font-bold text-amber-500">
@@ -539,7 +529,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <h3 className="font-display font-bold text-lg text-foreground group-hover:text-primary transition-colors leading-snug">
+                    <h3 className="font-display font-bold text-lg text-foreground group-hover:text-violet-600 transition-colors leading-snug">
                       {course.title}
                     </h3>
                     <p className="text-xs text-muted-foreground">{course.lessons} • Hands-on Projects Included</p>
@@ -547,7 +537,7 @@ export default function Home() {
 
                   <div className="pt-4 border-t border-border flex items-center justify-between">
                     <span className="text-xs font-semibold text-muted-foreground">Self-Paced Learning</span>
-                    <Link href="/register" className="text-xs font-bold text-primary group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+                    <Link href="/register" className="text-xs font-bold text-violet-600 group-hover:translate-x-1 transition-transform flex items-center space-x-1">
                       <span>Enroll Now</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
@@ -558,23 +548,23 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 9. Porto Modern Accordion FAQ Section */}
+        {/* 9. FAQ Section */}
         <section id="faq" className="py-20 border-b border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 space-y-2">
-              <span className="text-xs font-bold text-primary uppercase tracking-widest">Got Questions?</span>
+              <span className="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest">Got Questions?</span>
               <h2 className="text-3xl font-display font-bold">Frequently Asked Questions</h2>
             </div>
 
             <div className="space-y-4">
               {faqs.map((faq, idx) => (
-                <div key={idx} className="border border-border rounded bg-card overflow-hidden transition-all shadow-sm">
+                <div key={idx} className="border border-border rounded-xl bg-card overflow-hidden transition-all shadow-sm">
                   <button
                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="w-full p-5 text-left font-display font-bold text-base flex items-center justify-between text-foreground hover:text-primary transition-colors"
+                    className="w-full p-5 text-left font-display font-bold text-base flex items-center justify-between text-foreground hover:text-violet-600 transition-colors"
                   >
                     <span>{faq.q}</span>
-                    <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${openFaq === idx ? 'rotate-180 text-primary' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${openFaq === idx ? 'rotate-180 text-violet-600' : ''}`} />
                   </button>
                   {openFaq === idx && (
                     <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed border-t border-border/50 pt-3">
@@ -587,8 +577,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 10. Porto CTA Section & Porto Ribbon Footer */}
-        <section className="py-20 bg-primary/5 border-b border-border">
+        {/* 10. CTA Banner */}
+        <section className="py-20 bg-gradient-to-r from-violet-600/10 via-indigo-600/10 to-purple-600/10 border-b border-border">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
             <h2 className="text-3xl sm:text-4xl font-display font-extrabold">Ready to Build Production-Grade Apps?</h2>
             <p className="text-muted-foreground text-base max-w-xl mx-auto">
@@ -597,7 +587,7 @@ export default function Home() {
             <div>
               <Link
                 href="/register"
-                className="inline-flex items-center space-x-2 bg-primary text-primary-foreground font-bold px-8 py-4 rounded shadow-lg hover:opacity-95 transition-all text-base"
+                className="inline-flex items-center space-x-2 bg-violet-600 hover:bg-violet-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all text-base"
               >
                 <span>Create Your Free Account</span>
                 <ArrowRight className="w-5 h-5" />
@@ -607,31 +597,26 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Porto-Style Footer with Ribbon */}
-      <footer className="relative bg-secondary text-white pt-16 pb-12 border-t border-white/10">
-        {/* Porto Footer Ribbon Badge */}
-        <div className="footer-ribbon hidden sm:block">
-          <span>Get Certified Today</span>
-        </div>
-
+      {/* Modern Footer */}
+      <footer className="relative bg-slate-950 text-white pt-16 pb-12 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           {/* Col 1 */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-lg">
-                e
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-500 text-white flex items-center justify-center font-display font-bold text-lg">
+                <GraduationCap className="w-5 h-5" />
               </div>
               <span className="font-display font-bold text-xl">eLearny LMS</span>
             </div>
-            <p className="text-xs text-white/70 leading-relaxed">
+            <p className="text-xs text-slate-400 leading-relaxed">
               Full-scale Learning Management System engineered with Spring Boot 3.2, Next.js 14, React Native Expo, and PostgreSQL.
             </p>
           </div>
 
           {/* Col 2 */}
           <div className="space-y-3">
-            <h4 className="font-display font-bold text-sm text-primary uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-2 text-xs text-white/70">
+            <h4 className="font-display font-bold text-sm text-violet-400 uppercase tracking-wider">Quick Links</h4>
+            <ul className="space-y-2 text-xs text-slate-400">
               <li><Link href="#features" className="hover:text-white transition-colors">Platform Features</Link></li>
               <li><Link href="#disciplines" className="hover:text-white transition-colors">Course Disciplines</Link></li>
               <li><Link href="/certificates/verify/demo" className="hover:text-white transition-colors">Certificate Verification</Link></li>
@@ -641,8 +626,8 @@ export default function Home() {
 
           {/* Col 3 */}
           <div className="space-y-3">
-            <h4 className="font-display font-bold text-sm text-primary uppercase tracking-wider">Disciplines</h4>
-            <ul className="space-y-2 text-xs text-white/70">
+            <h4 className="font-display font-bold text-sm text-violet-400 uppercase tracking-wider">Disciplines</h4>
+            <ul className="space-y-2 text-xs text-slate-400">
               <li>Full-Stack Web Engineering</li>
               <li>Spring Boot Microservices</li>
               <li>AI & Agentic Engineering</li>
@@ -650,28 +635,28 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Col 4 - Newsletter Form */}
+          {/* Col 4 */}
           <div className="space-y-3">
-            <h4 className="font-display font-bold text-sm text-primary uppercase tracking-wider">Stay Updated</h4>
-            <p className="text-xs text-white/70">Subscribe for new course alerts and engineering tutorials.</p>
+            <h4 className="font-display font-bold text-sm text-violet-400 uppercase tracking-wider">Stay Updated</h4>
+            <p className="text-xs text-slate-400">Subscribe for new course alerts and engineering tutorials.</p>
             <form className="flex" onSubmit={(e) => e.preventDefault()}>
               <input 
                 type="email" 
                 placeholder="Enter email address..." 
-                className="w-full px-3 py-2 text-xs bg-white/10 border border-white/20 rounded-l text-white placeholder:text-white/50 focus:outline-none"
+                className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-800 rounded-l-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
               />
-              <button type="submit" className="bg-primary px-3 py-2 rounded-r text-white hover:opacity-90">
+              <button type="submit" className="bg-violet-600 hover:bg-violet-700 px-3 py-2 rounded-r-lg text-white transition-colors">
                 <Send className="w-4 h-4" />
               </button>
             </form>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {new Date().getFullYear()} eLearny Inc. All rights reserved.</p>
           <div className="flex items-center space-x-4">
-            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white">Terms of Use</Link>
+            <Link href="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-slate-300">Terms of Use</Link>
             <span className="flex items-center space-x-1 text-emerald-400 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span>Platform Systems Normal</span>
@@ -682,3 +667,4 @@ export default function Home() {
     </div>
   );
 }
+
