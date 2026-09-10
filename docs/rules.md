@@ -1,6 +1,6 @@
 # eLearny — Rules Document (rules.md)
 
-> Status: **v0.5.** Governs how code gets written across backend, web, and
+> Status: **v0.8.** Governs how code gets written across backend, web, and
 > mobile — not what gets built (that's `prd.md`) or how it's structured
 > (that's `architecture.md`). Living document: when a new library or
 > pattern decision gets made mid-build, it's added here, not left implicit
@@ -69,6 +69,8 @@
 |---|---|---|
 | Navigation | Expo Router | File-based, mirrors the web's route-group structure conceptually |
 | Data fetching | TanStack Query (same as web) | Same caching model, same `packages/api-client` |
+| Styling | NativeWind v4 | Real Tailwind syntax on React Native — the mobile equivalent of web's Tailwind setup, so the same design vocabulary (spacing, color tokens) applies on both platforms even though the underlying mechanism differs (CSS on web, StyleSheet under the hood on mobile) |
+| Fonts | `expo-font` + `@expo-google-fonts/inter` + `@expo-google-fonts/space-grotesk` | Expo's pre-hosted Google Fonts packages — no manual font-file management. See §14 for the mandatory global-loading pattern; this is what was missing and causing per-file font hacks |
 | Animation | `react-native-reanimated` | Already decided — `motion` doesn't run on native |
 | Notifications | `expo-notifications` | Standard Expo push notification handling |
 | Secure token storage | `expo-secure-store` | JWTs must not sit in plain AsyncStorage |
@@ -145,7 +147,132 @@
 
 ---
 
-## 12. Change Log
+## 12. Build the Complete Page, Not the Minimum Literal Reading
+
+**This is the single most important rule in this document for avoiding
+thin, disappointing output.** `pages.md` and `prd.md` describe pages and
+features at the scope level — "Register: create account" — deliberately,
+not as an exhaustive field-by-field spec. That's not an oversight to fix
+by writing longer specs (a truly exhaustive spec for every page would be
+thousands of lines and go stale immediately). It's a gap the builder is
+expected to fill with real production judgment, the same way a senior
+engineer doesn't build a registration form with two fields just because
+a ticket said "add registration."
+
+- **Before building any page, ask: what does a genuinely complete,
+  production-grade version of this page actually contain**, at companies
+  actually operating at eLearny's target scale (Udemy, Coursera, GitHub,
+  LinkedIn)? A registration page isn't email + password + confirm — a
+  real one includes: full name, a username with a live availability
+  check, email, password + confirm with live strength/requirement
+  validation, a terms-of-service/privacy agreement checkbox (also
+  legally necessary per `prd.md` §3.19, not optional polish), and proper
+  validation — both client-side (immediate feedback) and server-side
+  (never trust the client alone) — on every field. That is the floor for
+  a page called "Register," not a stretch goal.
+- **This applies to every page type, not just auth**: a dashboard has
+  multiple real data widgets, not one card; a list page has real
+  filtering/sorting, not just a bare list; a form has inline validation
+  and clear error states on every field, not just a submit button that
+  either works or shows one generic error.
+- **Self-check before marking any page complete**: would a user who has
+  used a real, polished platform look at this page and think it's thin
+  or incomplete compared to what they're used to? If the honest answer
+  is yes, it is not done, regardless of whether every literal bullet in
+  `pages.md` is technically present.
+- **This is not license to invent new scope.** Filling in standard,
+  expected fields/behavior *within* an already-committed page is
+  expected initiative. Inventing an entirely new page, feature, or
+  workflow not in `prd.md` or `pages.md` is a different thing and still
+  needs to be raised with the user first, per this document's existing
+  "ask before assuming scope" principle. The judgment call is about
+  depth within committed scope, not about expanding scope itself.
+- **When genuinely unsure whether something belongs**, default toward
+  including the standard real-world pattern rather than omitting it —
+  omission is the failure mode this rule exists to prevent. Flag
+  genuinely business-specific or ambiguous choices (e.g. "should
+  usernames be public-facing or just internal") for the user rather than
+  silently guessing on that specific point, but don't use that as a
+  reason to under-build everything else on the page.
+
+---
+
+## 13. Full Parity Is Mandatory — No Partial-Platform Ships
+
+**A feature is not done when it exists on one platform.** Per
+`architecture.md`'s core principle, backend + web + mobile are one
+system, not three separate deliverables on separate timelines. Every
+checkpoint unit that touches a user-facing feature must ship backend +
+`frontend/web` UI + `frontend/mobile` UI **together**, in the same unit
+— not backend now, web next session, mobile "eventually."
+
+- **Never mark a feature/page checked off in `memory.md` if only one
+  frontend platform has it.** If a feature has a web UI but no mobile UI
+  (or vice versa), it is incomplete, full stop — regardless of how
+  polished the platform that does exist looks.
+- **If a genuine reason exists to build one platform first** (e.g. a
+  page type that's meaningfully harder on mobile and needs more design
+  thought — see `phases.md`'s Phase 2/10 mobile-parity notes for the
+  only two places this was ever explicitly discussed), that is a
+  decision to raise with the user and log in `memory.md`'s Decisions
+  log **before** proceeding single-platform — never a default, and never
+  silent.
+- **This applies to `memory.md`'s checklist structure itself**: checklist
+  items are split per-platform (`- [ ] Backend: ...`, `- [ ] Web: ...`,
+  `- [ ] Mobile: ...`) specifically so partial completion is visible, not
+  hidden inside one combined checkbox that could get checked when only
+  one platform actually shipped.
+
+---
+
+## 14. Global Font & Theme Application (Mobile) — Set Once, Never Per-File
+
+**This is a mandatory pattern, not a suggestion — it exists specifically
+because per-file font fixes were happening, which is the wrong layer to
+solve this at.** React Native does not cascade a default font the way
+CSS does on web; every `Text` component uses the system font unless
+told otherwise. The fix is to override the default **once, globally**,
+not to set `fontFamily` on every individual component.
+
+**In `frontend/mobile/app/_layout.tsx` (the root layout — loads exactly
+once, before any screen renders):**
+
+1. Load fonts via `expo-font`'s `useFonts` hook with the Google Fonts
+   packages from §5, gating render until loaded (standard Expo splash
+   screen pattern — `expo-splash-screen`'s `preventAutoHideAsync`/
+   `hideAsync`).
+2. **Immediately after fonts load, override React Native's `Text` and
+   `TextInput` default styles globally**, in this same root file only:
+   ```tsx
+   import { Text, TextInput } from 'react-native';
+   // @ts-ignore
+   Text.defaultProps = Text.defaultProps || {};
+   Text.defaultProps.style = { fontFamily: 'Inter_400Regular' };
+   // @ts-ignore
+   TextInput.defaultProps = TextInput.defaultProps || {};
+   TextInput.defaultProps.style = { fontFamily: 'Inter_400Regular' };
+   ```
+   This makes Inter the default font for **every** `Text`/`TextInput` in
+   the entire app, automatically, with zero per-file changes.
+3. Headings that need Space Grotesk (per `design.md` §3) get it through
+   a single shared `Heading` component in `frontend/mobile/components/`
+   that sets `fontFamily: 'SpaceGrotesk_700Bold'` — other files use that
+   component, they don't set the font family themselves.
+4. **If a file needs to set `fontFamily` directly to fix a font problem,
+   that is a signal something is wrong upstream** (the global default
+   isn't loaded yet, or a component is bypassing the shared `Heading`)
+   — the fix is to correct the root cause in `_layout.tsx` or the shared
+   component, never to patch the symptom in that individual file.
+
+This is the mobile-side equivalent of web's single-token-file
+re-theming goal from `design.md` §2 — one place controls the font
+globally, on both platforms, even though the underlying mechanism
+necessarily differs (CSS custom properties on web, a global
+`defaultProps` override on mobile, since React Native has no CSS cascade).
+
+---
+
+## 15. Change Log
 - **v0.1** — Initial rules drafted covering backend/frontend/mobile library
   choices (with reasoning, including resolving the PDFBox vs. iText
   ambiguity left open in `architecture.md`), error handling conventions,
@@ -166,3 +293,19 @@
 - **v0.5** — Path fix: frontend component references now correctly point
   to `frontend/web/components` (folder structure is `frontend/web` +
   `frontend/mobile`, not flat top-level folders).
+- **v0.6** — Added §12: "Build the Complete Page, Not the Minimum Literal
+  Reading" — the standing rule that `pages.md`/`prd.md` describe scope,
+  not an exhaustive field-by-field spec, and filling that gap with real
+  production judgment (not the literal minimum) is expected on every
+  page, not just the ones called out with extra detail.
+- **v0.7** — Added §13: "Full Parity Is Mandatory — No Partial-Platform
+  Ships" — a feature isn't done if it only shipped on one frontend
+  platform. Also changed `memory.md`'s checklist convention to split
+  Web/Mobile into separate checkboxes per phase item so partial
+  completion is visible instead of hidden inside one combined box.
+- **v0.8** — Fixed a real architectural gap: no styling solution or font
+  mechanism was ever defined for mobile, which is why per-file font
+  hacks kept happening. Added NativeWind as mobile's styling solution
+  (§5) and §14, a mandatory global-font-loading pattern (`expo-font` +
+  a one-time `Text.defaultProps` override in the root layout) so the
+  font gets set once, globally, never per-file again.

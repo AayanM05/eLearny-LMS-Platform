@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { api } from '../../lib/api';
@@ -9,13 +9,94 @@ import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay 
 export default function RegisterScreen() {
   const router = useRouter();
   const { setAuthSession } = useAuth();
+
+  const [role, setRole] = useState<'STUDENT' | 'INSTRUCTOR'>('STUDENT');
   const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+
+  // Username check state
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [usernameSuggestions, setUsernameSuggestions] = useState<string[]>([]);
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [statusText, setStatusText] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Password requirements checklist
+  const passwordChecks = {
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
+
+  // Debounced username check
+  useEffect(() => {
+    if (!username || username.trim().length < 3) {
+      setUsernameAvailable(null);
+      setUsernameSuggestions([]);
+      return;
+    }
+
+    setIsCheckingUsername(true);
+    const timer = setTimeout(async () => {
+      try {
+        const res: any = await api.fetch(`/auth/check-username?username=${encodeURIComponent(username.trim())}`);
+        setUsernameAvailable(res.available);
+        setUsernameSuggestions(res.suggestions || []);
+      } catch (err) {
+        setUsernameAvailable(null);
+      } finally {
+        setIsCheckingUsername(false);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [username]);
+
+  const handleRegister = async () => {
+    if (!fullName || !username || !email || !password || !confirmPassword) {
+      setErrorMessage('Please fill in all required fields');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+      return;
+    }
+    if (usernameAvailable === false) {
+      setErrorMessage('Username is taken. Please choose another username.');
+      return;
+    }
+    if (!agreeToTerms) {
+      setErrorMessage('You must agree to the Terms of Service & Privacy Policy');
+      return;
+    }
+
+    setErrorMessage(null);
+    setLoading(true);
+
+    try {
+      const response: any = await api.fetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ fullName, username: username.trim(), email, password, role }),
+        timeoutMs: 60000,
+      });
+
+      await setAuthSession(response.user, response.accessToken, response.refreshToken);
+      redirectUser(response.user?.role || 'STUDENT');
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const redirectUser = (role: string) => {
     if (role === 'ADMIN') {
@@ -25,56 +106,6 @@ export default function RegisterScreen() {
     } else {
       router.replace('/(student)/dashboard');
     }
-  };
-
-  const handleRegister = async () => {
-    if (!fullName || !email || !password) {
-      setErrorMessage('Please fill in all fields');
-      return;
-    }
-    setErrorMessage(null);
-    setSuccessMessage(null);
-    setStatusText('Connecting... this may take a moment on first load');
-    setLoading(true);
-
-    try {
-      const response: any = await api.fetch('/auth/register', {
-        method: 'POST',
-        body: JSON.stringify({ fullName, email, password }),
-        timeoutMs: 60000,
-      });
-
-      setSuccessMessage('🎉 Registration Successful! Validated user in database.');
-      await setAuthSession(response.user, response.accessToken, response.refreshToken);
-      setTimeout(() => {
-        redirectUser(response.user?.role || 'STUDENT');
-      }, 500);
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Registration failed. Please check your inputs or network connection.');
-    } finally {
-      setLoading(false);
-      setStatusText(null);
-    }
-  };
-
-  const handleInstantDemoLogin = async (role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN') => {
-    setErrorMessage(null);
-    setSuccessMessage('🎉 Instant Demo Access Activated! Opening workspace...');
-    setStatusText(`Configuring demo as ${role.toLowerCase()}...`);
-    setLoading(true);
-    const mockUser = {
-      id: role === 'ADMIN' ? 'demo-admin-id' : role === 'INSTRUCTOR' ? 'demo-inst-id' : 'demo-stud-id',
-      email: role === 'ADMIN' ? 'admin@elearny.com' : role === 'INSTRUCTOR' ? 'instructor@elearny.com' : 'student@elearny.com',
-      fullName: role === 'ADMIN' ? 'System Administrator' : role === 'INSTRUCTOR' ? 'Dr. Sarah Jenkins' : 'Alex Rivera',
-      role: role,
-      createdAt: new Date().toISOString(),
-    };
-    await setAuthSession(mockUser, 'demo_access_token_jwt', 'demo_refresh_token');
-    setTimeout(() => {
-      setLoading(false);
-      setStatusText(null);
-      redirectUser(role);
-    }, 400);
   };
 
   return (
@@ -91,36 +122,8 @@ export default function RegisterScreen() {
       <View style={styles.card}>
         <View style={styles.titleContainer}>
           <Text style={styles.brandTitle}>Join eLearny</Text>
-          <Text style={styles.subtitle}>Start learning software engineering on mobile</Text>
+          <Text style={styles.subtitle}>Full Parity Mobile & Web LMS Platform</Text>
         </View>
-
-        {/* Instant Demo Quick Access Bar */}
-        <View style={styles.demoBox}>
-          <View style={styles.demoHeader}>
-            <Feather name="zap" size={13} color="#7c3aed" />
-            <Text style={styles.demoTitle}>Instant Demo Access (No backend needed)</Text>
-          </View>
-          <View style={styles.demoButtonsRow}>
-            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('STUDENT')}>
-              <Text style={styles.demoChipText}>Student</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('INSTRUCTOR')}>
-              <Text style={styles.demoChipText}>Instructor</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.demoChip} onPress={() => handleInstantDemoLogin('ADMIN')}>
-              <Text style={styles.demoChipText}>Admin</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {loading && (
-          <View style={styles.loadingBanner}>
-            <ActivityIndicator size="small" color="#7c3aed" style={{ marginRight: 8 }} />
-            <Text style={styles.loadingBannerText}>
-              Connecting... this may take a moment on first load if the server is waking up
-            </Text>
-          </View>
-        )}
 
         {errorMessage && (
           <View style={styles.errorBox}>
@@ -129,14 +132,24 @@ export default function RegisterScreen() {
           </View>
         )}
 
-        {successMessage && (
-          <View style={styles.successBox}>
-            <Feather name="check-circle" size={16} color="#059669" />
-            <Text style={styles.successText}>{successMessage}</Text>
-          </View>
-        )}
+        {/* Role Selection Tabs */}
+        <View style={styles.roleContainer}>
+          <TouchableOpacity
+            style={[styles.roleTab, role === 'STUDENT' && styles.roleTabActive]}
+            onPress={() => setRole('STUDENT')}
+          >
+            <Text style={[styles.roleTabText, role === 'STUDENT' && styles.roleTabTextActive]}>Student</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.roleTab, role === 'INSTRUCTOR' && styles.roleTabActive]}
+            onPress={() => setRole('INSTRUCTOR')}
+          >
+            <Text style={[styles.roleTabText, role === 'INSTRUCTOR' && styles.roleTabTextActive]}>Instructor</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.form}>
+          {/* Full Name */}
           <View style={styles.inputWrapper}>
             <Feather name="user" size={18} color="#64748b" style={styles.inputIcon} />
             <TextInput
@@ -148,6 +161,37 @@ export default function RegisterScreen() {
             />
           </View>
 
+          {/* Username with Live Availability Indicator */}
+          <View style={styles.inputWrapper}>
+            <Feather name="at-sign" size={18} color="#64748b" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Username"
+              placeholderTextColor="#94a3b8"
+              autoCapitalize="none"
+              value={username}
+              onChangeText={setUsername}
+            />
+            {isCheckingUsername && <ActivityIndicator size="small" color="#7c3aed" />}
+            {!isCheckingUsername && usernameAvailable === true && <Feather name="check-circle" size={18} color="#059669" />}
+            {!isCheckingUsername && usernameAvailable === false && <Feather name="x-circle" size={18} color="#ef4444" />}
+          </View>
+
+          {/* Username Suggestions if Taken */}
+          {usernameAvailable === false && usernameSuggestions.length > 0 && (
+            <View style={styles.suggestionsContainer}>
+              <Text style={styles.suggestionsTitle}>Suggestions:</Text>
+              <View style={styles.suggestionsRow}>
+                {usernameSuggestions.map(sugg => (
+                  <TouchableOpacity key={sugg} onPress={() => setUsername(sugg)} style={styles.suggestionChip}>
+                    <Text style={styles.suggestionText}>{sugg}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* Email */}
           <View style={styles.inputWrapper}>
             <Feather name="mail" size={18} color="#64748b" style={styles.inputIcon} />
             <TextInput
@@ -161,24 +205,81 @@ export default function RegisterScreen() {
             />
           </View>
 
+          {/* Optional Phone */}
+          <View style={styles.inputWrapper}>
+            <Feather name="phone" size={18} color="#64748b" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone (Optional)"
+              placeholderTextColor="#94a3b8"
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
+            />
+          </View>
+
+          {/* Password */}
           <View style={styles.inputWrapper}>
             <Feather name="lock" size={18} color="#64748b" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Password (min 8 chars)"
               placeholderTextColor="#94a3b8"
-              secureTextEntry
+              secureTextEntry={!showPassword}
               value={password}
               onChangeText={setPassword}
             />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Feather name={showPassword ? 'eye-off' : 'eye'} size={18} color="#64748b" />
+            </TouchableOpacity>
           </View>
+
+          {/* Password Live Checklist */}
+          <View style={styles.checklistGrid}>
+            <View style={styles.checkItem}>
+              <Feather name={passwordChecks.length ? 'check' : 'x'} size={12} color={passwordChecks.length ? '#059669' : '#94a3b8'} />
+              <Text style={[styles.checkText, passwordChecks.length && styles.checkTextPass]}>Min 8 chars</Text>
+            </View>
+            <View style={styles.checkItem}>
+              <Feather name={passwordChecks.uppercase ? 'check' : 'x'} size={12} color={passwordChecks.uppercase ? '#059669' : '#94a3b8'} />
+              <Text style={[styles.checkText, passwordChecks.uppercase && styles.checkTextPass]}>Uppercase</Text>
+            </View>
+            <View style={styles.checkItem}>
+              <Feather name={passwordChecks.lowercase ? 'check' : 'x'} size={12} color={passwordChecks.lowercase ? '#059669' : '#94a3b8'} />
+              <Text style={[styles.checkText, passwordChecks.lowercase && styles.checkTextPass]}>Lowercase</Text>
+            </View>
+            <View style={styles.checkItem}>
+              <Feather name={passwordChecks.number ? 'check' : 'x'} size={12} color={passwordChecks.number ? '#059669' : '#94a3b8'} />
+              <Text style={[styles.checkText, passwordChecks.number && styles.checkTextPass]}>Number</Text>
+            </View>
+          </View>
+
+          {/* Confirm Password */}
+          <View style={styles.inputWrapper}>
+            <Feather name="lock" size={18} color="#64748b" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              placeholderTextColor="#94a3b8"
+              secureTextEntry={!showPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+          </View>
+
+          {/* Terms & Privacy Agreement */}
+          <TouchableOpacity onPress={() => setAgreeToTerms(!agreeToTerms)} style={styles.termsRow}>
+            <View style={[styles.checkbox, agreeToTerms && styles.checkboxChecked]}>
+              {agreeToTerms && <Feather name="check" size={12} color="#ffffff" />}
+            </View>
+            <Text style={styles.termsText}>
+              I agree to the <Text style={styles.termsLink} onPress={() => router.push('/(public)/terms')}>Terms & Privacy Policy</Text>
+            </Text>
+          </TouchableOpacity>
 
           <TouchableOpacity style={[styles.button, loading && styles.buttonDisabled]} onPress={handleRegister} disabled={loading}>
             {loading ? (
-              <View style={styles.buttonContent}>
-                <ActivityIndicator color="#ffffff" size="small" style={{ marginRight: 8 }} />
-                <Text style={styles.buttonText}>{statusText || 'Registering...'}</Text>
-              </View>
+              <ActivityIndicator color="#ffffff" size="small" />
             ) : (
               <View style={styles.buttonContent}>
                 <Text style={styles.buttonText}>Complete Registration</Text>
@@ -197,198 +298,46 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  mainWrapper: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  scrollContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 40,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 8,
-  },
-  headerTitle: {
-    fontFamily: fontHeadingDisplay,
-    fontSize: 18,
-    color: '#0f172a',
-  },
-  card: {
-    backgroundColor: '#ffffff',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    padding: 20,
-  },
-  titleContainer: {
-    marginBottom: 20,
-  },
-  brandTitle: {
-    fontFamily: fontHeadingDisplay,
-    fontSize: 24,
-    color: '#7c3aed',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontFamily: fontInterRegular,
-    fontSize: 13,
-    color: '#64748b',
-  },
-  demoBox: {
-    backgroundColor: '#f5f3ff',
-    borderWidth: 1,
-    borderColor: '#ddd6fe',
-    borderRadius: 4,
-    padding: 12,
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  demoHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  demoTitle: {
-    fontFamily: fontInterBold,
-    fontSize: 12,
-    color: '#7c3aed',
-    marginLeft: 6,
-  },
-  demoButtonsRow: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  demoChip: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#c4b5fd',
-    paddingVertical: 6,
-    borderRadius: 4,
-    alignItems: 'center',
-  },
-  demoChipText: {
-    fontFamily: fontInterSemiBold,
-    fontSize: 11,
-    color: '#6d28d9',
-  },
-  loadingBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f3e8ff',
-    borderWidth: 1,
-    borderColor: '#ddd6fe',
-    padding: 12,
-    borderRadius: 4,
-    marginBottom: 16,
-  },
-  loadingBannerText: {
-    fontFamily: fontInterSemiBold,
-    color: '#7c3aed',
-    fontSize: 12,
-    flex: 1,
-  },
-  errorBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fef2f2',
-    borderWidth: 1,
-    borderColor: '#fecaca',
-    padding: 10,
-    borderRadius: 4,
-    marginBottom: 16,
-  },
-  errorText: {
-    fontFamily: fontInterRegular,
-    color: '#ef4444',
-    fontSize: 12,
-    marginLeft: 8,
-    flex: 1,
-  },
-  successBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ecfdf5',
-    borderWidth: 1,
-    borderColor: '#a7f3d0',
-    padding: 10,
-    borderRadius: 4,
-    marginBottom: 16,
-  },
-  successText: {
-    fontFamily: fontInterSemiBold,
-    color: '#059669',
-    fontSize: 12,
-    marginLeft: 8,
-    flex: 1,
-  },
-  form: {
-    gap: 12,
-    marginBottom: 16,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    backgroundColor: '#ffffff',
-  },
-  inputIcon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    fontFamily: fontInterRegular,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: '#0f172a',
-  },
-  button: {
-    backgroundColor: '#7c3aed',
-    borderRadius: 4,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4,
-  },
-  buttonDisabled: {
-    opacity: 0.65,
-  },
-  buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontFamily: fontInterBold,
-    color: '#ffffff',
-    fontSize: 15,
-  },
-  buttonIconRight: {
-    marginLeft: 6,
-  },
-  linkContainer: {
-    alignItems: 'center',
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
-  },
-  linkText: {
-    fontFamily: fontInterRegular,
-    fontSize: 13,
-    color: '#64748b',
-  },
-  linkTextBold: {
-    fontFamily: fontInterBold,
-    color: '#7c3aed',
-  },
+  mainWrapper: { flex: 1, backgroundColor: '#ffffff' },
+  scrollContainer: { paddingHorizontal: 20, paddingTop: 50, paddingBottom: 40 },
+  header: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+  backButton: { padding: 8, marginRight: 8 },
+  headerTitle: { fontFamily: fontHeadingDisplay, fontSize: 18, color: '#0f172a' },
+  card: { backgroundColor: '#ffffff', borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0', padding: 20 },
+  titleContainer: { marginBottom: 16 },
+  brandTitle: { fontFamily: fontHeadingDisplay, fontSize: 24, color: '#7c3aed', marginBottom: 4 },
+  subtitle: { fontFamily: fontInterRegular, fontSize: 13, color: '#64748b' },
+  roleContainer: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  roleTab: { flex: 1, paddingVertical: 10, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 6, alignItems: 'center', backgroundColor: '#f8fafc' },
+  roleTabActive: { backgroundColor: '#f3e8ff', borderColor: '#7c3aed' },
+  roleTabText: { fontFamily: fontInterSemiBold, fontSize: 13, color: '#64748b' },
+  roleTabTextActive: { color: '#7c3aed' },
+  errorBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca', padding: 10, borderRadius: 6, marginBottom: 16 },
+  errorText: { fontFamily: fontInterRegular, color: '#ef4444', fontSize: 12, marginLeft: 8, flex: 1 },
+  form: { gap: 12, marginBottom: 16 },
+  inputWrapper: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#cbd5e1', borderRadius: 6, paddingHorizontal: 12, backgroundColor: '#ffffff' },
+  inputIcon: { marginRight: 10 },
+  input: { flex: 1, fontFamily: fontInterRegular, paddingVertical: 12, fontSize: 14, color: '#0f172a' },
+  suggestionsContainer: { marginTop: -4, marginBottom: 4 },
+  suggestionsTitle: { fontFamily: fontInterRegular, fontSize: 11, color: '#64748b', marginBottom: 4 },
+  suggestionsRow: { flexDirection: 'row', gap: 6 },
+  suggestionChip: { backgroundColor: '#f3e8ff', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4, borderWidth: 1, borderColor: '#ddd6fe' },
+  suggestionText: { fontFamily: fontInterSemiBold, fontSize: 11, color: '#7c3aed' },
+  checklistGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, padding: 8, backgroundColor: '#f8fafc', borderRadius: 6, borderWidth: 1, borderColor: '#f1f5f9' },
+  checkItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  checkText: { fontFamily: fontInterRegular, fontSize: 11, color: '#94a3b8' },
+  checkTextPass: { color: '#059669', fontFamily: fontInterSemiBold },
+  termsRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 4 },
+  checkbox: { width: 18, height: 18, borderRadius: 4, borderWidth: 1, borderColor: '#cbd5e1', alignItems: 'center', justifyContent: 'center', marginRight: 8 },
+  checkboxChecked: { backgroundColor: '#7c3aed', borderColor: '#7c3aed' },
+  termsText: { fontFamily: fontInterRegular, fontSize: 12, color: '#64748b' },
+  termsLink: { color: '#7c3aed', fontFamily: fontInterSemiBold },
+  button: { backgroundColor: '#7c3aed', borderRadius: 6, paddingVertical: 14, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  buttonDisabled: { opacity: 0.65 },
+  buttonContent: { flexDirection: 'row', alignItems: 'center' },
+  buttonText: { fontFamily: fontInterBold, color: '#ffffff', fontSize: 15 },
+  buttonIconRight: { marginLeft: 6 },
+  linkContainer: { alignItems: 'center', marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#f1f5f9' },
+  linkText: { fontFamily: fontInterRegular, fontSize: 13, color: '#64748b' },
+  linkTextBold: { fontFamily: fontInterBold, color: '#7c3aed' },
 });

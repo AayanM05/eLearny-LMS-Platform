@@ -1,11 +1,20 @@
 # eLearny — Pages Document (pages.md)
 
-> Status: v0.1. This is the screen-by-screen spec that `prd.md` and
+> Status: v0.3. This is the screen-by-screen spec that `prd.md` and
 > `architecture.md` deliberately don't cover — what each page actually
 > contains, not just that the feature exists. Every page below exists on
 > **both** `frontend/web` and `frontend/mobile` unless marked otherwise,
 > per the full-parity decisions in `memory.md`. Each entry lists: purpose,
-> key components, states to handle, and which PRD section it implements.
+> key components, states to handle, and which doc section it implements
+> (mostly `prd.md`; a handful of auth/approval-flow pages reference
+> `architecture.md`'s App Flow numbering instead, since those flows aren't
+> separately numbered in the PRD — each row's ref states which doc it means).
+>
+> **These tables are a floor, not a ceiling.** Per `rules.md` §12: a
+> one-line "purpose" description is scope confirmation, not the complete
+> spec. "Register: create account" does not mean building only what's
+> listed in the Key Components column — see the Register row below for a
+> concrete worked example of what "complete" actually means in practice.
 > A page is not "done" until it handles its Empty/Loading/Error states —
 > a page that only renders when everything goes right is not finished.
 
@@ -21,24 +30,35 @@ not just that the route file exists.
 
 ## 1. Auth (Web + Mobile)
 
-| Page | Purpose | Key components | States | PRD ref |
+| Page | Purpose | Key components | States | Doc ref |
 |---|---|---|---|---|
 | Splash / App Loading | Mobile-only. Shown while checking stored auth token on cold start. | Logo, loading indicator | Loading → routes to Login or role dashboard | — |
-| Login | Authenticate | Email/password fields, "Forgot password" link, "Create account" link, submit button | Empty, validating, submitting, error (wrong credentials), 2FA-required redirect | §2.1 |
-| Register | Create account | Name/email/password fields, role selection (Student/Instructor — TA is invite-only, not self-registered), terms checkbox | Empty, validating, submitting, error (email taken) | §2.1, §2 |
-| Two-Factor Setup | Enable TOTP 2FA | QR code, manual secret fallback text, 6-digit confirmation input | Loading (generating secret), verifying, error (wrong code), success | §2.1 |
-| Two-Factor Challenge | Verify TOTP at login | 6-digit input, "use backup method" link if applicable | Submitting, error (wrong/expired code), rate-limited after repeated failures | §2.1, §3.18 |
-| Forgot Password | Request reset | Email input | Submitting, success (check-your-email message — never confirm/deny if the email exists) | §3.18 |
-| Reset Password | Set new password from emailed link | New password + confirm fields | Invalid/expired token, submitting, success | §3.18 |
-| Account Locked | Shown after too many failed login attempts | Explanation, unlock path (wait timer or "contact support" link) | Static with a live countdown if time-based | §3.18 |
-| Session Expired | Shown when a JWT expires mid-session | Explanation, re-login prompt (preserve what the user was doing where feasible) | Static | §3.18 |
-| Terms & Privacy Viewer | Legal text | Scrollable document view | Static | §3.19 |
+| Login | Authenticate | Email/password fields, "Forgot password" link, "Create account" link, submit button | Empty, validating, submitting, error (wrong credentials), 2FA-required redirect | architecture.md §2.1 |
+| Register | Create account | Full name (first/last), **username with live debounced availability check** (spinner → checkmark/X, alternate-username suggestions if taken), email, phone (optional), password + confirm with **live requirement checklist** (length/upper/lower/number/special, each item updates in real time) and show/hide toggles, password-match validation, role selection where applicable (Student/Instructor — TA is invite-only), **terms & privacy agreement checkbox** (required — also satisfies §3.19's legal-page requirement), submit button | Empty, validating (per-field, live), submitting, error (email/username taken, weak password, terms unchecked), success | architecture.md §2.1, prd.md §2 |
+| Two-Factor Setup | Enable TOTP 2FA | QR code, manual secret fallback text, 6-digit confirmation input | Loading (generating secret), verifying, error (wrong code), success | architecture.md §2.1 |
+| Two-Factor Challenge | Verify TOTP at login | 6-digit input, "use backup method" link if applicable | Submitting, error (wrong/expired code), rate-limited after repeated failures | architecture.md §2.1, prd.md §3.18 |
+| Forgot Password | Request reset | Email input | Submitting, success (check-your-email message — never confirm/deny if the email exists) | prd.md §3.18 |
+| Reset Password | Set new password from emailed link | New password + confirm fields | Invalid/expired token, submitting, success | prd.md §3.18 |
+| Account Locked | Shown after too many failed login attempts | Explanation, unlock path (wait timer or "contact support" link) | Static with a live countdown if time-based | prd.md §3.18 |
+| Session Expired | Shown when a JWT expires mid-session | Explanation, re-login prompt (preserve what the user was doing where feasible) | Static | prd.md §3.18 |
+| Terms & Privacy Viewer | Legal text | Scrollable document view | Static | prd.md §3.19 |
+
+**Worked example of "floor, not ceiling" (see `rules.md` §12):** the
+Register row above is deliberately written with real field-level detail,
+not because Register is special, but to demonstrate the expected depth.
+Every other row in this document gets the same treatment when actually
+built — a one-line "Key components" summary elsewhere in this doc (e.g.
+"Search bar, filter panel...") is shorthand for "build this the way a
+real, complete version of this component works," not a literal ceiling
+on what the finished page contains. When in doubt on any page, build
+toward what a polished, production platform actually ships, then confirm
+specifics with the user rather than defaulting to the minimum.
 
 ---
 
 ## 2. Student (Web + Mobile)
 
-| Page | Purpose | Key components | States | PRD ref |
+| Page | Purpose | Key components | States | Doc ref |
 |---|---|---|---|---|
 | Home / Dashboard | Landing page after login | Continue-learning card (last-watched lesson + resume button), progress-per-course summary, recommended courses (chatbot Tier A engine), quick links | Loading, empty (no enrollments yet — show browse CTA), populated | §3.2, §3.3 |
 | Browse / Search Courses | Discovery | Search bar, filter panel (category, level, price, rating, language), course card grid, pagination | Loading, empty (no results — suggest broadening filters), populated | §3.3 |
@@ -66,9 +86,9 @@ not just that the route file exists.
 
 ## 3. Instructor (Web + Mobile — full parity, per earlier decision)
 
-| Page | Purpose | Key components | States | PRD ref |
+| Page | Purpose | Key components | States | Doc ref |
 |---|---|---|---|---|
-| Dashboard | Landing page | Draft courses, published courses, pending-approval status banner if not yet approved, quick stats | Loading, not-yet-approved (blocks course actions), populated | §2.2 |
+| Dashboard | Landing page | Draft courses, published courses, pending-approval status banner if not yet approved, quick stats | Loading, not-yet-approved (blocks course actions), populated | architecture.md §2.2 |
 | Course Builder — Curriculum | Build course structure | Section/lesson tree editor, drag-to-reorder, add-lesson (video/article/resource), drip-content scheduling per lesson | Loading, saving, draft vs. published-editing (versioning) | §3.1 |
 | Course Builder — Quiz Builder | Build assessments | Question list editor, question-type picker (MCQ/true-false/short-answer), randomization toggle, pass-threshold setting | Saving, validation errors (e.g. no correct answer marked) | §3.4 |
 | Course Builder — Pricing & Coupons | Set price and discounts | Price input, coupon list (create/edit/expire), bundle inclusion toggle | Saving | §3.6, §3.11 |
@@ -84,7 +104,7 @@ not just that the route file exists.
 
 ## 4. Teaching Assistant (Web + Mobile)
 
-| Page | Purpose | Key components | States | PRD ref |
+| Page | Purpose | Key components | States | Doc ref |
 |---|---|---|---|---|
 | Dashboard | Landing page | Pending invitations (accept/decline), list of active course assignments | Empty (no invitations/assignments), populated | §3.17 |
 | Course Grading & Moderation | Scoped to assigned courses only | Grading queue (same UI pattern as Instructor's, scoped), discussion moderation view | Empty, populated | §3.17, §3.9 |
@@ -94,10 +114,10 @@ not just that the route file exists.
 
 ## 5. Admin (Web + Mobile — full parity, per earlier decision)
 
-| Page | Purpose | Key components | States | PRD ref |
+| Page | Purpose | Key components | States | Doc ref |
 |---|---|---|---|---|
 | Operations Dashboard | Landing page | Platform-wide stats (users, courses, revenue snapshot), pending-action counts (approvals, refunds, moderation) | Loading, populated | §3.7 |
-| Instructor Approval Queue | Review applications | Application list, applicant details, approve/reject actions | Empty, populated | §2.2, §3.7 |
+| Instructor Approval Queue | Review applications | Application list, applicant details, approve/reject actions | Empty, populated | architecture.md §2.2, prd.md §3.7 |
 | User Management | Manage all roles | Searchable user list, role/status editing, suspend/reinstate action | Loading, populated | §3.7 |
 | Category Management | Taxonomy control | Category/subcategory tree editor | Saving | §3.3, §3.7 |
 | Coupon Eligibility Management | Platform-wide coupon rules | Rule list/editor (which instructors/categories a coupon type applies to) | Saving | §3.6 |
@@ -140,3 +160,17 @@ not just that the route file exists.
   (wishlist, bundles, practice hub, chatbot, gamification, referral, etc.)
   was missing a page. Includes the new Teaching Assistant role's pages and
   the new Trust/Support/Governance pages (§3.19) added in `prd.md` v0.6.
+- **v0.2** — Found during self-review: several Auth and Instructor/Admin
+  rows cited "§2.1"/"§2.2" labeled as "PRD ref," but `prd.md`'s section 2
+  has no subsections — those refs actually pointed to `architecture.md`'s
+  App Flow numbering. Relabeled the column "Doc ref" everywhere and made
+  every cross-doc reference explicit (`architecture.md §2.1` vs. bare
+  `§3.x` for `prd.md`), so the reference is unambiguous rather than
+  silently assumed.
+- **v0.3** — Added `rules.md` §12 ("Build the Complete Page, Not the
+  Minimum Literal Reading") as the governing principle behind this whole
+  document, and expanded the Register row into a concrete worked example
+  (live username check, live password requirements, terms checkbox, full
+  field set) to demonstrate what that principle means in practice, since
+  no finite spec can enumerate every field for every page — the mindset
+  has to travel with the builder, not just live in one row's detail level.

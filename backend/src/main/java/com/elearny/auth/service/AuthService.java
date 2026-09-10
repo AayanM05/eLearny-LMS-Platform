@@ -14,6 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,18 +30,53 @@ public class AuthService {
     private final TotpService totpService;
     private final UserMapper userMapper;
 
+    @Transactional(readOnly = true)
+    public CheckUsernameResponse checkUsername(String username) {
+        if (username == null || username.trim().length() < 3) {
+            return CheckUsernameResponse.builder()
+                    .available(false)
+                    .suggestions(List.of())
+                    .build();
+        }
+        boolean exists = userRepository.existsByUsername(username.trim());
+        if (!exists) {
+            return CheckUsernameResponse.builder()
+                    .available(true)
+                    .suggestions(List.of())
+                    .build();
+        }
+        List<String> suggestions = new ArrayList<>();
+        int suffix = 1;
+        while (suggestions.size() < 3) {
+            String candidate = username.trim() + suffix;
+            if (!userRepository.existsByUsername(candidate)) {
+                suggestions.add(candidate);
+            }
+            suffix++;
+        }
+        return CheckUsernameResponse.builder()
+                .available(false)
+                .suggestions(suggestions)
+                .build();
+    }
+
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email is already registered");
         }
+        if (request.getUsername() != null && userRepository.existsByUsername(request.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
 
         User user = User.builder()
                 .email(request.getEmail())
+                .username(request.getUsername() != null ? request.getUsername().trim() : null)
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .fullName(request.getFullName())
                 .role(Role.STUDENT)
                 .totpEnabled(false)
+                .failedLoginAttempts(0)
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -53,14 +92,28 @@ public class AuthService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
+        if (user.getAccountLockedUntil() != null && user.getAccountLockedUntil().isAfter(Instant.now())) {
+            throw new BadCredentialsException("Account is temporarily locked due to multiple failed login attempts. Try again later.");
+        }
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            int attempts = user.getFailedLoginAttempts() + 1;
+            user.setFailedLoginAttempts(attempts);
+            if (attempts >= 5) {
+                user.setAccountLockedUntil(Instant.now().plus(15, ChronoUnit.MINUTES));
+            }
+            userRepository.save(user);
             throw new BadCredentialsException("Invalid email or password");
         }
+
+        user.setFailedLoginAttempts(0);
+        user.setAccountLockedUntil(null);
+        userRepository.save(user);
 
         if (user.isTotpEnabled()) {
             String pending2faToken = jwtProvider.generatePending2FaToken(user.getId());
@@ -79,6 +132,32 @@ public class AuthService {
                 .is2faRequired(false)
                 .user(userMapper.toDto(user))
                 .build();
+    }
+
+    @Transactional
+    public void forgotPassword(ForgotPasswordRequest request) {
+        userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+            user.setPasswordResetToken(UUID.randomUUID().toString());
+            user.setPasswordResetExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
+            userRepository.save(user);
+        });
+    }
+
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByPasswordResetToken(request.getToken())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid or expired password reset token"));
+
+        if (user.getPasswordResetExpiresAt() == null || user.getPasswordResetExpiresAt().isBefore(Instant.now())) {
+            throw new IllegalArgumentException("Invalid or expired password reset token");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        user.setPasswordResetToken(null);
+        user.setPasswordResetExpiresAt(null);
+        user.setFailedLoginAttempts(0);
+        user.setAccountLockedUntil(null);
+        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)

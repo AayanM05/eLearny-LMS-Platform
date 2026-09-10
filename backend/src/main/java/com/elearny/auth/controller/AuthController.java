@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -17,6 +18,12 @@ import java.util.UUID;
 public class AuthController {
 
     private final AuthService authService;
+
+    @GetMapping("/check-username")
+    public ResponseEntity<CheckUsernameResponse> checkUsername(@RequestParam String username) {
+        CheckUsernameResponse response = authService.checkUsername(username);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -28,6 +35,18 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        authService.forgotPassword(request);
+        return ResponseEntity.ok(Map.of("message", "If an account with that email exists, password reset instructions have been set."));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request);
+        return ResponseEntity.ok(Map.of("message", "Password reset successfully."));
     }
 
     @PostMapping("/2fa/verify")

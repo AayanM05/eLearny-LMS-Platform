@@ -205,16 +205,22 @@ export default function LoginPage() {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block text-xs font-semibold uppercase tracking-wider text-foreground">Password</label>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValue('email', 'student@elearny.com');
-                      setValue('password', 'Password123!');
-                    }}
-                    className="text-[11px] text-primary hover:underline"
-                  >
-                    Auto-fill Demo Credentials
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setValue('email', 'student@elearny.com');
+                        setValue('password', 'Password123!');
+                      }}
+                      className="text-[11px] text-primary hover:underline"
+                    >
+                      Auto-fill
+                    </button>
+                    <span className="text-muted-foreground text-[10px]">•</span>
+                    <Link href="/forgot-password" className="text-[11px] text-primary hover:underline font-medium">
+                      Forgot password?
+                    </Link>
+                  </div>
                 </div>
                 <div className="relative">
                   <Lock className="w-4 h-4 text-muted-foreground absolute left-3 top-3" />

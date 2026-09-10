@@ -42,6 +42,22 @@ public class User {
     @Column(name = "totp_secret")
     private String totpSecret;
 
+    @Column(nullable = false, unique = true, length = 50)
+    private String username;
+
+    @Column(name = "failed_login_attempts", nullable = false)
+    @Builder.Default
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "account_locked_until")
+    private Instant accountLockedUntil;
+
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
+
+    @Column(name = "password_reset_expires_at")
+    private Instant passwordResetExpiresAt;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

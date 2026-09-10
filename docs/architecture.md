@@ -1,6 +1,6 @@
 # eLearny — Architecture Document (architecture.md)
 
-> Status: **v0.7.** Derived from `prd.md` v0.5 — every module here exists to
+> Status: **v0.8.** Derived from `prd.md` v0.6 — every module here exists to
 > serve a committed feature, not a hypothetical one. Living document: update
 > when a structural decision changes, with a version bump.
 
@@ -50,13 +50,26 @@ way around.
 
 ### 2.1 Auth Flow (JWT + TOTP 2FA)
 1. `POST /api/v1/auth/register` → creates user with role `STUDENT` by default
-2. `POST /api/v1/auth/login` (email + password) → if 2FA is enabled, returns a
+2. `GET /api/v1/auth/check-username?username=x` → real-time availability
+   check, called by the frontend on debounced keystroke (per `pages.md`'s
+   Register page spec) — returns `{available, message, suggestions[]}`,
+   never a raw boolean alone, so the frontend can show a helpful message
+3. `POST /api/v1/auth/login` (email + password) → if 2FA is enabled, returns a
    short-lived `pending2FA` token instead of a session; otherwise issues
+   access + refresh JWT pair. After repeated failed attempts, returns 403
+   with an `ACCOUNT_LOCKED` error code rather than the generic
+   invalid-credentials message (per `prd.md` §3.18) — the frontend routes
+   this to the Account Locked page from `pages.md`
+4. `POST /api/v1/auth/2fa/verify` (TOTP code + `pending2FA` token) → issues
    access + refresh JWT pair
-3. `POST /api/v1/auth/2fa/verify` (TOTP code + `pending2FA` token) → issues
-   access + refresh JWT pair
-4. `POST /api/v1/auth/refresh` → rotates access token using refresh token
-5. Every protected endpoint reads role + user ID from the JWT claims; RBAC
+5. `POST /api/v1/auth/refresh` → rotates access token using refresh token
+6. `POST /api/v1/auth/forgot-password` (email) → always returns a generic
+   success response regardless of whether the email exists (never confirm
+   or deny account existence); sends a reset email if it does
+7. `POST /api/v1/auth/reset-password` (reset token + new password) →
+   validates the token, updates the password; token is single-use and
+   time-limited
+8. Every protected endpoint reads role + user ID from the JWT claims; RBAC
    is enforced at the controller/service layer via Spring Security method
    annotations, not by trusting the frontend's UI state
 
@@ -378,3 +391,12 @@ in `frontend/web/components` and native-specific ones in
   `enrollment/`, and removed a stale "Railway/Render" reference in the
   resources config comment (the decision has been Render-only since
   `deployment.md` was written).
+- **v0.8** — Added the missing endpoints implied by `pages.md`'s expanded
+  Register/Forgot-Password/Reset-Password specs to the Auth Flow (§2.1):
+  `GET /auth/check-username` (live availability check), account-lockout
+  behavior on `/auth/login` (§3.18), and explicit
+  `/auth/forgot-password` + `/auth/reset-password` endpoints — these
+  existed as pages in `pages.md` and as a feature in `prd.md` §3.8/§3.18
+  but were never reflected in the actual API flow. Also fixed a stale
+  "Derived from prd.md v0.5" reference in the status header (prd.md has
+  been at v0.6 for several revisions).

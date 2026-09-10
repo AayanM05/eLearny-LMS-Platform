@@ -16,6 +16,7 @@ import java.util.UUID;
 public class UserDto {
     private UUID id;
     private String email;
+    private String username;
     private String fullName;
     private Role role;
     private boolean totpEnabled;

@@ -1,6 +1,6 @@
 # eLearny — Design Document (design.md)
 
-> Status: **v0.2.** Governs visual identity — color, typography, spacing,
+> Status: **v0.3.** Governs visual identity — color, typography, spacing,
 > component styling philosophy. `rules.md` section 11 governs *how* this
 > gets implemented in code (icon library, animation discipline, when the
 > `frontend-design` skill applies); this document governs *what* the
@@ -114,6 +114,22 @@ tipping into playful (avoiding pinks/oranges keeps it professional).
 - **Weight usage:** headings at `font-semibold`/`font-bold`, body at
   `font-normal` — avoid using font-weight alone to convey emphasis where
   color or size would be clearer
+
+**Cross-platform mechanism — this is the same fonts, applied two
+different ways, since web and mobile have no shared font-loading
+system:**
+- **Web:** `next/font/google` loads Inter + Space Grotesk once in
+  `frontend/web/app/layout.tsx`, exposed as CSS variables, referenced by
+  Tailwind's `fontFamily` config — this cascades automatically via CSS,
+  same as any web font.
+- **Mobile:** React Native has no font cascade. Inter and Space Grotesk
+  are loaded via `expo-font` + the `@expo-google-fonts` packages, and
+  applied as the **global default** via a one-time `Text.defaultProps`
+  override in the root layout — see `rules.md` §14 for the exact
+  pattern. **This must be set globally in one place, never per-component
+  or per-file** — a font being set individually on separate screens is
+  a sign the global default isn't wired up correctly, not something to
+  patch screen-by-screen.
 
 ---
 
@@ -256,3 +272,10 @@ looks.
   Added a full-screen layout rule to directly address thin/orphaned page
   content found in a build review, and a critical rule against fabricated
   stats/testimonials/content appearing anywhere in the product.
+- **v0.3** — Fixed a real gap: the typography section only described
+  web's font mechanism (`next/font/google` + Tailwind), with no mobile
+  equivalent defined — which is what caused per-file font hacks on
+  mobile (React Native has no CSS cascade, so nothing was applying the
+  fonts globally). Added the explicit cross-platform mechanism: web via
+  CSS variables (unchanged), mobile via `expo-font` + a one-time global
+  `Text.defaultProps` override — full pattern in `rules.md` §14.

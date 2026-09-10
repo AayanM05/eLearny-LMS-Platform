@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class AuthControllerTest {
 
     @Autowired
@@ -40,7 +40,7 @@ public class AuthControllerTest {
 
     @Test
     public void shouldRegisterUserSuccessfully() throws Exception {
-        RegisterRequest request = new RegisterRequest("student@elearny.com", "securePassword123", "Jane Student");
+        RegisterRequest request = new RegisterRequest("student@elearny.com", "securePassword123", "janestudent", "Jane Student");
         UserDto userDto = UserDto.builder()
                 .id(UUID.randomUUID())
                 .email(request.getEmail())
