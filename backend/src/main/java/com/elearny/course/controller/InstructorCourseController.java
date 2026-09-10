@@ -37,6 +37,23 @@ public class InstructorCourseController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> getCourseById(
+            @PathVariable UUID courseId,
+            @AuthenticationPrincipal String userId) {
+        CourseResponse response = courseService.getCourseById(courseId, UUID.fromString(userId));
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> updateCourse(
+            @PathVariable UUID courseId,
+            @AuthenticationPrincipal String userId,
+            @Valid @RequestBody CreateCourseRequest request) {
+        CourseResponse response = courseService.updateCourse(courseId, UUID.fromString(userId), request);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{courseId}/sections")
     public ResponseEntity<SectionResponse> addSection(
             @PathVariable UUID courseId,
@@ -46,6 +63,23 @@ public class InstructorCourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/sections/{sectionId}")
+    public ResponseEntity<SectionResponse> updateSection(
+            @PathVariable UUID sectionId,
+            @AuthenticationPrincipal String userId,
+            @Valid @RequestBody CreateSectionRequest request) {
+        SectionResponse response = courseService.updateSection(sectionId, UUID.fromString(userId), request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/sections/{sectionId}")
+    public ResponseEntity<Void> deleteSection(
+            @PathVariable UUID sectionId,
+            @AuthenticationPrincipal String userId) {
+        courseService.deleteSection(sectionId, UUID.fromString(userId));
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/sections/{sectionId}/lessons")
     public ResponseEntity<LessonResponse> addLesson(
             @PathVariable UUID sectionId,
@@ -53,6 +87,23 @@ public class InstructorCourseController {
             @Valid @RequestBody CreateLessonRequest request) {
         LessonResponse response = courseService.addLesson(sectionId, UUID.fromString(userId), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/sections/lessons/{lessonId}")
+    public ResponseEntity<LessonResponse> updateLesson(
+            @PathVariable UUID lessonId,
+            @AuthenticationPrincipal String userId,
+            @Valid @RequestBody CreateLessonRequest request) {
+        LessonResponse response = courseService.updateLesson(lessonId, UUID.fromString(userId), request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/sections/lessons/{lessonId}")
+    public ResponseEntity<Void> deleteLesson(
+            @PathVariable UUID lessonId,
+            @AuthenticationPrincipal String userId) {
+        courseService.deleteLesson(lessonId, UUID.fromString(userId));
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{courseId}/status")

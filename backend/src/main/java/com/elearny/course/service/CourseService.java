@@ -124,6 +124,75 @@ public class CourseService {
         return mapToCourseResponse(course);
     }
 
+    @Transactional(readOnly = true)
+    public CourseResponse getCourseById(UUID courseId, UUID instructorId) {
+        Course course = getCourseAndValidateInstructor(courseId, instructorId);
+        return mapToCourseResponse(course);
+    }
+
+    @Transactional
+    public CourseResponse updateCourse(UUID courseId, UUID instructorId, CreateCourseRequest request) {
+        Course course = getCourseAndValidateInstructor(courseId, instructorId);
+        course.setTitle(request.getTitle());
+        course.setSubtitle(request.getSubtitle());
+        course.setDescription(request.getDescription());
+        if (request.getCategory() != null) course.setCategory(request.getCategory());
+        if (request.getLevel() != null) course.setLevel(request.getLevel());
+        if (request.getLanguage() != null) course.setLanguage(request.getLanguage());
+        if (request.getPrice() != null) course.setPrice(request.getPrice());
+        if (request.getThumbnailUrl() != null) course.setThumbnailUrl(request.getThumbnailUrl());
+
+        Course saved = courseRepository.save(course);
+        return mapToCourseResponse(saved);
+    }
+
+    @Transactional
+    public SectionResponse updateSection(UUID sectionId, UUID instructorId, CreateSectionRequest request) {
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Section not found with id: " + sectionId));
+        getCourseAndValidateInstructor(section.getCourse().getId(), instructorId);
+
+        section.setTitle(request.getTitle());
+        section.setOrderIndex(request.getOrderIndex());
+        Section saved = sectionRepository.save(section);
+        return mapToSectionResponse(saved);
+    }
+
+    @Transactional
+    public void deleteSection(UUID sectionId, UUID instructorId) {
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Section not found with id: " + sectionId));
+        getCourseAndValidateInstructor(section.getCourse().getId(), instructorId);
+        sectionRepository.delete(section);
+    }
+
+    @Transactional
+    public LessonResponse updateLesson(UUID lessonId, UUID instructorId, CreateLessonRequest request) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id: " + lessonId));
+        getCourseAndValidateInstructor(lesson.getSection().getCourse().getId(), instructorId);
+
+        lesson.setTitle(request.getTitle());
+        if (request.getLessonType() != null) lesson.setLessonType(request.getLessonType());
+        lesson.setContentUrl(request.getContentUrl());
+        lesson.setArticleContent(request.getArticleContent());
+        lesson.setDurationSeconds(request.getDurationSeconds());
+        lesson.setOrderIndex(request.getOrderIndex());
+        lesson.setPreview(request.isPreview());
+        lesson.setDripDelayDays(request.getDripDelayDays());
+
+        Lesson saved = lessonRepository.save(lesson);
+        return mapToLessonResponse(saved);
+    }
+
+    @Transactional
+    public void deleteLesson(UUID lessonId, UUID instructorId) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id: " + lessonId));
+        getCourseAndValidateInstructor(lesson.getSection().getCourse().getId(), instructorId);
+        lessonRepository.delete(lesson);
+    }
+
     private Course getCourseAndValidateInstructor(UUID courseId, UUID instructorId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + courseId));
@@ -193,6 +262,7 @@ public class CourseService {
                 .durationSeconds(lesson.getDurationSeconds())
                 .orderIndex(lesson.getOrderIndex())
                 .preview(lesson.isPreview())
+                .dripDelayDays(lesson.getDripDelayDays())
                 .createdAt(lesson.getCreatedAt())
                 .updatedAt(lesson.getUpdatedAt())
                 .build();

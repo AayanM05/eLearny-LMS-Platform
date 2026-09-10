@@ -51,6 +51,10 @@ public class Lesson {
     @Builder.Default
     private boolean preview = false;
 
+    @Column(name = "drip_delay_days", nullable = false)
+    @Builder.Default
+    private int dripDelayDays = 0;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

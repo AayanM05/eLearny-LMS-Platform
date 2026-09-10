@@ -23,6 +23,7 @@ public class LessonResponse {
     private int durationSeconds;
     private int orderIndex;
     private boolean preview;
+    private int dripDelayDays;
     private Instant createdAt;
     private Instant updatedAt;
 }

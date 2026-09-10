@@ -27,4 +27,6 @@ public class CreateLessonRequest {
     private int orderIndex;
 
     private boolean preview;
+
+    private int dripDelayDays;
 }
