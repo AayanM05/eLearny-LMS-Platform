@@ -1,0 +1,23 @@
+name: Render Backend Keep-Warm Service
+
+on:
+  schedule:
+    # Run every 10 minutes to prevent Render free-tier service from spinning down after 15m idle
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  keep-warm:
+    name: Ping Health Endpoint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Deployed Backend Health Endpoint
+        run: |
+          echo "Pinging https://elearny-lms-platform.onrender.com/api/v1/health..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://elearny-lms-platform.onrender.com/api/v1/health)
+          echo "Health Check Response HTTP Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 204 ]; then
+            echo "Successfully pinged backend health endpoint."
+          else
+            echo "Warning: Health check returned HTTP $HTTP_STATUS"
+          fi

@@ -1,6 +1,6 @@
 # eLearny — Deployment Document (deployment.md)
 
-> Status: **v0.4.** Governs where things actually run — local development
+> Status: **v0.6.** Governs where things actually run — local development
 > setup, environment/secret management, and production hosting. Distinct
 > from `architecture.md` (which describes structure, not hosting).
 > Every choice here is checked against the free-tier constraint from
@@ -18,8 +18,7 @@ testing directly against the live environment becomes risky.
 | Environment | Purpose | Where | Live URLs / Config |
 |---|---|---|---|
 | **Local** | Day-to-day development | Your machine — IntelliJ (backend), Next.js dev server, Expo dev client | `localhost:8080` (API), `localhost:3000` (Web) |
-| **Live** | Continuous testing on real infrastructure | Vercel (web) + Render (backend) + Supabase (database) + EAS (mobile) | Web: `https://elearny-web.vercel.app`<br>API: `https://elearny-lms-platform.onrender.com/api/v1`<br>DB: Supabase (Session Pooler) |
-
+| **Live** | Continuous testing on real infrastructure, and eventually real users | Vercel (web) + Render (backend) + Supabase (database) + EAS (mobile) | Web: `https://elearny-web.vercel.app`<br>API: `https://elearny-lms-platform.onrender.com/api/v1`<br>DB: Supabase (Session Pooler) |
 
 **On deploying early, per your explicit ask:** don't wait until Phase 13
 to deploy anything. Get the "Live" environment stood up once Phase 1
@@ -144,6 +143,29 @@ no credit card; its real characteristics are:
   user-facing product, not just a dev/test target), Render's Starter tier
   ($7/month) is the minimum for always-on
 
+**Real-world symptom this causes, and how to mitigate it while staying
+free:** the spin-down cold start (30–60+ seconds) is longer than most
+HTTP clients' default timeout, so login/registration (often the first
+call a fresh app session makes) can fail with what looks like a "server
+timeout" even though the server would eventually respond. Three
+mitigations, used together:
+1. **Keep the service warm** with a scheduled ping every ~10 minutes
+   (under the 15-minute spin-down threshold) — a free GitHub Actions
+   workflow hitting `/api/v1/health` on a cron works well and needs no
+   third-party account. Using close to the full 750 free instance-hours
+   this way is expected and fine for one service.
+2. **Increase the mobile/web client's request timeout** for auth calls
+   specifically (45–60s) and show a genuine "waking up, this may take a
+   moment" loading state rather than a generic error — per `rules.md`
+   §12, an auth flow without a graceful slow-network state isn't complete.
+3. **Reduce Spring Boot's own boot time**: `spring.main.lazy-initialization:
+   true`, and tune HikariCP's pool size down (`minimum-idle: 1`,
+   `maximum-pool-size: 5`) so establishing the Supabase pooler connection
+   doesn't add unnecessary time to an already-slow cold boot. Test
+   thoroughly after enabling lazy initialization — it can occasionally
+   surface a misconfigured bean that was previously failing silently at
+   eager startup instead of at first use.
+
 If spin-down genuinely becomes a dealbreaker later, **Google Cloud Run**
 is the strongest genuinely-free alternative (2 million requests/month,
 true scale-to-zero, no monthly instance-hour ceiling) — but it requires a
@@ -256,3 +278,15 @@ Phase 13, not something that happens for free just by using EAS Update.
 - **v0.4** — Corrected v0.3's flattening: paths are now `frontend/web` and
   `frontend/mobile` — `frontend/` groups both surfaces together rather
   than each sitting fully flat at the repo root.
+- **v0.5** — Added a real-world symptom section to §4.3: Render's cold
+  start (30–60+ seconds) exceeding client HTTP timeouts, causing
+  login/registration to fail with an apparent "server timeout" even
+  though the backend would eventually respond. Documented three
+  mitigations: a scheduled keep-warm ping, longer client timeouts with a
+  genuine loading state, and Spring Boot boot-time tuning
+  (lazy-initialization, smaller HikariCP pool).
+- **v0.6** — Merged in the actual live URLs (Vercel, Render, Supabase)
+  into §1's Environments table, added by the user's own AI tool session
+  — this doc had drifted in two directions (my copy had the login-fix
+  content, the user's had the real URLs) and needed reconciling both ways
+  rather than one side silently overwriting the other.
