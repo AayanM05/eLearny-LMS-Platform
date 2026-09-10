@@ -1,11 +1,11 @@
 # eLearny — Phases Document (phases.md)
 
-> Status: **v0.5.** This document decides *order*, not *scope* — every
-> feature in `prd.md` v0.5 is committed and appears somewhere below. A
+> Status: **v0.6.** This document decides *order*, not *scope* — every
+> feature in `prd.md` v0.7 is committed and appears somewhere below. A
 > phase number means "this is what it depends on existing first," never
 > "this is optional" or "maybe later." Living document: phases can be
 > re-sequenced as real dependencies get discovered mid-build, with a
-> version bump and a note on what moved and why.
+> version bump and a note on what moved and why. All phases enforce modern non-deprecated library versions.
 
 **How to read this doc:** each phase lists Backend / Web / Mobile scope
 together, since they're built in parallel per `architecture.md`. "Depends

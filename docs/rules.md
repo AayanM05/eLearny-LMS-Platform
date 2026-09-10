@@ -1,10 +1,9 @@
 # eLearny — Rules Document (rules.md)
 
-> Status: **v0.8.** Governs how code gets written across backend, web, and
+> Status: **v1.0.** Governs how code gets written across backend, web, and
 > mobile — not what gets built (that's `prd.md`) or how it's structured
-> (that's `architecture.md`). Living document: when a new library or
-> pattern decision gets made mid-build, it's added here, not left implicit
-> in one person's head or one file's imports.
+> (that's `architecture.md`). Enforces mandatory High Content Density (§12),
+> 100% Web & Mobile Feature Parity (§13), and Zero Deprecation Warning Policy (§15).
 
 ---
 
@@ -12,7 +11,7 @@
 
 | Concern | Library | Why |
 |---|---|---|
-| Web framework | Spring Boot 3.5 (Web MVC) | Already decided |
+| Web framework | Spring Boot 3.3.x (Web MVC) | Java 21 LTS compatibility & stable modern release |
 | Data access | Spring Data JPA + Hibernate | Standard, avoids hand-written SQL for CRUD |
 | DB migrations | Flyway | Versioned, committed schema changes — no hand-editing a live DB |
 | DTO ↔ Entity mapping | MapStruct | Compile-time mapping, avoids hand-written boilerplate mappers and avoids leaking entities over the API |
@@ -147,81 +146,27 @@
 
 ---
 
-## 12. Build the Complete Page, Not the Minimum Literal Reading
+## 12. Build High-Density, Production-Grade Pages (No Thin / Minimal Output)
 
-**This is the single most important rule in this document for avoiding
-thin, disappointing output.** `pages.md` and `prd.md` describe pages and
-features at the scope level — "Register: create account" — deliberately,
-not as an exhaustive field-by-field spec. That's not an oversight to fix
-by writing longer specs (a truly exhaustive spec for every page would be
-thousands of lines and go stale immediately). It's a gap the builder is
-expected to fill with real production judgment, the same way a senior
-engineer doesn't build a registration form with two fields just because
-a ticket said "add registration."
+**This is the single most important rule in this document for avoiding thin, disappointing AI-generated output.** AI tools often fall into the trap of creating minimal, 2-field placeholder screens. In eLearny, **minimal or thin pages are strictly prohibited.** Every page built must feel enterprise-grade, content-rich, visually polished, and production-ready.
 
-- **Before building any page, ask: what does a genuinely complete,
-  production-grade version of this page actually contain**, at companies
-  actually operating at eLearny's target scale (Udemy, Coursera, GitHub,
-  LinkedIn)? A registration page isn't email + password + confirm — a
-  real one includes: full name, a username with a live availability
-  check, email, password + confirm with live strength/requirement
-  validation, a terms-of-service/privacy agreement checkbox (also
-  legally necessary per `prd.md` §3.19, not optional polish), and proper
-  validation — both client-side (immediate feedback) and server-side
-  (never trust the client alone) — on every field. That is the floor for
-  a page called "Register," not a stretch goal.
-- **This applies to every page type, not just auth**: a dashboard has
-  multiple real data widgets, not one card; a list page has real
-  filtering/sorting, not just a bare list; a form has inline validation
-  and clear error states on every field, not just a submit button that
-  either works or shows one generic error.
-- **Self-check before marking any page complete**: would a user who has
-  used a real, polished platform look at this page and think it's thin
-  or incomplete compared to what they're used to? If the honest answer
-  is yes, it is not done, regardless of whether every literal bullet in
-  `pages.md` is technically present.
-- **This is not license to invent new scope.** Filling in standard,
-  expected fields/behavior *within* an already-committed page is
-  expected initiative. Inventing an entirely new page, feature, or
-  workflow not in `prd.md` or `pages.md` is a different thing and still
-  needs to be raised with the user first, per this document's existing
-  "ask before assuming scope" principle. The judgment call is about
-  depth within committed scope, not about expanding scope itself.
-- **When genuinely unsure whether something belongs**, default toward
-  including the standard real-world pattern rather than omitting it —
-  omission is the failure mode this rule exists to prevent. Flag
-  genuinely business-specific or ambiguous choices (e.g. "should
-  usernames be public-facing or just internal") for the user rather than
-  silently guessing on that specific point, but don't use that as a
-  reason to under-build everything else on the page.
+- **Mandatory High Content Density**: Every page MUST feature multiple rich UI blocks, metric KPI cards, status badges, interactive tabbed panels, action toolbars, live field validation, and contextual helper widgets.
+  - **Auth Pages (e.g., Register)**: Never build just email + password. A real registration screen contains: Full Name (first/last), Username with a live debounced availability check indicator (spinner → checkmark/cross + alternate username suggestions), Email, Phone number (optional), Password + Confirm password with a live requirement checklist badge list (min 8 chars, uppercase, lowercase, number, special character), password-match validation, role selection toggle (`STUDENT` / `INSTRUCTOR`), terms of service & privacy agreement checkbox (required), security reassurance banner, and support link.
+  - **Dashboards (Student / Instructor / Admin / TA)**: Must feature a multi-widget grid: KPI metric cards with trend badges (total courses, active streak, certificates earned, total revenue), a "Continue Learning / Active Course" hero card with lesson progress bar and resume button, upcoming deadlines / scheduled office hours widget, recent activity feed, and recommendations carousel.
+  - **Course Authoring**: Must include a multi-step workflow wizard (Basic Metadata, Target Audience & Prerequisites, Pricing & Coupons, Curriculum Builder with section/lesson drag-and-drop ordering, drip schedule inputs, R2 upload dropzones, and Quiz builder).
+  - **List & Table Pages**: Must feature searching, multi-criteria filtering tabs, sorting dropdowns, pagination controls, status badges, and quick-action toolbars.
+- **Multi-State UI Readiness**: Every page MUST explicitly render and handle all four lifecycle states: **Loading (skeleton shimmer)**, **Empty (informative graphic + CTA)**, **Error (retry button + user-friendly explanation)**, and **Populated Data**.
+- **Self-Check Before Completion**: Would a user looking at this screen think it is as feature-rich and polished as Udemy, Coursera, Notion, or Stripe? If it looks sparse or minimal, it is **unfinished** and must be enriched with appropriate data cards, widgets, and secondary information blocks.
 
 ---
 
-## 13. Full Parity Is Mandatory — No Partial-Platform Ships
+## 13. Strict 100% Web & Mobile Feature & Content Parity
 
-**A feature is not done when it exists on one platform.** Per
-`architecture.md`'s core principle, backend + web + mobile are one
-system, not three separate deliverables on separate timelines. Every
-checkpoint unit that touches a user-facing feature must ship backend +
-`frontend/web` UI + `frontend/mobile` UI **together**, in the same unit
-— not backend now, web next session, mobile "eventually."
+**Every feature, user capability, form option, and workflow MUST exist on BOTH Web and Mobile with equal capability.** Mobile is NEVER a "lite", "view-only", or partial version of the web platform.
 
-- **Never mark a feature/page checked off in `memory.md` if only one
-  frontend platform has it.** If a feature has a web UI but no mobile UI
-  (or vice versa), it is incomplete, full stop — regardless of how
-  polished the platform that does exist looks.
-- **If a genuine reason exists to build one platform first** (e.g. a
-  page type that's meaningfully harder on mobile and needs more design
-  thought — see `phases.md`'s Phase 2/10 mobile-parity notes for the
-  only two places this was ever explicitly discussed), that is a
-  decision to raise with the user and log in `memory.md`'s Decisions
-  log **before** proceeding single-platform — never a default, and never
-  silent.
-- **This applies to `memory.md`'s checklist structure itself**: checklist
-  items are split per-platform (`- [ ] Backend: ...`, `- [ ] Web: ...`,
-  `- [ ] Mobile: ...`) specifically so partial completion is visible, not
-  hidden inside one combined checkbox that could get checked when only
-  one platform actually shipped.
+- **Identical Functional Capabilities**: If an Instructor can create courses, build curriculums, set drip schedules, view analytics, and manage TA invites on the Web, the Mobile app MUST provide the exact same creation and editing capabilities. If a Student can run code in the Practice Hub, take quizzes, book office hours, and download PDF certificates on the Web, the Mobile app MUST support the exact same features.
+- **UX Adaptation, Never Feature Omission**: The only difference between Web and Mobile is responsive UX layout design (e.g. desktop sidebars become bottom tab bars or drawer menus; desktop multi-column data tables become responsive stacked card lists). The underlying actions, inputs, data fields, and features are **100% identical**.
+- **Simultaneous Milestone Deliveries**: Backend API + Next.js Web UI + Expo Mobile UI MUST be developed and verified together in the same checkpoint unit. A feature is incomplete until both Web and Mobile are proven working.
 
 ---
 
@@ -272,7 +217,18 @@ necessarily differs (CSS custom properties on web, a global
 
 ---
 
-## 15. Change Log
+## 15. Zero Deprecation Warning Policy — Modern Package Versions Only
+
+**All libraries, tools, and dependencies installed across root, web, mobile, shared packages, and Java backend must use modern, active, non-deprecated stable release versions.**
+
+- **No Deprecated Packages**: Do not install packages or SDK versions that emit deprecation warnings during `npm install`, `npx`, `expo start`, or `mvn compile`.
+- **Node & NPM Tooling**: Use current LTS versions of Node.js and modern NPM package managers.
+- **Expo & React Native**: Mobile applications use Expo SDK 51+ and React Native 0.74+ with NativeWind v4.
+- **Spring Boot**: Backend uses Spring Boot 3.3.x targeting Java 21 LTS.
+
+---
+
+## 16. Change Log
 - **v0.1** — Initial rules drafted covering backend/frontend/mobile library
   choices (with reasoning, including resolving the PDFBox vs. iText
   ambiguity left open in `architecture.md`), error handling conventions,
@@ -309,3 +265,8 @@ necessarily differs (CSS custom properties on web, a global
   (§5) and §14, a mandatory global-font-loading pattern (`expo-font` +
   a one-time `Text.defaultProps` override in the root layout) so the
   font gets set once, globally, never per-file again.
+- **v0.9** — Added §15: Zero Deprecation Warning Policy — mandated current
+  stable versions across all NPM packages, Expo SDK 51+, Next.js 14.2+, and
+  Spring Boot 3.3.x (Java 21).
+- **v1.0** — Expanded §12 ("Build High-Density, Production-Grade Pages — No Thin / Minimal Output") to strictly forbid 2-field placeholder UI, requiring multi-widget cards, live validation, status badges, and multi-state rendering. Expanded §13 ("Strict 100% Web & Mobile Feature & Content Parity") to mandate that every feature and creation workflow on Web exists with equal capability on Mobile.
+

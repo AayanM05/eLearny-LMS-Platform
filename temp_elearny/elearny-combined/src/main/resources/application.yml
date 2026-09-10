@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: elearny
+  profiles:
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+    # NOTE: several controllers return JPA entities directly (Quiz, Assignment, Enrollment, etc.)
+    # rather than DTOs, and rely on their lazy associations (course, section, student...) being
+    # walked during JSON serialization. open-in-view=true keeps the Hibernate session open through
+    # that serialization step so those lazy loads don't throw LazyInitializationException. The
+    # cleaner fix is converting the remaining entity-returning endpoints to response DTOs (the way
+    # CourseResponse/CertificateResponse/etc. already do) and setting this back to false — flagged
+    # in the README as follow-up work, not hidden here.
+    open-in-view: true
+
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:c2VjcmV0LWtleS1mb3ItZGV2LWVudmlyb25tZW50LWNoYW5nZS1pbi1wcm9kdWN0aW9uLTEyMzQ1Ng==}
+    access-token-expiry-minutes: 15
+    refresh-token-expiry-days: 7
+  storage:
+    dir: ${STORAGE_DIR:/tmp/elearny-storage}
+  refund:
+    # UI spec S13/AD3 refund policy window: a captured payment is only refund-eligible within
+    # this many days of purchase AND while course progress is under this percentage.
+    window-days: ${REFUND_WINDOW_DAYS:7}
+    max-progress-percent: ${REFUND_MAX_PROGRESS_PERCENT:30}
+
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID:rzp_test_placeholder}
+  key-secret: ${RAZORPAY_KEY_SECRET:placeholder_secret}
+  webhook-secret: ${RAZORPAY_WEBHOOK_SECRET:placeholder_webhook_secret}
+
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:}
+  auth-token: ${TWILIO_AUTH_TOKEN:}
+  from-number: ${TWILIO_FROM_NUMBER:}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    com.elearny: INFO
+    org.springframework.security: WARN

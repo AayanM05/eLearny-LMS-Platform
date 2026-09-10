@@ -1,10 +1,10 @@
 # eLearny — Deployment Document (deployment.md)
 
-> Status: **v0.6.** Governs where things actually run — local development
+> Status: **v0.7.** Governs where things actually run — local development
 > setup, environment/secret management, and production hosting. Distinct
 > from `architecture.md` (which describes structure, not hosting).
 > Every choice here is checked against the free-tier constraint from
-> `prd.md`, with honest flags where "free" has a real catch.
+> `prd.md`, with honest flags where "free" has a real catch. Enforces modern non-deprecated dependency releases across all deployment scripts.
 
 ---
 

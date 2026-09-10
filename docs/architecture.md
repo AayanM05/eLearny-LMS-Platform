@@ -1,8 +1,9 @@
 # eLearny — Architecture Document (architecture.md)
 
-> Status: **v0.8.** Derived from `prd.md` v0.6 — every module here exists to
-> serve a committed feature, not a hypothetical one. Living document: update
-> when a structural decision changes, with a version bump.
+> Status: **v0.9.** Derived from `prd.md` v0.7 — every module here exists to
+> serve a committed feature using modern, stable, non-deprecated dependency standards
+> (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51 / React Native 0.74+).
+> Living document: update when a structural decision changes, with a version bump.
 
 ---
 
@@ -20,8 +21,8 @@
                                             │
                                  ┌──────────▼───────────┐
                                  │   Spring Boot API     │
-                                 │  (Java 21, REST-only, │
-                                 │  platform-agnostic)   │
+                                 │  (Java 21, Spring 3.3│
+                                 │   REST-only API)     │
                                  └──────────┬────────────┘
                                             │
         ┌────────────┬────────────┬────────┼────────────┬─────────────┬──────────────┐
@@ -38,7 +39,8 @@
 the only thing that talks to Postgres, R2, Razorpay, Judge0, or the LLM
 provider. Neither frontend ever calls a third-party service directly —
 this is what keeps API keys server-side and keeps web/mobile logic
-identical (both just call our own REST API).
+identical (both just call our own REST API). All libraries across Node and
+Java use modern, non-deprecated stable package releases without deprecation warnings.
 
 ---
 
@@ -399,4 +401,6 @@ in `frontend/web/components` and native-specific ones in
   existed as pages in `pages.md` and as a feature in `prd.md` §3.8/§3.18
   but were never reflected in the actual API flow. Also fixed a stale
   "Derived from prd.md v0.5" reference in the status header (prd.md has
-  been at v0.6 for several revisions).
+  been v0.6 since the TA role addition).
+- **v0.9** — Derived from `prd.md` v0.7 — enforced modern non-deprecated dependency standards (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51).
+- **v1.0** — Derived from `prd.md` v0.8 — incorporated combined entities from `temp_elearny`: `InstructorLeave`, `LiveSessionSlot`, `LiveSessionBooking`, `WaitlistEntry`, `CommunicationLog`, `AuditLog`, `ConsentRecord`, and Apache POI Excel Data Export Service.

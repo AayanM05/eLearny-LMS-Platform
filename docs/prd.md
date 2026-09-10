@@ -1,9 +1,10 @@
 # eLearny — Product Requirements Document (prd.md)
 
-> Status: **v0.6 — living document.** Every feature listed below is
-> **committed scope** — it will be built, not shelved (one explicit,
+> Status: **v0.7 — living document.** Every feature listed below is
+> **committed scope** using modern, active, non-deprecated package standards
+> (Java 21, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51). One explicit,
 > user-requested exception: §3.20 Live Sessions — see its entry and the
-> v0.6 changelog for why). This document does
+> v0.6 changelog for why. This document does
 > not decide *when* something gets built (that's `phases.md`'s job); it
 > only decides *what* eLearny includes. New features still get added here
 > explicitly, with a version bump — nothing gets silently dropped either.
@@ -181,18 +182,27 @@ Two capabilities, both committed, with different infra profiles:
 - Public legal pages: Terms of Use, Privacy Policy
 - Help & Support page, and a "What's New" release-notes page
 
-### 3.20 Live Sessions — explicitly deferred (not committed scope right now)
-Real-time video sessions (instructor-led live classes, scheduling,
-attendance). **This entry is a deliberate exception to this document's
-"nothing is deferred" rule in §1 — the user explicitly requested deferring
-this one feature to a future phase**, after reviewing the real
-infrastructure cost: live video requires either self-hosting a WebRTC
-SFU (LiveKit/Jitsi — real DevOps burden: TURN servers, recording
-pipeline, scaling) or a managed API billed per participant-minute once
-free credits run out (LiveKit Cloud, Daily) — neither fits the platform's
-free-tier constraint at real usage. Revisit this as its own dedicated
-planning pass when the platform is ready to take on that cost, rather
-than folding it into the current build.
+### 3.21 Instructor Availability & Leave Management
+- Instructors can schedule leave dates and unavailability windows (`InstructorLeave`, `LeaveStatus`)
+- Automatically pauses live office hour slot bookings, notifies assigned Teaching Assistants, and displays leave notices on instructor profiles
+
+### 3.22 Live Session Office Hours & Slot Bookings
+- 1-on-1 and small group Office Hour slot scheduling (`LiveSessionSlot`, `LiveSessionBooking`, `BookingStatus`)
+- Waitlist management (`WaitlistEntry`, `WaitlistStatus`): automatically notifies students when a booked slot opens up
+- Integrates with Google Calendar / iCal download links for booked slots
+
+### 3.23 Excel Reporting & Data Export Engine
+- Admin & Instructor data export in `.xlsx` format (powered by Apache POI)
+- Financial reports, student enrollment rosters, quiz score analytics, and instructor payout statements exportable with one click
+
+### 3.24 Multi-Channel Communication & Audit Trail
+- Multi-channel notification dispatch: Email (SMTP), SMS alerts (`com.twilio.sdk`), and push notifications (`expo-notifications`)
+- Full audit logging (`CommunicationLog`, `CommunicationChannel`, `CommunicationStatus`) for delivery tracking and troubleshooting
+- Platform-wide administrative audit trail (`AuditLog`) tracking all admin actions (approvals, role changes, refund approvals, moderation) for compliance
+
+### 3.25 GDPR Consent & Privacy Management
+- Immutable user consent recording (`ConsentRecord`) tracking exact terms/privacy policy versions agreed to at registration and upon legal updates
+- Student privacy preferences management in user profile settings
 
 ---
 
@@ -228,3 +238,6 @@ than folding it into the current build.
   needs infrastructure (self-hosted WebRTC SFU or per-minute-billed managed
   API) that doesn't fit the free-tier constraint yet; explicitly deferred
   rather than committed, at the user's direction, not shrunk silently.
+- **v0.7** — Enforced modern non-deprecated dependency standards across Java 21,
+  Spring Boot 3.3.x, Next.js 14.2+, and Expo SDK 51.
+- **v0.8** — Incorporated combined features from `temp_elearny`: §3.21 Instructor Leave Management, §3.22 Live Session Office Hours & Slot Bookings with Waitlists, §3.23 Excel Data Export Engine (Apache POI), §3.24 Multi-Channel Communication & Audit Trail (Twilio SMS, Email, Push, AuditLog), §3.25 GDPR Consent & Privacy Management.

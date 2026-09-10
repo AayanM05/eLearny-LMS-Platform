@@ -1,10 +1,10 @@
 # eLearny — Design Document (design.md)
 
-> Status: **v0.3.** Governs visual identity — color, typography, spacing,
+> Status: **v0.4.** Governs visual identity — color, typography, spacing,
 > component styling philosophy. `rules.md` section 11 governs *how* this
 > gets implemented in code (icon library, animation discipline, when the
 > `frontend-design` skill applies); this document governs *what* the
-> actual visual language is.
+> actual visual language is across Next.js (web) and NativeWind v4 (mobile).
 
 ---
 

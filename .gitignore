@@ -32,3 +32,8 @@ backend/*.iml
 # OS files
 .DS_Store
 Thumbs.db
+
+# Explicitly Included Backup and Temp folders
+!backup/
+!temp_elearny/
+

@@ -14,19 +14,18 @@
 ## Current State
 *(Overwrite this section every session — it should always reflect right now, not history)*
 
-- **Active phase:** Phase 3 — Enrollment, Payments & Learning Experience
-- **Currently working on:** Phase 3 initial planning & backend implementation (Razorpay integration, course enrollment, video progress tracking).
-- **Last updated:** 2026-09-10
-- **Blockers:** None. Phase 0, Phase 1, and Phase 2 are 100% complete & verified with full Web/Mobile parity.
+- **Active phase:** Phase 0 — Foundation (Fresh Start Initialized)
+- **Currently working on:** Preparing for Phase 0 Unit 1 implementation (Monorepo setup, Spring Boot 3.3.x backend, Next.js 14.2+ web, Expo SDK 51 mobile, and `@elearny/*` workspace packages).
+- **Last updated:** 2026-09-11
+- **Blockers:** None. Codebase reset to clean state with project backup preserved in `backup/elearny-lms-backup.zip`. All completion checklist items are unmarked `[ ]`.
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
 - **Live deployment:** `https://elearny-web.vercel.app` (Vercel) +
-  Render backend + Supabase (session-mode pooler connection). Confirmed
-  working for registration/auth as of the Phase 1 deployment session.
-- **Doc versions:** `prd.md` v0.6, `architecture.md` v0.8, `rules.md`
-  v0.8, `design.md` v0.3, `phases.md` v0.5, `deployment.md` v0.4,
-  `pages.md` v0.3. If any of these numbers don't match what's actually in
+  Render backend + Supabase (session-mode pooler connection).
+- **Doc versions:** `prd.md` v0.8, `architecture.md` v1.0, `rules.md`
+  v1.0, `design.md` v0.4, `phases.md` v0.6, `deployment.md` v0.7,
+  `pages.md` v0.4. If any of these numbers don't match what's actually in
   the file when you read this, something changed since this entry was
   written — check that doc's own changelog for what happened.
 
@@ -38,24 +37,24 @@ started, not "mostly done." A checked box means it works and has been
 demonstrated, not just claimed.)*
 
 ### Phase 0 — Foundation
-- [x] Monorepo scaffold (Turborepo, `frontend/web`, `frontend/mobile`, `packages/*`)
-- [x] Spring Boot project init (base package structure, common module)
-- [x] Flyway wired up, first migration runs
-- [x] Docker Compose (Postgres + backend) running locally
-- [x] Design tokens applied (`globals.css`) to Tailwind config
-- [x] `/api/v1/health` endpoint working end to end
+- [ ] Monorepo scaffold (Turborepo, `frontend/web`, `frontend/mobile`, `packages/*`)
+- [ ] Spring Boot project init (base package structure, common module)
+- [ ] Flyway wired up, first migration runs
+- [ ] Docker Compose (Postgres + backend) running locally
+- [ ] Design tokens applied (`globals.css`) to Tailwind config
+- [ ] `/api/v1/health` endpoint working end to end
 
 ### Phase 1 — Auth & Roles
-- [x] Backend: registration, login, JWT issue/refresh, TOTP 2FA, RBAC roles
-- [x] Web: login/register pages, role-gated route shells
-- [x] Mobile: login/register screens, role-gated route shells
-- [x] Live environment stood up (Vercel + Render + Supabase), registration
+- [ ] Backend: registration, login, JWT issue/refresh, TOTP 2FA, RBAC roles
+- [ ] Web: login/register pages, role-gated route shells
+- [ ] Mobile: login/register screens, role-gated route shells
+- [ ] Live environment stood up (Vercel + Render + Supabase), registration
       verified end to end through the live web UI — see `deployment.md` §1
 
 ### Phase 2 — Instructor Approval & Course Authoring
-- [x] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip content, R2 media upload
-- [x] Web: instructor course-creation flow, admin approval screen
-- [x] Mobile: full instructor course-creation flow — same capability as web (decided 2026-09-08)
+- [ ] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip content, R2 media upload
+- [ ] Web: instructor course-creation flow, admin approval screen
+- [ ] Mobile: full instructor course-creation flow — same capability as web (decided 2026-09-08)
 - **UNVERIFIED CLAIM:** a "Full UI/UX Overhaul" session log entry exists
   claiming a Porto-template-based redesign of web and mobile, plus a
   separate claim that all of Phases 0–13 are complete. Neither is
@@ -257,4 +256,10 @@ items get their resolution noted, not deleted.)*
   - Backend: Presigned media upload URL endpoint (`POST /api/v1/media/upload-url`), drip scheduling (`drip_delay_days`), Flyway V14 migration, full section/lesson CRUD endpoints, verified `mvn test` (7/7 pass).
   - Web: Admin approval queue (`/instructor-applications`), course creator (`/courses/create`), curriculum builder (`/courses/[id]/builder`) with drip & preview toggles. Verified with `npx tsc --noEmit` (0 errors).
   - Mobile: Apply instructor screen (`apply-instructor.tsx`), Admin review screen (`applications.tsx`), Instructor courses list (`courses.tsx`), Course creator (`create-course.tsx`), Curriculum builder (`course-builder.tsx`). Verified with `npx tsc --noEmit` (0 errors).
+- **2026-09-10** — User requested a fresh start. Created full zip backup in `backup/elearny-lms-backup.zip` (1.0MB). Removed existing `backend/` and `frontend/` folders. Reset completion checklist to Phase 0 — Foundation.
+- **2026-09-11** — Expanded `rules.md` to **v1.0**: Updated §12 ("Build High-Density, Production-Grade Pages — No Thin / Minimal Output") to strictly forbid minimal 2-field screens, requiring rich multi-widget card grids, status badges, live field requirements, and multi-state rendering. Updated §13 ("Strict 100% Web & Mobile Feature & Content Parity") to mandate that every feature, input, and creation workflow on Web is 100% available on Mobile.
+
+
+
+
 

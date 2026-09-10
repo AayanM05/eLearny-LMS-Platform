@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; padding: 40px; }
+        h1 { color: #5b3fd6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>eLearny — Academic Transcript</h1>
+    <p>Student: <span th:text="${studentName}">Name</span></p>
+    <table>
+        <tr><th>Course</th><th>Completed</th><th>Certificate Code</th></tr>
+        <tr th:each="row : ${rows}">
+            <td th:text="${row.courseTitle}">Course</td>
+            <td th:text="${row.completionDate}">Date</td>
+            <td th:text="${row.certificateCode}">Code</td>
+        </tr>
+    </table>
+</body>
+</html>

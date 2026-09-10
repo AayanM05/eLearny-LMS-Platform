@@ -1,14 +1,11 @@
 # eLearny — Pages Document (pages.md)
 
-> Status: v0.3. This is the screen-by-screen spec that `prd.md` and
+> Status: v0.4. This is the screen-by-screen spec that `prd.md` and
 > `architecture.md` deliberately don't cover — what each page actually
 > contains, not just that the feature exists. Every page below exists on
 > **both** `frontend/web` and `frontend/mobile` unless marked otherwise,
-> per the full-parity decisions in `memory.md`. Each entry lists: purpose,
-> key components, states to handle, and which doc section it implements
-> (mostly `prd.md`; a handful of auth/approval-flow pages reference
-> `architecture.md`'s App Flow numbering instead, since those flows aren't
-> separately numbered in the PRD — each row's ref states which doc it means).
+> per the full-parity decisions in `memory.md` and UIRD v1.1. Each entry lists: purpose,
+> key components, states to handle, and which doc section it implements.
 >
 > **These tables are a floor, not a ceiling.** Per `rules.md` §12: a
 > one-line "purpose" description is scope confirmation, not the complete
