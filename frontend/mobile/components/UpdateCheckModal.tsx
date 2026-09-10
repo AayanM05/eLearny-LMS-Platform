@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, ActivityIndicator, AppState, AppStateStatus } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, ActivityIndicator, AppState, AppStateStatus, Platform } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../lib/typography';
 
 export default function UpdateCheckModal() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -150,14 +151,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 20,
-    fontWeight: '800',
     color: '#0f172a',
     marginBottom: 8,
     textAlign: 'center',
     letterSpacing: -0.3,
   },
   subtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#475569',
     textAlign: 'center',
@@ -176,8 +178,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 13,
-    fontWeight: '600',
     color: '#7c3aed',
   },
   updateBtn: {
@@ -195,13 +197,13 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   updateBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '800',
   },
   lockNotice: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
-    fontWeight: '600',
     color: '#94a3b8',
     marginTop: 14,
     textAlign: 'center',

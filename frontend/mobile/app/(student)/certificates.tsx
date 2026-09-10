@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { Feather, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 export default function CertificatesScreen() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function CertificatesScreen() {
   return (
     <View style={styles.mainWrapper}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={styles.headerBar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Feather name="arrow-left" size={20} color="#0f172a" />
         </TouchableOpacity>
@@ -82,7 +83,7 @@ export default function CertificatesScreen() {
               </View>
               <View style={styles.detailRow}>
                 <Text style={styles.detailLabel}>Grade Result:</Text>
-                <Text style={[styles.detailValue, { color: '#059669', fontWeight: 'bold' }]}>{cert.grade}</Text>
+                <Text style={[styles.detailValue, { color: '#059669', fontFamily: fontInterBold }]}>{cert.grade}</Text>
               </View>
             </View>
 
@@ -136,9 +137,9 @@ export default function CertificatesScreen() {
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#ffffff',
   },
-  header: {
+  headerBar: {
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 16,
@@ -153,8 +154,8 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 17,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   verifiedChip: {
@@ -167,13 +168,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   verifiedChipText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#059669',
   },
   scrollContainer: {
     padding: 20,
-    paddingBottom: 60,
+    paddingBottom: 90,
   },
   heroBanner: {
     backgroundColor: '#1e1b4b',
@@ -183,21 +184,22 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   heroTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#ffffff',
     marginBottom: 6,
     textAlign: 'center',
   },
   heroSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#c7d2fe',
     textAlign: 'center',
     lineHeight: 18,
   },
   sectionTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 14,
   },
@@ -230,13 +232,13 @@ const styles = StyleSheet.create({
     borderColor: '#fef3c7',
   },
   certId: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   certTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 15,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginTop: 2,
   },
@@ -252,12 +254,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   detailLabel: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
   },
   detailValue: {
+    fontFamily: fontInterSemiBold,
     fontSize: 12,
-    fontWeight: '600',
     color: '#0f172a',
   },
   actionRow: {
@@ -276,8 +279,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   verifyBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   downloadBtn: {
@@ -290,8 +293,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   downloadBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   modalOverlay: {
@@ -309,12 +312,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 4,
   },
   modalSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
     marginBottom: 20,
@@ -330,6 +334,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   qrUrl: {
+    fontFamily: fontInterRegular,
     fontSize: 9,
     color: '#64748b',
     marginTop: 10,
@@ -346,8 +351,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   statusText: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#059669',
   },
   closeBtn: {
@@ -358,8 +363,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   closeBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 13,
-    fontWeight: 'bold',
   },
 });

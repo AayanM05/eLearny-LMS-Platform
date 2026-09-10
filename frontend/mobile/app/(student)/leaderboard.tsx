@@ -1,7 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { Feather, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 export default function LeaderboardScreen() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function LeaderboardScreen() {
   return (
     <View style={styles.mainWrapper}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={styles.headerBar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Feather name="arrow-left" size={20} color="#ffffff" />
         </TouchableOpacity>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
   },
-  header: {
+  headerBar: {
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 16,
@@ -119,8 +120,8 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   streakBadge: {
@@ -133,13 +134,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   streakBadgeText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#f59e0b',
   },
   scrollContainer: {
     padding: 16,
-    paddingBottom: 60,
+    paddingBottom: 90,
   },
   podiumContainer: {
     flexDirection: 'row',
@@ -175,17 +176,18 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   podiumAvatarText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: 'bold',
   },
   podiumName: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#ffffff',
     textAlign: 'center',
   },
   podiumXp: {
+    fontFamily: fontInterRegular,
     fontSize: 10,
     color: '#94a3b8',
     marginTop: 2,
@@ -197,8 +199,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   rankTagText: {
+    fontFamily: fontInterBold,
     fontSize: 9,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   userRankCard: {
@@ -224,16 +226,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   userRankBadgeText: {
+    fontFamily: fontInterBold,
     fontSize: 14,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   userRankName: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 14,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   userRankSub: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#ddd6fe',
   },
@@ -246,13 +249,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   boostBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   sectionTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#ffffff',
     marginBottom: 12,
   },
@@ -273,8 +276,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e1065',
   },
   itemRankText: {
+    fontFamily: fontInterBold,
     fontSize: 13,
-    fontWeight: 'bold',
     color: '#94a3b8',
     width: 28,
   },
@@ -287,22 +290,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemAvatarText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 14,
-    fontWeight: 'bold',
   },
   itemName: {
+    fontFamily: fontInterBold,
     fontSize: 13,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   itemLevel: {
+    fontFamily: fontInterRegular,
     fontSize: 10,
     color: '#94a3b8',
   },
   itemXp: {
+    fontFamily: fontInterBold,
     fontSize: 13,
-    fontWeight: 'bold',
     color: '#34d399',
   },
   streakRow: {
@@ -311,6 +315,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   itemStreak: {
+    fontFamily: fontInterRegular,
     fontSize: 10,
     color: '#f8fafc',
   },

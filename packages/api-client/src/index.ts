@@ -2,6 +2,10 @@
 
 import type { ApiErrorResponse } from '@elearny/types';
 
+export interface ApiRequestInit extends RequestInit {
+  timeoutMs?: number;
+}
+
 export class ApiClient {
   private baseUrl: string;
   private tokenGetter?: () => string | null;
@@ -11,7 +15,7 @@ export class ApiClient {
     this.tokenGetter = tokenGetter;
   }
 
-  async fetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  async fetch<T>(endpoint: string, options: ApiRequestInit = {}): Promise<T> {
     const url = `${this.baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -23,8 +27,9 @@ export class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
+    const timeoutMs = options.timeoutMs ?? 15000; // General default: 15s. Auth calls can pass timeoutMs: 60000.
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       const response = await fetch(url, {

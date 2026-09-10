@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, Image 
 import { useAuth } from '../../lib/auth';
 import { useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay } from '../../lib/typography';
 
 export default function StudentDashboard() {
   const { user, logout } = useAuth();
@@ -63,8 +64,8 @@ export default function StudentDashboard() {
           <View style={{ backgroundColor: '#f3e8ff', borderWidth: 1, borderColor: '#ddd6fe', borderRadius: 10, padding: 14, marginBottom: 16, flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name="sparkles" size={20} color="#7c3aed" style={{ marginRight: 10 }} />
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#6d28d9' }}>v1.1 OTA Live Update Verified! 🎉</Text>
-              <Text style={{ fontSize: 11, color: '#5b21b6', marginTop: 2 }}>Student Dashboard enhanced with instant AI Assistant FAB & Live Judge0 practice links.</Text>
+              <Text style={{ fontSize: 13, fontFamily: fontInterBold, color: '#6d28d9' }}>v1.1 OTA Live Update Verified! 🎉</Text>
+              <Text style={{ fontSize: 11, fontFamily: fontInterRegular, color: '#5b21b6', marginTop: 2 }}>Student Dashboard enhanced with instant AI Assistant FAB & Live Judge0 practice links.</Text>
             </View>
           </View>
 
@@ -267,13 +268,13 @@ export default function StudentDashboard() {
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#ffffff',
   },
   scrollContainer: {
-    paddingBottom: 80,
+    paddingBottom: 90,
   },
   heroHeader: {
-    backgroundColor: '#4c1d95',
+    backgroundColor: '#7c3aed',
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 24,
@@ -282,8 +283,8 @@ const styles = StyleSheet.create({
   },
   topBar: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
   },
   userBadge: {
@@ -294,7 +295,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#7c3aed',
+    backgroundColor: '#6d28d9',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -302,17 +303,18 @@ const styles = StyleSheet.create({
     borderColor: '#a78bfa',
   },
   avatarText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 20,
-    fontWeight: 'bold',
   },
   greetingText: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#c4b5fd',
   },
   userName: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 17,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   topActions: {
@@ -330,9 +332,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   xpBadgeText: {
+    fontFamily: fontInterBold,
     color: '#fbbf24',
     fontSize: 12,
-    fontWeight: 'bold',
   },
   iconBtn: {
     padding: 8,
@@ -354,6 +356,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#0f172a',
   },
@@ -380,11 +383,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   statNumber: {
+    fontFamily: fontInterBold,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   statLabel: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#475569',
     marginTop: 2,
@@ -396,13 +400,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   seeAllText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 13,
-    fontWeight: '600',
     color: '#7c3aed',
   },
   activeCourseCard: {
@@ -430,21 +434,23 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   moduleTagText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: '700',
     color: '#7c3aed',
   },
   timeTag: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
   },
   courseTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 4,
   },
   lessonTitle: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#475569',
     marginBottom: 16,
@@ -458,12 +464,13 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   progressLabel: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
   },
   progressPercent: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   progressTrack: {
@@ -486,9 +493,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   resumeBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 14,
-    fontWeight: 'bold',
   },
   moduleGrid: {
     flexDirection: 'row',
@@ -512,12 +519,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   moduleTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 13,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 2,
   },
   moduleDesc: {
+    fontFamily: fontInterRegular,
     fontSize: 10,
     color: '#64748b',
   },
@@ -535,8 +543,8 @@ const styles = StyleSheet.create({
     borderColor: '#7c3aed',
   },
   catChipText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 12,
-    fontWeight: '600',
     color: '#475569',
   },
   catChipTextActive: {
@@ -565,21 +573,23 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   levelBadgeText: {
+    fontFamily: fontInterBold,
     fontSize: 9,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   ratingText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
   },
   catalogTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 15,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 4,
   },
   catalogInstructor: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
     marginBottom: 12,
@@ -594,12 +604,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   metaText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#475569',
   },
   metaPrice: {
+    fontFamily: fontInterBold,
     fontSize: 14,
-    fontWeight: 'bold',
     color: '#059669',
   },
   enrollBtn: {
@@ -611,8 +622,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   enrollBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   floatingFab: {
@@ -633,8 +644,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   fabText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 13,
-    fontWeight: 'bold',
   },
 });
+

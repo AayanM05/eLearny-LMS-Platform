@@ -4,6 +4,7 @@ import { useAuth } from '../../lib/auth';
 import { api } from '../../lib/api';
 import { useRouter } from 'expo-router';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 interface ApplicationItem {
   id: string;
@@ -213,17 +214,17 @@ const styles = StyleSheet.create({
   avatarText: {
     color: '#ffffff',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fontInterBold,
   },
   userName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fontInterBold,
     color: '#0f172a',
   },
   userEmail: {
     fontSize: 11,
     color: '#7c3aed',
-    fontWeight: '600',
+    fontFamily: fontInterSemiBold,
   },
   logoutButton: {
     padding: 8,
@@ -234,11 +235,12 @@ const styles = StyleSheet.create({
   },
   pageTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: fontHeadingDisplay,
     color: '#0f172a',
   },
   pageSubtitle: {
     fontSize: 12,
+    fontFamily: fontInterRegular,
     color: '#64748b',
     marginBottom: 20,
   },
@@ -265,6 +267,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 13,
+    fontFamily: fontInterRegular,
     color: '#64748b',
   },
   card: {
@@ -283,7 +286,7 @@ const styles = StyleSheet.create({
   },
   applicantName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fontInterBold,
     color: '#0f172a',
   },
   statusTag: {
@@ -306,7 +309,7 @@ const styles = StyleSheet.create({
   },
   statusTagText: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontFamily: fontInterBold,
   },
   statusPendingText: {
     color: '#d97706',
@@ -319,6 +322,7 @@ const styles = StyleSheet.create({
   },
   reviewedLabel: {
     fontSize: 12,
+    fontFamily: fontInterRegular,
     color: '#64748b',
     fontStyle: 'italic',
     marginTop: 4,
@@ -326,11 +330,12 @@ const styles = StyleSheet.create({
 
   applicantMeta: {
     fontSize: 12,
+    fontFamily: fontInterRegular,
     color: '#64748b',
   },
   applicantSpec: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: fontInterSemiBold,
     color: '#0f172a',
   },
   actionRow: {
@@ -350,7 +355,7 @@ const styles = StyleSheet.create({
   approveButtonText: {
     color: '#ffffff',
     fontSize: 13,
-    fontWeight: '600',
+    fontFamily: fontInterSemiBold,
   },
   rejectButton: {
     flex: 1,
@@ -366,6 +371,6 @@ const styles = StyleSheet.create({
   rejectButtonText: {
     color: '#0f172a',
     fontSize: 13,
-    fontWeight: '600',
+    fontFamily: fontInterSemiBold,
   },
 });

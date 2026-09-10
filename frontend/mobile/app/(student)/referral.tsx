@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 export default function MobileReferral() {
   const router = useRouter();
@@ -49,10 +50,10 @@ export default function MobileReferral() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 40,
+    flex: 1,
     backgroundColor: '#ffffff',
+    padding: 20,
+    paddingTop: 50,
   },
   header: {
     flexDirection: 'row',
@@ -64,8 +65,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   banner: {
@@ -78,11 +79,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   bannerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   bannerSub: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
     lineHeight: 18,
@@ -97,8 +99,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   codeLbl: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#64748b',
   },
   codeBox: {
@@ -112,7 +114,6 @@ const styles = StyleSheet.create({
   codeVal: {
     fontSize: 14,
     fontFamily: 'monospace',
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   copyBtn: {
@@ -125,9 +126,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   copyText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 11,
-    fontWeight: 'bold',
   },
   statsCard: {
     flexDirection: 'row',
@@ -143,11 +144,12 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statVal: {
+    fontFamily: fontInterBold,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
   statLbl: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
   },

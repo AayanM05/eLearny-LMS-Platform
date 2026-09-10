@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { Feather, Octicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 export default function CommunityScreen() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function CommunityScreen() {
   return (
     <View style={styles.mainWrapper}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={styles.headerBar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Feather name="arrow-left" size={20} color="#0f172a" />
         </TouchableOpacity>
@@ -134,9 +135,9 @@ export default function CommunityScreen() {
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#ffffff',
   },
-  header: {
+  headerBar: {
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 16,
@@ -151,8 +152,8 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 17,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   askBtn: {
@@ -165,13 +166,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   askBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   scrollContainer: {
     padding: 20,
-    paddingBottom: 60,
+    paddingBottom: 90,
   },
   searchBanner: {
     marginBottom: 16,
@@ -188,6 +189,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#0f172a',
   },
@@ -205,16 +207,16 @@ const styles = StyleSheet.create({
     borderColor: '#7c3aed',
   },
   catChipText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 12,
-    fontWeight: '600',
     color: '#475569',
   },
   catChipTextActive: {
     color: '#ffffff',
   },
   sectionTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 12,
   },
@@ -248,16 +250,17 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   authorAvatarText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 14,
-    fontWeight: 'bold',
   },
   authorName: {
+    fontFamily: fontInterBold,
     fontSize: 13,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   threadTime: {
+    fontFamily: fontInterRegular,
     fontSize: 10,
     color: '#64748b',
   },
@@ -271,18 +274,19 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   acceptedBadgeText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#059669',
   },
   threadTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 15,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginBottom: 6,
     lineHeight: 20,
   },
   threadSnippet: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
     lineHeight: 16,
@@ -306,6 +310,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metricText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
   },
@@ -316,8 +321,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   replyBtnText: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#7c3aed',
   },
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 export default function AppInfoScreen() {
   const router = useRouter();
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   card: {
@@ -102,11 +103,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   appName: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   appMeta: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
   },
@@ -120,10 +122,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   statusText: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#059669',
     textAlign: 'center',
-    fontWeight: '500',
   },
   updateBtn: {
     backgroundColor: '#7c3aed',
@@ -136,8 +138,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   updateBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 14,
-    fontWeight: 'bold',
   },
 });

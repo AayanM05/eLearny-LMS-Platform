@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../lib/typography';
 
 export default function BottomNavigation() {
   const router = useRouter();
@@ -55,7 +56,7 @@ export default function BottomNavigation() {
             activeOpacity={0.7}
           >
             {tab.icon(isActive ? activeColor : inactiveColor)}
-            <Text style={[styles.tabLabel, { color: isActive ? activeColor : inactiveColor, fontWeight: isActive ? '700' : '500' }]}>
+            <Text style={[styles.tabLabel, { color: isActive ? activeColor : inactiveColor, fontFamily: isActive ? fontInterBold : fontInterSemiBold }]}>
               {tab.name}
             </Text>
             {isActive && <View style={styles.activeDot} />}

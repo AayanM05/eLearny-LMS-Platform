@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { api } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay } from '../../lib/typography';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function LoginScreen() {
   const [is2faRequired, setIs2faRequired] = useState(false);
   const [pending2faToken, setPending2faToken] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [statusText, setStatusText] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
@@ -22,25 +25,32 @@ export default function LoginScreen() {
       return;
     }
     setErrorMessage(null);
+    setSuccessMessage(null);
+    setStatusText('Connecting... this may take a moment on first load');
     setLoading(true);
 
     try {
       const response: any = await api.fetch('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
+        timeoutMs: 60000,
       });
 
-      if (response.is2faRequired) {
+      if (response.is2faRequired || response['2faRequired']) {
         setIs2faRequired(true);
         setPending2faToken(response.pending2faToken);
       } else {
+        setSuccessMessage('🎉 Success! Credentials verified in database. Opening workspace...');
         await setAuthSession(response.user, response.accessToken, response.refreshToken);
-        redirectUser(response.user.role);
+        setTimeout(() => {
+          redirectUser(response.user?.role || 'STUDENT');
+        }, 500);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || 'Invalid email or password');
+      setErrorMessage(err.message || 'Invalid email or password. Please check your credentials.');
     } finally {
       setLoading(false);
+      setStatusText(null);
     }
   };
 
@@ -50,6 +60,7 @@ export default function LoginScreen() {
       return;
     }
     setErrorMessage(null);
+    setStatusText('Verifying security code...');
     setLoading(true);
 
     try {
@@ -58,12 +69,16 @@ export default function LoginScreen() {
         body: JSON.stringify({ pending2faToken, totpCode }),
       });
 
+      setSuccessMessage('🎉 2FA Code Verified! Opening workspace...');
       await setAuthSession(response.user, response.accessToken, response.refreshToken);
-      redirectUser(response.user.role);
+      setTimeout(() => {
+        redirectUser(response.user?.role || 'STUDENT');
+      }, 500);
     } catch (err: any) {
       setErrorMessage(err.message || 'Invalid 2FA code');
     } finally {
       setLoading(false);
+      setStatusText(null);
     }
   };
 
@@ -79,6 +94,8 @@ export default function LoginScreen() {
 
   const handleInstantDemoLogin = async (role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN') => {
     setErrorMessage(null);
+    setSuccessMessage('🎉 Demo Credentials Validated! Directing to workspace...');
+    setStatusText(`Signing in as ${role.toLowerCase()}...`);
     setLoading(true);
     const mockUser = {
       id: role === 'ADMIN' ? 'demo-admin-id' : role === 'INSTRUCTOR' ? 'demo-inst-id' : 'demo-stud-id',
@@ -88,8 +105,11 @@ export default function LoginScreen() {
       createdAt: new Date().toISOString(),
     };
     await setAuthSession(mockUser, 'demo_access_token_jwt', 'demo_refresh_token');
-    setLoading(false);
-    redirectUser(role);
+    setTimeout(() => {
+      setLoading(false);
+      setStatusText(null);
+      redirectUser(role);
+    }, 400);
   };
 
 
@@ -129,10 +149,26 @@ export default function LoginScreen() {
           </View>
         </View>
 
+        {loading && (
+          <View style={styles.loadingBanner}>
+            <ActivityIndicator size="small" color="#7c3aed" style={{ marginRight: 8 }} />
+            <Text style={styles.loadingBannerText}>
+              Connecting... this may take a moment on first load if the server is waking up
+            </Text>
+          </View>
+        )}
+
         {errorMessage && (
           <View style={styles.errorBox}>
             <Feather name="alert-circle" size={16} color="#ef4444" />
             <Text style={styles.errorText}>{errorMessage}</Text>
+          </View>
+        )}
+
+        {successMessage && (
+          <View style={styles.successBox}>
+            <Feather name="check-circle" size={16} color="#059669" />
+            <Text style={styles.successText}>{successMessage}</Text>
           </View>
         )}
 
@@ -163,9 +199,12 @@ export default function LoginScreen() {
               />
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+            <TouchableOpacity style={[styles.button, loading && styles.buttonDisabled]} onPress={handleLogin} disabled={loading}>
               {loading ? (
-                <ActivityIndicator color="#fff" />
+                <View style={styles.buttonContent}>
+                  <ActivityIndicator color="#ffffff" size="small" style={{ marginRight: 8 }} />
+                  <Text style={styles.buttonText}>{statusText || 'Validating credentials...'}</Text>
+                </View>
               ) : (
                 <View style={styles.buttonContent}>
                   <Text style={styles.buttonText}>Sign In with Backend</Text>
@@ -209,7 +248,6 @@ export default function LoginScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
@@ -230,8 +268,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   card: {
@@ -245,12 +283,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   brandTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 24,
-    fontWeight: '800',
     color: '#7c3aed',
     marginBottom: 4,
   },
   subtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#64748b',
   },
@@ -268,8 +307,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   demoTitle: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: '700',
     color: '#7c3aed',
     marginLeft: 6,
   },
@@ -287,12 +326,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   demoChipText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 11,
-    fontWeight: '600',
     color: '#6d28d9',
   },
+  loadingBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f3e8ff',
+    borderWidth: 1,
+    borderColor: '#ddd6fe',
+    padding: 12,
+    borderRadius: 4,
+    marginBottom: 16,
+  },
+  loadingBannerText: {
+    fontFamily: fontInterSemiBold,
+    color: '#7c3aed',
+    fontSize: 12,
+    flex: 1,
+  },
   errorBox: {
-
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fef2f2',
@@ -303,7 +357,25 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   errorText: {
+    fontFamily: fontInterRegular,
     color: '#ef4444',
+    fontSize: 12,
+    marginLeft: 8,
+    flex: 1,
+  },
+  successBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ecfdf5',
+    borderWidth: 1,
+    borderColor: '#a7f3d0',
+    padding: 10,
+    borderRadius: 4,
+    marginBottom: 16,
+  },
+  successText: {
+    fontFamily: fontInterSemiBold,
+    color: '#059669',
     fontSize: 12,
     marginLeft: 8,
     flex: 1,
@@ -326,15 +398,16 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    fontFamily: fontInterRegular,
     paddingVertical: 12,
     fontSize: 15,
     color: '#0f172a',
   },
   totpInput: {
+    fontFamily: fontInterBold,
     textAlign: 'center',
     letterSpacing: 4,
     fontSize: 18,
-    fontWeight: 'bold',
   },
   twoFaBanner: {
     alignItems: 'center',
@@ -344,12 +417,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   twoFaTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 14,
-    fontWeight: 'bold',
     color: '#7c3aed',
     marginTop: 4,
   },
   infoText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
     textAlign: 'center',
@@ -363,14 +437,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 4,
   },
+  buttonDisabled: {
+    opacity: 0.65,
+  },
   buttonContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   buttonText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '600',
   },
   buttonIconRight: {
     marginLeft: 6,
@@ -383,11 +460,12 @@ const styles = StyleSheet.create({
     borderTopColor: '#f1f5f9',
   },
   linkText: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#64748b',
   },
   linkTextBold: {
+    fontFamily: fontInterBold,
     color: '#7c3aed',
-    fontWeight: 'bold',
   },
 });

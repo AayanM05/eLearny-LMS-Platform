@@ -4,6 +4,7 @@ import { useAuth } from '../../lib/auth';
 import { api } from '../../lib/api';
 import { useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterMedium, fontInterSemiBold, fontInterBold, fontHeadingDisplay, fontHeadingSemiBold } from '../../lib/typography';
 
 interface CourseItem {
   id: string;
@@ -177,19 +178,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   avatarText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 18,
-    fontWeight: 'bold',
   },
   userName: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   userEmail: {
+    fontFamily: fontInterSemiBold,
     fontSize: 11,
     color: '#059669',
-    fontWeight: '600',
   },
   logoutButton: {
     padding: 8,
@@ -199,11 +200,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fef2f2',
   },
   pageTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   pageSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
     marginBottom: 20,
@@ -217,13 +219,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   revenueLabel: {
+    fontFamily: fontInterSemiBold,
     fontSize: 12,
-    fontWeight: '600',
     color: '#047857',
   },
   revenueAmount: {
+    fontFamily: fontInterBold,
     fontSize: 28,
-    fontWeight: 'bold',
     color: '#065f46',
     marginVertical: 4,
   },
@@ -232,8 +234,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   trendText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 12,
-    fontWeight: '600',
     color: '#059669',
     marginLeft: 4,
   },
@@ -250,12 +252,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   statNumber: {
+    fontFamily: fontInterBold,
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#0f172a',
     marginTop: 6,
   },
   statLabel: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
     marginTop: 2,
@@ -270,8 +273,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   refreshBtn: {
@@ -296,8 +299,8 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   courseTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 15,
-    fontWeight: 'bold',
     color: '#0f172a',
     flex: 1,
     marginRight: 8,
@@ -317,8 +320,8 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
   },
   statusTagText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
   },
   publishedTagText: {
     color: '#059669',
@@ -327,6 +330,7 @@ const styles = StyleSheet.create({
     color: '#64748b',
   },
   courseMeta: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#64748b',
   },

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, ActivityIndicator, Platform } from 'react-native';
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay } from '../../lib/typography';
 import { useRouter } from 'expo-router';
 
 export default function PracticeHub() {
@@ -168,11 +169,12 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   headerSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#94a3b8',
   },
@@ -192,13 +194,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#38bdf8',
   },
   badgeLiveText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   scrollContainer: {
     padding: 16,
-    paddingBottom: 60,
+    paddingBottom: 90,
   },
   problemCard: {
     backgroundColor: '#1e293b',
@@ -221,22 +223,23 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   diffBadgeText: {
+    fontFamily: fontInterBold,
     fontSize: 9,
-    fontWeight: 'bold',
     color: '#0f172a',
   },
   problemPoints: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#34d399',
   },
   problemTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 17,
-    fontWeight: 'bold',
     color: '#f8fafc',
     marginBottom: 6,
   },
   problemDesc: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#cbd5e1',
     lineHeight: 18,
@@ -255,8 +258,8 @@ const styles = StyleSheet.create({
     borderColor: '#334155',
   },
   constraintTitle: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#94a3b8',
     marginBottom: 4,
   },
@@ -284,8 +287,8 @@ const styles = StyleSheet.create({
     borderColor: '#7c3aed',
   },
   langTabText: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#94a3b8',
   },
   langTabTextActive: {
@@ -316,11 +319,11 @@ const styles = StyleSheet.create({
   },
   ideHeaderTitle: {
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#cbd5e1',
     fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
   resetText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#f43f5e',
   },
@@ -351,9 +354,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   runBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 13,
-    fontWeight: 'bold',
   },
   submitBtn: {
     backgroundColor: '#059669',
@@ -365,9 +368,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   submitBtnText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 13,
-    fontWeight: 'bold',
   },
   outputBox: {
     backgroundColor: '#064e3b',
@@ -383,8 +386,8 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   outputTitle: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: 'bold',
     color: '#34d399',
   },
   outputText: {

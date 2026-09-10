@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay } from '../../lib/typography';
 import { useRouter } from 'expo-router';
 
 export default function AiChatScreen() {
@@ -62,7 +63,7 @@ export default function AiChatScreen() {
   return (
     <KeyboardAvoidingView style={styles.mainWrapper} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={styles.headerBar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Feather name="arrow-left" size={20} color="#ffffff" />
         </TouchableOpacity>
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f172a',
   },
-  header: {
+  headerBar: {
     paddingTop: 50,
     paddingHorizontal: 20,
     paddingBottom: 16,
@@ -154,11 +155,12 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   headerTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#ffffff',
   },
   headerSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#a78bfa',
   },
@@ -210,6 +212,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 2,
   },
   msgText: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     lineHeight: 18,
   },
@@ -220,6 +223,7 @@ const styles = StyleSheet.create({
     color: '#e2e8f0',
   },
   msgTime: {
+    fontFamily: fontInterRegular,
     fontSize: 9,
     marginTop: 6,
     alignSelf: 'flex-end',
@@ -249,8 +253,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   promptPillText: {
+    fontFamily: fontInterBold,
     fontSize: 11,
-    fontWeight: 'bold',
     color: '#c7d2fe',
   },
   inputContainer: {
@@ -264,6 +268,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    fontFamily: fontInterRegular,
     backgroundColor: '#1e293b',
     borderRadius: 20,
     paddingHorizontal: 16,

@@ -1,14 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, View, Pressable, ScrollView, StatusBar, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Pressable, ScrollView, StatusBar, Image, Platform, ActivityIndicator } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../lib/auth';
+import { fontInterRegular, fontInterSemiBold, fontInterBold, fontHeadingDisplay } from '../lib/typography';
 
 export default function App() {
   const router = useRouter();
   const { setAuthSession } = useAuth();
 
+  const [loadingRole, setLoadingRole] = useState<'STUDENT' | 'INSTRUCTOR' | 'ADMIN' | null>(null);
+
   const handleInstantDemoLogin = async (role: 'STUDENT' | 'INSTRUCTOR' | 'ADMIN') => {
+    setLoadingRole(role);
     const mockUser = {
       id: role === 'ADMIN' ? 'demo-admin-id' : role === 'INSTRUCTOR' ? 'demo-inst-id' : 'demo-stud-id',
       email: role === 'ADMIN' ? 'admin@elearny.com' : role === 'INSTRUCTOR' ? 'instructor@elearny.com' : 'student@elearny.com',
@@ -18,13 +22,16 @@ export default function App() {
     };
     await setAuthSession(mockUser, 'demo_access_token_jwt', 'demo_refresh_token');
 
-    if (role === 'ADMIN') {
-      router.replace('/(admin)/applications');
-    } else if (role === 'INSTRUCTOR') {
-      router.replace('/(instructor)/analytics');
-    } else {
-      router.replace('/(student)/dashboard');
-    }
+    setTimeout(() => {
+      setLoadingRole(null);
+      if (role === 'ADMIN') {
+        router.replace('/(admin)/applications');
+      } else if (role === 'INSTRUCTOR') {
+        router.replace('/(instructor)/analytics');
+      } else {
+        router.replace('/(student)/dashboard');
+      }
+    }, 200);
   };
 
   return (
@@ -45,7 +52,7 @@ export default function App() {
           </View>
 
           <View style={styles.versionTag}>
-            <Text style={styles.versionTagText}>v1.1 OTA LIVE ⚡</Text>
+            <Text style={styles.versionTagText}>v1.2 OTA LIVE ⚡</Text>
           </View>
         </View>
 
@@ -53,12 +60,24 @@ export default function App() {
         <View style={styles.otaNoticeCard}>
           <View style={styles.otaNoticeHeader}>
             <Ionicons name="sparkles" size={18} color="#7c3aed" />
-            <Text style={styles.otaNoticeTitle}>What's New in v1.1 Update</Text>
+            <Text style={styles.otaNoticeTitle}>What's New in v1.2 Update</Text>
           </View>
           <Text style={styles.otaNoticeBody}>
             • Live Instant OTA Updates active!{'\n'}
-            • Integrated Judge0 Cloud Code Execution Engine.{'\n'}
-            • New Dark Mode & Enhanced Analytics Dashboard.
+            • Real-Time AI Assistant & Code Debugger.{'\n'}
+            • Locked Clean Sans-Serif System Typography.{'\n'}
+            • Enhanced Analytics & Leaderboards.
+          </Text>
+        </View>
+
+        {/* v1.2 Feature Spotlight Card */}
+        <View style={styles.spotlightCard}>
+          <View style={styles.spotlightHeader}>
+            <MaterialCommunityIcons name="robot-excited-outline" size={18} color="#7c3aed" />
+            <Text style={styles.spotlightTitle}>v1.2 Feature Spotlight: AI Tutor Live</Text>
+          </View>
+          <Text style={styles.spotlightBody}>
+            Experience interactive AI tutoring, instant code debugging hints, and automated course outline generation live on mobile!
           </Text>
         </View>
 
@@ -115,25 +134,40 @@ export default function App() {
             <Pressable 
               style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
               onPress={() => handleInstantDemoLogin('STUDENT')}
+              disabled={!!loadingRole}
             >
-              <Ionicons name="person" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
-              <Text style={styles.demoRoleButtonText}>Student</Text>
+              {loadingRole === 'STUDENT' ? (
+                <ActivityIndicator size="small" color="#7c3aed" style={{ marginRight: 4 }} />
+              ) : (
+                <Ionicons name="person" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              )}
+              <Text style={styles.demoRoleButtonText}>{loadingRole === 'STUDENT' ? 'Opening...' : 'Student'}</Text>
             </Pressable>
 
             <Pressable 
               style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
               onPress={() => handleInstantDemoLogin('INSTRUCTOR')}
+              disabled={!!loadingRole}
             >
-              <Ionicons name="briefcase" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
-              <Text style={styles.demoRoleButtonText}>Instructor</Text>
+              {loadingRole === 'INSTRUCTOR' ? (
+                <ActivityIndicator size="small" color="#7c3aed" style={{ marginRight: 4 }} />
+              ) : (
+                <Ionicons name="briefcase" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              )}
+              <Text style={styles.demoRoleButtonText}>{loadingRole === 'INSTRUCTOR' ? 'Opening...' : 'Instructor'}</Text>
             </Pressable>
 
             <Pressable 
               style={({ pressed }) => [styles.demoRoleButton, pressed && styles.buttonPressed]} 
               onPress={() => handleInstantDemoLogin('ADMIN')}
+              disabled={!!loadingRole}
             >
-              <Ionicons name="shield-checkmark" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
-              <Text style={styles.demoRoleButtonText}>Admin</Text>
+              {loadingRole === 'ADMIN' ? (
+                <ActivityIndicator size="small" color="#7c3aed" style={{ marginRight: 4 }} />
+              ) : (
+                <Ionicons name="shield-checkmark" size={14} color="#6d28d9" style={{ marginRight: 4 }} />
+              )}
+              <Text style={styles.demoRoleButtonText}>{loadingRole === 'ADMIN' ? 'Opening...' : 'Admin'}</Text>
             </Pressable>
           </View>
         </View>
@@ -163,7 +197,7 @@ export default function App() {
     </View>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
@@ -192,14 +226,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   logoTitleText: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 22,
-    fontWeight: '800',
     color: '#0f172a',
     letterSpacing: -0.5,
   },
   logoTitleAccent: {
+    fontFamily: fontHeadingDisplay,
     color: '#7c3aed',
-    fontWeight: '800',
   },
   versionTag: {
     backgroundColor: '#f3e8ff',
@@ -210,8 +244,8 @@ const styles = StyleSheet.create({
     borderColor: '#ddd6fe',
   },
   versionTagText: {
+    fontFamily: fontInterBold,
     fontSize: 10,
-    fontWeight: '700',
     color: '#7c3aed',
     letterSpacing: 0.5,
   },
@@ -221,7 +255,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd6fe',
     borderRadius: 8,
     padding: 14,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   otaNoticeHeader: {
     flexDirection: 'row',
@@ -229,14 +263,45 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   otaNoticeTitle: {
+    fontFamily: fontInterBold,
     fontSize: 14,
-    fontWeight: '700',
     color: '#6d28d9',
     marginLeft: 6,
   },
   otaNoticeBody: {
+    fontFamily: fontInterRegular,
     fontSize: 12,
     color: '#4c1d95',
+    lineHeight: 18,
+  },
+  spotlightCard: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#c4b5fd',
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 16,
+    shadowColor: '#7c3aed',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  spotlightHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  spotlightTitle: {
+    fontFamily: fontInterBold,
+    fontSize: 13,
+    color: '#6d28d9',
+    marginLeft: 6,
+  },
+  spotlightBody: {
+    fontFamily: fontInterRegular,
+    fontSize: 12,
+    color: '#475569',
     lineHeight: 18,
   },
   heroCard: {
@@ -258,20 +323,21 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   pillBadgeText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 11,
-    fontWeight: '600',
     color: '#7c3aed',
     marginLeft: 6,
   },
   heroTitle: {
+    fontFamily: fontHeadingDisplay,
     fontSize: 23,
-    fontWeight: '800',
     color: '#0f172a',
     lineHeight: 30,
     marginBottom: 10,
     letterSpacing: -0.3,
   },
   heroSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 13,
     color: '#64748b',
     lineHeight: 19,
@@ -297,8 +363,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   featureItemText: {
+    fontFamily: fontInterSemiBold,
     fontSize: 13,
-    fontWeight: '600',
     color: '#334155',
   },
   demoCard: {
@@ -320,12 +386,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   demoCardTitle: {
+    fontFamily: fontInterBold,
     fontSize: 13,
-    fontWeight: '700',
     color: '#7c3aed',
     marginLeft: 6,
   },
   demoCardSubtitle: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
     marginBottom: 12,
@@ -346,8 +413,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   demoRoleButtonText: {
+    fontFamily: fontInterBold,
     fontSize: 12,
-    fontWeight: '700',
     color: '#6d28d9',
   },
   buttonContainer: {
@@ -368,9 +435,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   primaryButtonText: {
+    fontFamily: fontInterBold,
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '700',
   },
   buttonIcon: {
     marginLeft: 8,
@@ -384,9 +451,9 @@ const styles = StyleSheet.create({
     borderColor: '#cbd5e1',
   },
   secondaryButtonText: {
+    fontFamily: fontInterSemiBold,
     color: '#0f172a',
     fontSize: 14,
-    fontWeight: '600',
   },
   buttonPressed: {
     opacity: 0.85,
@@ -398,9 +465,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   footerText: {
+    fontFamily: fontInterRegular,
     fontSize: 11,
     color: '#64748b',
     marginLeft: 6,
   },
 });
+
 
