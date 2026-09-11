@@ -242,20 +242,23 @@
 
 ## 17. Brand Logo & Asset Architecture (Web + Mobile)
 
-**Mandatory Asset Storage Locations & Naming Conventions:**
+**Master Brand Assets (`logo/` Directory Structure)**:
 
-1. **Web Assets (`frontend/web/public/assets/branding/`)**:
-   - `logo-light.svg` / `.png`: Horizontal brand logo for light mode headers.
-   - `logo-dark.svg` / `.png`: Horizontal brand logo for dark mode headers.
-   - `logo-icon.svg` / `.png`: Square icon mark for compact headers, mobile web, and avatar fallbacks.
-   - `favicon.ico`: Browser tab icon.
-2. **Mobile Assets (`frontend/mobile/assets/branding/`)**:
-   - `logo-light.png` & `logo-dark.png`: 3x high-resolution PNG logos.
-   - `icon.png`: App launcher icon (1024x1024 px).
-   - `splash.png`: Pre-loader splash screen graphic (1242x2436 px).
-   - `adaptive-icon.png`: Android adaptive launcher icon (1024x1024 px).
-3. **Smart `BrandLogo` Component**:
-   - Web (`frontend/web/components/common/BrandLogo.tsx`) and Mobile (`frontend/mobile/components/common/BrandLogo.tsx`) use a shared component that detects the active theme (`next-themes` on web, `useColorScheme()` on mobile) and automatically toggles between `logo-light` and `logo-dark` assets with zero manual theme checks.
+1. **Master Directory Structure (`logo/`)**:
+   - `hr-logo.png`: Horizontal Light Mode logo with white background.
+   - `hr-logo-bgr.png`: Horizontal Light Mode logo without background (transparent).
+   - `hr-logo-dark.png`: Horizontal Dark Mode logo with dark background (`#1E2022`).
+   - `hr-logo-dark-bgr.png`: Horizontal Dark Mode logo without background (transparent).
+   - `logo-icon.png`: Square 1:1 icon mark (Terracotta student avatar + graduation cap).
+   - `favicon/`: Extracted Web Favicon Suite (`favicon.ico`, `favicon.svg`, `favicon-96x96.png`, `apple-touch-icon.png`, `site.webmanifest`).
+
+2. **Web Branding Integration (`frontend/web/public/assets/branding/`)**:
+   - Favicon assets copied to `frontend/web/public/`.
+   - `BrandLogo` component auto-detects `next-themes` (`light` vs. `dark`) and switches between `hr-logo-bgr.png` and `hr-logo-dark-bgr.png`.
+
+3. **Mobile Splash Screen & App Icon (`frontend/mobile/assets/branding/`)**:
+   - **Centered Horizontal Logo Splash Screen**: Native mobile splash screen renders the **centered horizontal logo** (`hr-logo-bgr.png` for Light theme, `hr-logo-dark-bgr.png` for Dark theme) on `#FFFFFF` or `#0F172A` background according to the active theme chosen in the app.
+   - `logo-icon.png` is assigned as the native app launcher icon in Expo `app.json`.
 
 ---
 

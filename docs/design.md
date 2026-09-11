@@ -1,6 +1,6 @@
 # eLearny — Design Document (design.md)
 
-> Status: **v0.5 — living document.** Governs visual identity — color, typography, spacing,
+> Status: **v0.6 — living document.** Governs visual identity — color, typography, spacing,
 > component styling philosophy, and high content density visual rules. eLearny is high-level and large-scale by design — **not a demo or MVP**.
 > Enforces rich multi-card layouts, metric KPI grids, zero deprecation warnings, and multi-state UI shimmers across Next.js (web) and NativeWind v4 (mobile).
 > AI tools MUST double-check all UI implementations to ensure proper layout filling, high content density, and multi-state readiness before completion.
@@ -48,7 +48,7 @@ file change; no component code changes.
 
 :root {
   /* Brand */
-  --primary: 252 75% 58%;          /* Indigo/violet — the one confident accent */
+  --primary: 17 66% 56%;           /* Terracotta Orange (#D96B43) — the official brand accent matching logo-icon */
   --primary-foreground: 0 0% 100%;
 
   /* Neutrals (structure, most of the UI) */
@@ -74,7 +74,7 @@ file change; no component code changes.
   --muted: 240 6% 16%;
   --muted-foreground: 240 5% 65%;
   --border: 240 6% 20%;
-  --primary: 252 80% 68%;           /* slightly lighter for contrast on dark bg */
+  --primary: 17 75% 62%;            /* Terracotta Orange (#E57A52) — slightly lighter for high contrast on dark bg */
   --primary-foreground: 240 10% 8%;
   /* success/warning/destructive stay the same unless contrast testing says otherwise */
 }
@@ -88,12 +88,10 @@ whatever that resolves to.
 **To change the entire platform's color scheme later:** edit the values in
 this one `:root`/`.dark` block. That's the whole re-theming operation —
 this is the specific thing you asked for, and it's why every component
-must reference tokens (`bg-primary`) and never a raw color (`bg-[#7c3aed]`)
+must reference tokens (`bg-primary`) and never a raw color (`bg-[#D96B43]`)
 or the whole point of this architecture breaks.
 
-**Chosen starting palette:** Indigo/violet as the primary — reads as
-modern and tech-forward, has enough saturation to feel "bold" without
-tipping into playful (avoiding pinks/oranges keeps it professional).
+**Official Brand Palette:** **Terracotta Orange (`#D96B43` / `HSL 17° 66% 56%`)** is the locked primary brand accent—derived directly from the official `logo-icon.png` student avatar graduation cap mark. It provides a warm, high-confidence, executive visual tone across both web and mobile platforms.
 
 ---
 
@@ -255,22 +253,31 @@ looks.
 
 ---
 
-## 10. Brand Logo & Visual Identity Asset Setup
+## 10. Brand Logo & Visual Identity Assets
 
-**Logo Asset Architecture across Web and Mobile:**
+**Master Brand Assets (`logo/` Directory Structure)**:
 
-1. **Brand Logo Variations**:
-   - **Horizontal Logo (Light Mode)**: `logo-light.svg` / `.png` — Dark indigo text + vibrant accent icon mark for light headers.
-   - **Horizontal Logo (Dark Mode)**: `logo-dark.svg` / `.png` — Crisp white text + vibrant accent icon mark for dark headers.
-   - **Icon Mark**: `logo-icon.svg` / `.png` — Standalone geometric mark for mobile app icon, favicons, compact headers, and avatar fallbacks.
-2. **Web Branding Directory (`frontend/web/public/assets/branding/`)**:
-   - Stores `logo-light.svg`, `logo-dark.svg`, `logo-icon.svg`, and `favicon.ico`.
-   - Next.js `<Image>` components reference these paths cleanly.
-3. **Mobile Branding Directory (`frontend/mobile/assets/branding/`)**:
-   - Stores `logo-light.png`, `logo-dark.png`, `icon.png` (1024x1024), `splash.png` (1242x2436), and `adaptive-icon.png` (1024x1024).
-   - Expo `app.json` config maps these assets directly to native app launcher & splash screen binaries.
-4. **Theme-Aware `BrandLogo` Component**:
-   - A single shared component (`<BrandLogo variant="horizontal" | "icon" height={32} />`) auto-detects light/dark mode and renders the correct logo variant automatically on both Web and Mobile.
+1. **Master Brand Files**:
+   - **`logo/hr-logo.png`**: Light Mode horizontal logo with white background.
+   - **`logo/hr-logo-bgr.png`**: Light Mode horizontal logo transparent background.
+   - **`logo/hr-logo-dark.png`**: Dark Mode horizontal logo with dark background (`#1E2022`).
+   - **`logo/hr-logo-dark-bgr.png`**: Dark Mode horizontal logo transparent background.
+   - **`logo/logo-icon.png`**: Square 1:1 icon mark — Terracotta / Copper Orange (`#D96B43`) student profile avatar pictogram with a graduation cap.
+   - **`logo/favicon/`**: Complete Web Favicon Kit (`favicon.ico`, `favicon.svg`, `favicon-96x96.png`, `apple-touch-icon.png`, `site.webmanifest`).
+
+2. **Web Frontend Asset Storage (`frontend/web/public/`)**:
+   - `frontend/web/public/favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `site.webmanifest` (Tab & PWA icons).
+   - `frontend/web/public/assets/branding/hr-logo-bgr.png` (Light mode header logo).
+   - `frontend/web/public/assets/branding/hr-logo-dark-bgr.png` (Dark mode header logo).
+   - `frontend/web/public/assets/branding/logo-icon.png` (Square avatar & footer icon mark).
+
+3. **Mobile Frontend Asset Storage (`frontend/mobile/assets/`)**:
+   - `frontend/mobile/assets/branding/hr-logo-bgr.png` (Light mode splash screen & header logo).
+   - `frontend/mobile/assets/branding/hr-logo-dark-bgr.png` (Dark mode splash screen & header logo).
+   - `frontend/mobile/assets/branding/logo-icon.png` (Assigned as `icon` in Expo `app.json`).
+
+4. **Mobile Splash Screen Architecture**:
+   - Native mobile splash screen renders the **centered horizontal logo** (`hr-logo-bgr.png` for Light theme, `hr-logo-dark-bgr.png` for Dark theme) on `#FFFFFF` or `#0F172A` background according to the active theme chosen in the app.
 
 ---
 
