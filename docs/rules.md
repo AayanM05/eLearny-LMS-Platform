@@ -1,9 +1,9 @@
 # eLearny — Rules Document (rules.md)
 
-> Status: **v1.0.** Governs how code gets written across backend, web, and
+> Status: **v1.0 — living document.** Governs how code gets written across backend, web, and
 > mobile — not what gets built (that's `prd.md`) or how it's structured
-> (that's `architecture.md`). Enforces mandatory High Content Density (§12),
-> 100% Web & Mobile Feature Parity (§13), and Zero Deprecation Warning Policy (§15).
+> (that's `architecture.md`). eLearny is a full-scale, production-grade LMS — **high-level and large-scale by design, not a demo or MVP**.
+> Enforces mandatory High Content Density (§12), 100% Web & Mobile Feature & Content Parity (§13), AI Development Double-Check Guardrails (§12/§13), and Zero Deprecation Warning Policy (§15). AI tools MUST double-check all work against these rules before completing any unit.
 
 ---
 

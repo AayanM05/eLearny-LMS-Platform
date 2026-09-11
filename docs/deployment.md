@@ -1,10 +1,9 @@
 # eLearny — Deployment Document (deployment.md)
 
-> Status: **v0.7.** Governs where things actually run — local development
-> setup, environment/secret management, and production hosting. Distinct
-> from `architecture.md` (which describes structure, not hosting).
-> Every choice here is checked against the free-tier constraint from
-> `prd.md`, with honest flags where "free" has a real catch. Enforces modern non-deprecated dependency releases across all deployment scripts.
+> Status: **v0.8 — living document.** Governs hosting & local execution — local development, environment secrets, and production hosting
+> (Vercel Web + Render Backend + Supabase PostgreSQL + Self-Hosted Judge0 Docker Sandbox + EAS Mobile).
+> eLearny is high-level and large-scale by design — **not a demo or MVP**.
+> Enforces modern non-deprecated dependency releases across all deployment scripts and AI development double-check guardrails.
 
 ---
 

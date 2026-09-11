@@ -1,9 +1,11 @@
 # eLearny — Architecture Document (architecture.md)
 
-> Status: **v0.9.** Derived from `prd.md` v0.7 — every module here exists to
-> serve a committed feature using modern, stable, non-deprecated dependency standards
+> Status: **v1.1 — living document.** Derived from `prd.md` v0.9 — every module here exists to
+> serve a committed feature using modern, active, non-deprecated package standards
 > (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51 / React Native 0.74+).
-> Living document: update when a structural decision changes, with a version bump.
+> eLearny is architected as a full-scale, production-grade platform — **high-level and large-scale by design, not a demo or MVP**.
+> All architectural modules and API flows synchronize directly with [`processflows.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/processflows.md) (Flows 01–18) and [`pages.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/pages.md).
+> AI tools must double-check all implementation details to ensure maximum content density, zero deprecation warnings, and 100% Web & Mobile feature parity.
 
 ---
 
@@ -404,3 +406,5 @@ in `frontend/web/components` and native-specific ones in
   been v0.6 since the TA role addition).
 - **v0.9** — Derived from `prd.md` v0.7 — enforced modern non-deprecated dependency standards (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51).
 - **v1.0** — Derived from `prd.md` v0.8 — incorporated combined entities from `temp_elearny`: `InstructorLeave`, `LiveSessionSlot`, `LiveSessionBooking`, `WaitlistEntry`, `CommunicationLog`, `AuditLog`, `ConsentRecord`, and Apache POI Excel Data Export Service.
+- **v1.1** — Derived from `prd.md` v0.9 — added architectural specifications for Judge0 Sandbox Code Execution Queue Flow (multi-language execution, test cases, memory/time limits, async webhook status) and Duolingo Gamification Engine Flow (streak evaluation, loss aversion streak freeze protection, XP economy, leaderboard ranking).
+

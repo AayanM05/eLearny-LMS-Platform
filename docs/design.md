@@ -1,10 +1,9 @@
 # eLearny — Design Document (design.md)
 
-> Status: **v0.4.** Governs visual identity — color, typography, spacing,
-> component styling philosophy. `rules.md` section 11 governs *how* this
-> gets implemented in code (icon library, animation discipline, when the
-> `frontend-design` skill applies); this document governs *what* the
-> actual visual language is across Next.js (web) and NativeWind v4 (mobile).
+> Status: **v0.5 — living document.** Governs visual identity — color, typography, spacing,
+> component styling philosophy, and high content density visual rules. eLearny is high-level and large-scale by design — **not a demo or MVP**.
+> Enforces rich multi-card layouts, metric KPI grids, zero deprecation warnings, and multi-state UI shimmers across Next.js (web) and NativeWind v4 (mobile).
+> AI tools MUST double-check all UI implementations to ensure proper layout filling, high content density, and multi-state readiness before completion.
 
 ---
 

@@ -1,9 +1,11 @@
 # eLearny — Product Requirements Document (prd.md)
 
-> Status: **v0.7 — living document.** Every feature listed below is
-> **committed scope** using modern, active, non-deprecated package standards
-> (Java 21, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51). One explicit,
-> user-requested exception: §3.20 Live Sessions — see its entry and the
+> Status: **v0.9 — living document.** Every feature listed below is
+> **committed scope** for eLearny's **All-in-One Flagship LMS Platform** (combining
+> B2C Marketplace + Enterprise LMS + Code Execution Sandbox + Gamification + AI Platform)
+> using modern, active, non-deprecated package standards (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51).
+> All features explicitly map to process flows in [`processflows.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/processflows.md) (Flows 01–18) and UI screen specs in [`pages.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/pages.md).
+> One explicit, user-requested exception: §3.20 Live Sessions — see its entry and the
 > v0.6 changelog for why. This document does
 > not decide *when* something gets built (that's `phases.md`'s job); it
 > only decides *what* eLearny includes. New features still get added here
@@ -14,16 +16,21 @@
 ## 1. What to Build
 
 eLearny is a full-scale, production-grade **Learning Management System (LMS)**
-— high-level and large-scale by design, not an MVP. It combines a
-Udemy-style multi-instructor course marketplace, Coursera-style bundled
-learning paths and certification rigor, a GeeksforGeeks-style free
-article/practice hub for organic reach, and an AI-assisted layer for
-discovery and support.
+— high-level and large-scale by design, **not a demo or MVP**. It combines a Udemy-style multi-instructor course marketplace, Coursera-style bundled learning paths and certification rigor, a GeeksforGeeks-style free article/practice hub for organic reach, a LeetCode-style code execution sandbox, a Duolingo-style gamification engine, and an AI-assisted layer for discovery, authoring, and support.
+
+Specifically, eLearny combines:
+1. **Udemy/Coursera B2C Marketplace**: Multi-instructor course marketplace, bundled learning paths, certificate rigor, coupon engine, Razorpay payments, tiered revenue splits.
+2. **Enterprise LMS & Academic Control**: 5 Role RBAC (`Student`, `Instructor`, `Teaching Assistant`, `Admin`, `Super Admin`), TA invitation workflows, Instructor Leave & availability scheduling, Live Office Hours slot bookings with automatic waitlist promotion, Multi-channel audit logs, Apache POI Excel exports.
+3. **LeetCode/GeeksforGeeks Practice Sandbox**: Public SEO-optimized technical article hub, interactive coding problem sandbox powered by self-hosted **Judge0 API**, multi-language code execution, test cases evaluation, execution memory/time analytics.
+4. **Duolingo/Brilliant Gamification Engine**: Daily learning streaks, loss-aversion streak freeze power-ups, XP points economy, milestone badge achievements, real-time top-3 podium leaderboards.
+5. **Modern AI Assistant & Authoring Layer**: 2-Tier AI assistant (Rule-based course recommender + LLM-backed Gemini/Groq contextual chatbot), rate-limiting before LLM calls, AI quiz & course syllabus generator.
 
 The platform is architected **API-first**: a single Spring Boot backend
 serves a Next.js responsive web app and a React Native (Expo) mobile app
-from day one, so no future frontend (tablet-native, desktop app, etc.)
+from day one with 100% full feature and content parity (every feature, input, form, and capability on Web MUST exist on Mobile), so no future frontend (tablet-native, desktop app, etc.)
 requires backend rework.
+
+**Mandatory AI Tool Development Guardrail:** AI assistants and developers building eLearny MUST double-check all implementation steps to ensure zero deprecated package warnings (strictly using modern stable releases: Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51), maximum content density (no thin 2-field screens or placeholder pages), multi-state rendering (loading, empty, error, populated), and strict Web & Mobile functional parity before declaring any task complete.
 
 Note on sequencing: a system this size cannot be built in one motion —
 some pieces genuinely depend on others existing first (auth before
@@ -36,14 +43,15 @@ forgotten because of that ordering.
 
 ## 2. Targeted Users
 
-**Pure B2C**, matching Udemy's model. Four roles:
+**Five roles**:
 
 | Role | Description |
 |---|---|
-| **Student** | Browses, purchases/enrolls in courses, tracks progress, takes quizzes, earns certificates, leaves reviews. |
-| **Instructor** | Creates and manages courses, quizzes, and pricing/coupons. **Must be approved by an Admin** before any instructor-level action is permitted. Views revenue/analytics for own courses. Can invite Teaching Assistants to their own courses. |
-| **Teaching Assistant** | Invited by a specific Instructor to one or more of that instructor's courses (not platform-wide, not self-registered). Can grade assignments and moderate discussion on the courses they're assigned to. Cannot create courses, set pricing, or access revenue data — narrower than Instructor by design. Accepts or declines an invitation before gaining any access. |
-| **Admin** | Platform-wide management: instructor approval, content moderation, user management, category/taxonomy management, revenue oversight. |
+| **Student** | Browses, purchases/enrolls in courses & bundles, tracks progress, takes quizzes, runs code in Practice Hub, earns certificates, leaves reviews, books office hours, tracks streaks & XP. |
+| **Instructor** | Creates and manages courses, sections, lessons, quizzes, and pricing/coupons. **Must be approved by an Admin**. Views revenue/analytics, schedules leave dates, invites Teaching Assistants, hosts office hours. |
+| **Teaching Assistant** | Invited by an Instructor to specific assigned courses. Accepts/declines invitation. Grades assignments, moderates Q&A forums, covers office hours during instructor leave. Cannot create courses or access revenue. |
+| **Admin** | Platform-wide management: instructor approval, content moderation, category taxonomy, user role management, coupon oversight, revenue reports. |
+| **Super Admin / Compliance** | System-wide governance: security audit log inspection, system settings override, global revenue splits, multi-channel communication logs. |
 
 **Out of scope (a deliberate design boundary, not a deferral):**
 organizational/team accounts (bulk seats, org-level admins, assigned
@@ -241,3 +249,5 @@ Two capabilities, both committed, with different infra profiles:
 - **v0.7** — Enforced modern non-deprecated dependency standards across Java 21,
   Spring Boot 3.3.x, Next.js 14.2+, and Expo SDK 51.
 - **v0.8** — Incorporated combined features from `temp_elearny`: §3.21 Instructor Leave Management, §3.22 Live Session Office Hours & Slot Bookings with Waitlists, §3.23 Excel Data Export Engine (Apache POI), §3.24 Multi-Channel Communication & Audit Trail (Twilio SMS, Email, Push, AuditLog), §3.25 GDPR Consent & Privacy Management.
+- **v0.9** — Expanded targeted users to 5 Roles (adding Super Admin / Compliance Officer). Supercharged scope into an All-in-One Flagship LMS Platform combining B2C Marketplace, Enterprise Academic Controls, Judge0 Code Execution Practice Sandbox, Duolingo Gamification Engine (Streaks/Loss Aversion/Freeze/XP Podium), and AI Assistant/Authoring layer with 100% Web & Mobile Parity.
+

@@ -2,9 +2,8 @@
 
 > This file is different from the other seven docs: those record decisions
 > (versioned, append-to-changelog). This one records **live state** — what
-> exists right now, what's being worked on right now. The "Current State"
-> section gets overwritten every session, not appended to. The "Session
-> Log" at the bottom is the only append-only part.
+> exists right now, what's being worked on right now. eLearny is high-level and large-scale by design — **not a demo or MVP**.
+> AI tools MUST double-check all implementation progress to enforce 100% Web & Mobile Parity, zero deprecation warning policy, and high content density.
 >
 > **Update this file every session, before ending it.** If a session ends
 > without this file being updated, the next session starts blind.
@@ -17,109 +16,97 @@
 - **Active phase:** Phase 0 — Foundation (Fresh Start Initialized)
 - **Currently working on:** Preparing for Phase 0 Unit 1 implementation (Monorepo setup, Spring Boot 3.3.x backend, Next.js 14.2+ web, Expo SDK 51 mobile, and `@elearny/*` workspace packages).
 - **Last updated:** 2026-09-11
-- **Blockers:** None. Codebase reset to clean state with project backup preserved in `backup/elearny-lms-backup.zip`. All completion checklist items are unmarked `[ ]`.
+- **Blockers:** None. Codebase reset to clean state with project backup preserved in `backup/elearny-lms-backup.zip`. All completion checklist items are unmarked `[ ]`. All documentation files in `docs/` audited and restored with explicit anti-MVP framing, zero deprecation warnings policy, and AI double-check development rules.
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
 - **Live deployment:** `https://elearny-web.vercel.app` (Vercel) +
   Render backend + Supabase (session-mode pooler connection).
-- **Doc versions:** `prd.md` v0.8, `architecture.md` v1.0, `rules.md`
-  v1.0, `design.md` v0.4, `phases.md` v0.6, `deployment.md` v0.7,
-  `pages.md` v0.4. If any of these numbers don't match what's actually in
+- **Doc versions:** `prd.md` v0.9, `architecture.md` v1.1, `rules.md`
+  v1.0, `design.md` v0.5, `pages.md` v1.0, `processflows.md` v1.0, `phases.md` v0.8, `deployment.md` v0.8. If any of these numbers don't match what's actually in
   the file when you read this, something changed since this entry was
   written — check that doc's own changelog for what happened.
 
 ---
 
 ## Completion Checklist
-*(Mirrors `phases.md`. Check items off as they're actually done — not
-started, not "mostly done." A checked box means it works and has been
-demonstrated, not just claimed.)*
+*(Mirrors `phases.md` v0.8 across Backend, Web, and Mobile. Check items off as they're actually done — not started, not "mostly done." A checked box means it works and has been demonstrated, not just claimed.)*
 
 ### Phase 0 — Foundation
 - [ ] Monorepo scaffold (Turborepo, `frontend/web`, `frontend/mobile`, `packages/*`)
-- [ ] Spring Boot project init (base package structure, common module)
-- [ ] Flyway wired up, first migration runs
+- [ ] Spring Boot project init (base package structure, common module, `application-dev.yml`)
+- [ ] Flyway wired up, baseline migration (`V1__init.sql`) runs cleanly
 - [ ] Docker Compose (Postgres + backend) running locally
-- [ ] Design tokens applied (`globals.css`) to Tailwind config
+- [ ] Design tokens applied (`globals.css`) to Tailwind config & NativeWind v4
 - [ ] `/api/v1/health` endpoint working end to end
 
-### Phase 1 — Auth & Roles
-- [ ] Backend: registration, login, JWT issue/refresh, TOTP 2FA, RBAC roles
-- [ ] Web: login/register pages, role-gated route shells
-- [ ] Mobile: login/register screens, role-gated route shells
-- [ ] Live environment stood up (Vercel + Render + Supabase), registration
-      verified end to end through the live web UI — see `deployment.md` §1
+### Phase 1 — Auth, Roles & Identity Security
+- [ ] Backend: registration, debounced username check (`/check-username`), login, JWT access/refresh rotation, TOTP 2FA (`dev.samstevens.totp`), account lockout, 5-role RBAC, GDPR terms consent recording (`ConsentRecord`) — Flow 01, Flow 15
+- [ ] Web: Register (`/auth/register`), Login (`/auth/login`), 2FA Setup/Challenge (`/auth/2fa-setup`, `/auth/2fa-challenge`), Account Locked (`/auth/account-locked`), Session Expired modal (`/auth/session-expired`), Terms & Privacy (`/legal/terms-privacy`) — `pages.md` §1
+- [ ] Mobile: Matching native auth screens with Expo `SecureStore` JWT storage — `pages.md` §1
+- [ ] Live environment stood up (Vercel + Render + Supabase), registration verified end to end — `deployment.md` §1
 
-### Phase 2 — Instructor Approval & Course Authoring
-- [ ] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip content, R2 media upload
-- [ ] Web: instructor course-creation flow, admin approval screen
-- [ ] Mobile: full instructor course-creation flow — same capability as web (decided 2026-09-08)
-- **UNVERIFIED CLAIM:** a "Full UI/UX Overhaul" session log entry exists
-  claiming a Porto-template-based redesign of web and mobile, plus a
-  separate claim that all of Phases 0–13 are complete. Neither is
-  demonstrated. Do not check any box here until it's actually shown
-  working, per `pages.md`'s page-by-page spec and `design.md` §8's
-  quality bar — and note the Porto-template reference itself needs
-  checking for licensing/originality before being trusted as-is.
+### Phase 2 — Instructor Approval, Course Authoring & Academic Controls
+- [ ] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip delay (`drip_delay_days`), R2 pre-signed media upload, `InstructorLeave` scheduling, `LiveSessionSlot`/`LiveSessionBooking`/`WaitlistEntry` (Office Hours & waitlists), `TAInvitation`/`TAAssignment` — Flow 02, Flow 03, Flow 11, Flow 12
+- [ ] Web: Instructor Dashboard (`/instructor/dashboard`), Application (`/instructor/apply`), Admin Review (`/admin/instructor-applications`), Course Creator (`/instructor/courses/create`), Curriculum Builder (`/instructor/courses/[id]/builder`), Office Hours Scheduler (`/instructor/office-hours`), Leave Manager (`/instructor/leave`), TA Management (`/instructor/ta-management`) — `pages.md` §3, §4, §5.2
+- [ ] Mobile: Full instructor authoring, office hours, leave manager, and TA management screens with 100% parity — `pages.md` §3, §4
 
 ### Phase 3 — Enrollment, Payments & Learning Experience
-- [ ] Backend: Razorpay orders/webhook/coupons, enrollment, progress tracking
-- [ ] Web: purchase flow, video player, student dashboard
-- [ ] Mobile: purchase flow, video player, student dashboard
+- [ ] Backend: Razorpay order creation, signed webhook signature verification (`POST /api/v1/webhooks/razorpay`), coupon validation, enrollment progress tracking & private notes — Flow 05, Flow 06
+- [ ] Web: Course purchase flow (`/checkout/[id]`), signed R2 video player, Student Dashboard (`/dashboard`), Course Player (`/my-courses/[id]`) — `pages.md` §2.1, §2.3, §2.5
+- [ ] Mobile: Course purchase flow, native video player, Student Dashboard, Course Player with 100% parity — `pages.md` §2.1, §2.3, §2.5
 
-### Phase 4 — Discovery, Reviews & Bundling
-- [ ] Backend: search/filters/categories, recommendations, reviews, wishlist, bundles
-- [ ] Web: search/filter UI, reviews, wishlist, bundle pages
-- [ ] Mobile: search/filter UI, reviews, wishlist, bundle pages
+### Phase 4 — Discovery, Reviews, Wishlist & Bundling
+- [ ] Backend: search/filters/categories taxonomy tree, rule-based recommendation engine, reviews, wishlist, course bundles / specializations — Flow 04
+- [ ] Web: Browse & search (`/courses`), Category Taxonomy pages, Course Detail Reviews (`/courses/[slug]`), Wishlist (`/wishlist`), Bundle Detail (`/bundles/[id]`) — `pages.md` §2.2, §2.4, §2.6
+- [ ] Mobile: Browse & search, Category pages, Reviews, Wishlist, Bundle Detail — `pages.md` §2.2, §2.4, §2.6
 
-### Phase 5 — Assessment & Certification
-- [ ] Backend: quiz/exam engine, server-side grading, browser-level integrity checks, certificate generation + verification
-- [ ] Web: quiz-taking UI, results, certificate view
-- [ ] Mobile: quiz-taking UI, results, certificate view
-- [ ] Phase 5b: camera-based proctoring (separate sub-project — not started)
+### Phase 5 — Assessment, Integrity Proctoring & Certification
+- [ ] Backend: quiz/exam engine, timed attempts, server-side grading, browser violation logging, Apache PDFBox PDF generation, R2 upload, unique verification code — Flow 07, Flow 08
+- [ ] Web: Quiz Builder (`/instructor/courses/[id]/quizzes`), Exam Player (`/exams/[id]/attempt`), full-screen enforcement + tab-switch detection, My Certificates (`/certificates`), Public Certificate Verification QR Page (`/certificates/verify/[code]`) — `pages.md` §2.7, §2.8, §3.5
+- [ ] Mobile: Quiz Builder, Exam Player, My Certificates, Verification Page — `pages.md` §2.7, §2.8, §3.5
+- [ ] Phase 5b: Camera-based WebRTC proctoring stream, gaze tracking, snapshot logging to R2 (separate sub-project)
 
-### Phase 6 — Notifications & Community
-- [ ] Backend: in-app notifications, transactional email, community (discussion/Q&A, announcements)
-- [ ] Web: notification center, discussion/Q&A
-- [ ] Mobile: notification center, discussion/Q&A
+### Phase 6 — Multi-Channel Notifications & Community
+- [ ] Backend: in-app notifications, Gmail SMTP email dispatch, Twilio SMS alerts, `expo-notifications` push, `CommunicationLog`, per-course Q&A discussion, instructor announcements — Flow 06, Flow 11, Flow 13
+- [ ] Web: Notification Center (`/notifications`), Course Player Discussion Tab (`/my-courses/[id]`), Instructor Announcements, TA Scoped Moderation (`/ta/moderation`) — `pages.md` §2.10, §4.3, §5.8
+- [ ] Mobile: Notification Center, Course Player Discussion Tab, Announcements, TA Moderation — `pages.md` §2.10, §4.3, §5.8
 
-### Phase 7 — Admin Panel & Revenue
-- [ ] Backend: admin moderation/analytics, instructor revenue, refunds
-- [ ] Web: full admin panel, revenue dashboard
-- [ ] Mobile: full admin panel, revenue dashboard
+### Phase 7 — Admin Governance, Revenue Splits & Excel Data Export Engine
+- [ ] Backend: admin course moderation, user role manager, category tree editor, instructor revenue split ledger, refund processing, `ExcelExportService` (Apache POI `.xlsx` report generator) — Flow 03, Flow 14
+- [ ] Web: Operations Dashboard (`/admin/dashboard`), Course Moderation Queue (`/admin/course-moderation`), User Role Manager (`/admin/users`), Category Taxonomy Editor (`/admin/categories`), Refund Review Queue (`/admin/refunds`), Instructor Revenue Dashboard (`/instructor/revenue`), Apache POI Excel Exporter buttons (`/instructor/reports` & `/admin/reports`) — `pages.md` §3.11, §3.12, §5.1–§5.7
+- [ ] Mobile: Full admin panel screens, instructor revenue dashboard, Excel report triggers with 100% parity — `pages.md` §3.11, §3.12, §5.1–§5.7
 
-### Phase 8 — Gamification & Motion
-- [ ] Backend: badges, streaks, points, leaderboard
-- [ ] Web: animated micro-interactions, leaderboard UI
-- [ ] Mobile: animated micro-interactions, leaderboard UI
+### Phase 8 — Duolingo Gamification Engine & Motion
+- [ ] Backend: daily streak calculation, loss-aversion streak freeze power-ups, XP economy, milestone badges, top-3 podium leaderboard calculation — Flow 10
+- [ ] Web: animated micro-interactions (`motion`), badge unlock modals, Top-3 Podium Leaderboard UI (`/leaderboard`) — `pages.md` §2.19
+- [ ] Mobile: animated micro-interactions (`react-native-reanimated`), Top-3 Podium Leaderboard screen — `pages.md` §2.19
 
-### Phase 9 — Localization
-- [ ] Web: next-intl wired across pages
-- [ ] Mobile: i18n-js wired across screens
-- [ ] Backend: language storage, content localization
+### Phase 9 — Localization & Multi-Language Support
+- [ ] Web: `next-intl` wired across all pages — `pages.md`
+- [ ] Mobile: `i18n-js` wired across all native screens — `pages.md`
+- [ ] Backend: `localization` domain (language storage, translation endpoints), course subtitle/caption upload — `prd.md` §3.12
 
-### Phase 10 — Practice & Content Hub
-- [ ] Backend: articles, practice problems, Judge0 integration
-- [ ] Web: public article pages, embedded code playground
-- [ ] Mobile: full embedded code playground — same editing capability as web (decided 2026-09-08)
+### Phase 10 — Judge0 Code Execution Practice Sandbox
+- [ ] Backend: `practicehub` (public articles, practice problems, difficulty levels, Problem of the Day), self-hosted Judge0 REST API integration, code submission execution queue & webhook callback — Flow 09
+- [ ] Web: Public SEO article list (`/articles`), Article Detail (`/articles/[slug]`), Practice Problems (`/practice`), Code Sandbox Editor (`/practice/[id]`) with Monaco editor — `pages.md` §2.14–§2.17
+- [ ] Mobile: Public SEO articles, Practice Problems, Code Sandbox Editor (`/practice/[id]`) with touch-friendly syntax toolbar (`{`, `}`, `;`, `(`, `)`) — `pages.md` §2.14–§2.17
 
-### Phase 11 — AI Assistant (Chatbot)
-- [ ] Backend: LLM client, rate limiting, prompt scoping, fallback
-- [ ] Web: chat UI, Tier A + Tier B responses
-- [ ] Mobile: chat UI, Tier A + Tier B responses
+### Phase 11 — 2-Tier AI Assistant Chatbot
+- [ ] Backend: `chatbot` (LLM provider client via `WebClient`, per-user rate-limiting before LLM call, Gemini Flash / Groq integration, prompt scoping, quota exhaustion fallback response, logging) — Flow 16
+- [ ] Web: Conversational Chatbot UI widget (`/chatbot`), Tier A rule-based course recommendations (zero cost), Tier B LLM Q&A assistant — `pages.md` §2.18
+- [ ] Mobile: Conversational Chatbot screen with Tier A + Tier B responses — `pages.md` §2.18
 
 ### Phase 12 — AI-Assisted Authoring & Growth Mechanics
-- [ ] Backend: quiz-draft generation, referral/affiliate
-- [ ] Web: instructor tool, referral UI
-- [ ] Mobile: instructor tool, referral UI
+- [ ] Backend: AI-generated quiz question drafts (Gemini content parsing), syllabus draft generator, `growth` (student referral links, instructor affiliate link tracking) — Flow 17, Flow 18
+- [ ] Web: AI Quiz Draft Generator UI (`/instructor/courses/[id]/quizzes/ai-generate`), Referral & Rewards Manager (`/referrals`) — `pages.md` §2.20, §3.6
+- [ ] Mobile: AI Quiz Draft Generator screen, Referral & Rewards screen — `pages.md` §2.20, §3.6
 
-### Phase 13 — Hardening & Deployment
-- [ ] Production Docker image for backend hardened (not just working, but reviewed)
-- [ ] Security pass, load testing
-- [ ] Mobile: visible "check for update" UI built (EAS Update — see `deployment.md` §6)
-- [ ] Mobile app-store readiness review (Android APK path free; iOS requires the $99/year Apple Developer Program — see `deployment.md` §4.5)
-- [ ] Vercel plan reviewed before real payments go live (Hobby prohibits commercial use — see `deployment.md` §4.4)
+### Phase 13 — Hardening, Compliance, GDPR & Live Deployment
+- [ ] Backend: Production Docker hardening, Render deployment, Supabase connection pooler, administrative `AuditLog` inspection (`/admin/audit-logs`), GDPR consent tracking & account erasure (`ConsentRecord`), global system settings override (`/admin/system-settings`) — Flow 13, Flow 15
+- [ ] Security & Load Testing: Endpoint rate-limiting audit, dependency vulnerability check, webhook signature security pass
+- [ ] Mobile: Visible "check for update" UI built (EAS Update — see `deployment.md` §6), app-store readiness review
+- [ ] Hosting Review: Vercel plan reviewed before real payments go live (Hobby prohibits commercial use — see `deployment.md` §4.4)
 
 ---
 
@@ -258,6 +245,9 @@ items get their resolution noted, not deleted.)*
   - Mobile: Apply instructor screen (`apply-instructor.tsx`), Admin review screen (`applications.tsx`), Instructor courses list (`courses.tsx`), Course creator (`create-course.tsx`), Curriculum builder (`course-builder.tsx`). Verified with `npx tsc --noEmit` (0 errors).
 - **2026-09-10** — User requested a fresh start. Created full zip backup in `backup/elearny-lms-backup.zip` (1.0MB). Removed existing `backend/` and `frontend/` folders. Reset completion checklist to Phase 0 — Foundation.
 - **2026-09-11** — Expanded `rules.md` to **v1.0**: Updated §12 ("Build High-Density, Production-Grade Pages — No Thin / Minimal Output") to strictly forbid minimal 2-field screens, requiring rich multi-widget card grids, status badges, live field requirements, and multi-state rendering. Updated §13 ("Strict 100% Web & Mobile Feature & Content Parity") to mandate that every feature, input, and creation workflow on Web is 100% available on Mobile.
+- **2026-09-11** — Supercharged documentation suite (`prd.md` v0.9, `architecture.md` v1.1, `rules.md` v1.0, `design.md` v0.5, `phases.md` v0.7, `deployment.md` v0.8, `pages.md` v0.5). Integrated architectural research for Judge0 Sandbox Code Execution Queue, Duolingo Gamification Engine (Loss Aversion Streaks, Freeze, XP Podium), Canvas LMS 5-Role Academic Control (Student, Instructor, TA, Admin, Super Admin), and AI Assistant/Authoring layer.
+- **2026-09-11** — Created `processflows.md` **v1.0** (18 exhaustive process flows covering Auth, Instructor Elevation, Authoring/Drip Release, Razorpay Webhook Checkout, Judge0 Sandbox Execution Queue, Duolingo Gamification, TA Scoped Operations, Office Hours/Waitlists, Audit Logging, and 2-Tier AI) and expanded `pages.md` to **v1.0** (40+ detailed screen specifications across 5 roles with component trees, navigation links, empty-state CTAs, and Web/Mobile layout rules).
+
 
 
 
