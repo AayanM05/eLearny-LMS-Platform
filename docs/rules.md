@@ -170,50 +170,62 @@
 
 ---
 
-## 14. Global Font & Theme Application (Mobile) — Set Once, Never Per-File
+## 14. Mobile Custom Font Preloading & Zero-Fallback Infrastructure — Set Once Globally
 
-**This is a mandatory pattern, not a suggestion — it exists specifically
-because per-file font fixes were happening, which is the wrong layer to
-solve this at.** React Native does not cascade a default font the way
-CSS does on web; every `Text` component uses the system font unless
-told otherwise. The fix is to override the default **once, globally**,
-not to set `fontFamily` on every individual component.
+**Why this rule exists:** React Native executes inside a JS engine (Hermes/JSC) on iOS and Android. It **cannot load Web CSS Google Fonts via `@import` links or `<link>` tags**. If custom fonts (`Inter` and `Space Grotesk`) are not explicitly bundled into the mobile asset package and preloaded before rendering, the app defaults to the generic system font (San Francisco on iOS, Roboto on Android) or renders unstyled text.
 
-**In `frontend/mobile/app/_layout.tsx` (the root layout — loads exactly
-once, before any screen renders):**
+**Mandatory Mobile Font Bundling Architecture:**
 
-1. Load fonts via `expo-font`'s `useFonts` hook with the Google Fonts
-   packages from §5, gating render until loaded (standard Expo splash
-   screen pattern — `expo-splash-screen`'s `preventAutoHideAsync`/
-   `hideAsync`).
-2. **Immediately after fonts load, override React Native's `Text` and
-   `TextInput` default styles globally**, in this same root file only:
-   ```tsx
-   import { Text, TextInput } from 'react-native';
-   // @ts-ignore
-   Text.defaultProps = Text.defaultProps || {};
-   Text.defaultProps.style = { fontFamily: 'Inter_400Regular' };
-   // @ts-ignore
-   TextInput.defaultProps = TextInput.defaultProps || {};
-   TextInput.defaultProps.style = { fontFamily: 'Inter_400Regular' };
-   ```
-   This makes Inter the default font for **every** `Text`/`TextInput` in
-   the entire app, automatically, with zero per-file changes.
-3. Headings that need Space Grotesk (per `design.md` §3) get it through
-   a single shared `Heading` component in `frontend/mobile/components/`
-   that sets `fontFamily: 'SpaceGrotesk_700Bold'` — other files use that
-   component, they don't set the font family themselves.
-4. **If a file needs to set `fontFamily` directly to fix a font problem,
-   that is a signal something is wrong upstream** (the global default
-   isn't loaded yet, or a component is bypassing the shared `Heading`)
-   — the fix is to correct the root cause in `_layout.tsx` or the shared
-   component, never to patch the symptom in that individual file.
+1. **Package Dependencies (`frontend/mobile/package.json`)**:
+   - Install `@expo-google-fonts/inter` (`Inter_400Regular`, `Inter_500Medium`, `Inter_600SemiBold`, `Inter_700Bold`) and `@expo-google-fonts/space-grotesk` (`SpaceGrotesk_700Bold`) as explicit dependencies.
+   - Alternatively, bundle local `.ttf`/`.otf` font files in `frontend/mobile/assets/fonts/` loaded via `expo-font`.
 
-This is the mobile-side equivalent of web's single-token-file
-re-theming goal from `design.md` §2 — one place controls the font
-globally, on both platforms, even though the underlying mechanism
-necessarily differs (CSS custom properties on web, a global
-`defaultProps` override on mobile, since React Native has no CSS cascade).
+2. **Splash Screen Gating & Font Preloading (`frontend/mobile/app/_layout.tsx`)**:
+   - In the root layout, prevent native splash screen auto-hiding until custom fonts finish loading:
+     ```tsx
+     import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+     import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk';
+     import * as SplashScreen from 'expo-splash-screen';
+
+     SplashScreen.preventAutoHideAsync();
+
+     export default function RootLayout() {
+       const [fontsLoaded, fontError] = useFonts({
+         Inter_400Regular,
+         Inter_500Medium,
+         Inter_600SemiBold,
+         Inter_700Bold,
+         SpaceGrotesk_700Bold,
+       });
+
+       useEffect(() => {
+         if (fontsLoaded || fontError) {
+           SplashScreen.hideAsync();
+         }
+       }, [fontsLoaded, fontError]);
+
+       if (!fontsLoaded && !fontError) {
+         return null; // Keeps splash screen visible; zero unstyled text flickering!
+       }
+
+       // 3. Override React Native default font ONCE globally
+       // @ts-ignore
+       Text.defaultProps = Text.defaultProps || {};
+       // @ts-ignore
+       Text.defaultProps.style = { fontFamily: 'Inter_400Regular' };
+       // @ts-ignore
+       TextInput.defaultProps = TextInput.defaultProps || {};
+       // @ts-ignore
+       TextInput.defaultProps.style = { fontFamily: 'Inter_400Regular' };
+
+       return <Stack ... />;
+     }
+     ```
+
+3. **Global Font Application**:
+   - Every `Text` and `TextInput` in the mobile app inherits `Inter_400Regular` automatically.
+   - Headings that require Space Grotesk use a single shared `<Heading>` component in `frontend/mobile/components/common/Heading.tsx` that sets `fontFamily: 'SpaceGrotesk_700Bold'`.
+   - **Per-file `fontFamily` hacks are strictly forbidden.**
 
 ---
 
@@ -225,6 +237,25 @@ necessarily differs (CSS custom properties on web, a global
 - **Node & NPM Tooling**: Use current LTS versions of Node.js and modern NPM package managers.
 - **Expo & React Native**: Mobile applications use Expo SDK 51+ and React Native 0.74+ with NativeWind v4.
 - **Spring Boot**: Backend uses Spring Boot 3.3.x targeting Java 21 LTS.
+
+---
+
+## 17. Brand Logo & Asset Architecture (Web + Mobile)
+
+**Mandatory Asset Storage Locations & Naming Conventions:**
+
+1. **Web Assets (`frontend/web/public/assets/branding/`)**:
+   - `logo-light.svg` / `.png`: Horizontal brand logo for light mode headers.
+   - `logo-dark.svg` / `.png`: Horizontal brand logo for dark mode headers.
+   - `logo-icon.svg` / `.png`: Square icon mark for compact headers, mobile web, and avatar fallbacks.
+   - `favicon.ico`: Browser tab icon.
+2. **Mobile Assets (`frontend/mobile/assets/branding/`)**:
+   - `logo-light.png` & `logo-dark.png`: 3x high-resolution PNG logos.
+   - `icon.png`: App launcher icon (1024x1024 px).
+   - `splash.png`: Pre-loader splash screen graphic (1242x2436 px).
+   - `adaptive-icon.png`: Android adaptive launcher icon (1024x1024 px).
+3. **Smart `BrandLogo` Component**:
+   - Web (`frontend/web/components/common/BrandLogo.tsx`) and Mobile (`frontend/mobile/components/common/BrandLogo.tsx`) use a shared component that detects the active theme (`next-themes` on web, `useColorScheme()` on mobile) and automatically toggles between `logo-light` and `logo-dark` assets with zero manual theme checks.
 
 ---
 

@@ -255,6 +255,25 @@ looks.
 
 ---
 
+## 10. Brand Logo & Visual Identity Asset Setup
+
+**Logo Asset Architecture across Web and Mobile:**
+
+1. **Brand Logo Variations**:
+   - **Horizontal Logo (Light Mode)**: `logo-light.svg` / `.png` — Dark indigo text + vibrant accent icon mark for light headers.
+   - **Horizontal Logo (Dark Mode)**: `logo-dark.svg` / `.png` — Crisp white text + vibrant accent icon mark for dark headers.
+   - **Icon Mark**: `logo-icon.svg` / `.png` — Standalone geometric mark for mobile app icon, favicons, compact headers, and avatar fallbacks.
+2. **Web Branding Directory (`frontend/web/public/assets/branding/`)**:
+   - Stores `logo-light.svg`, `logo-dark.svg`, `logo-icon.svg`, and `favicon.ico`.
+   - Next.js `<Image>` components reference these paths cleanly.
+3. **Mobile Branding Directory (`frontend/mobile/assets/branding/`)**:
+   - Stores `logo-light.png`, `logo-dark.png`, `icon.png` (1024x1024), `splash.png` (1242x2436), and `adaptive-icon.png` (1024x1024).
+   - Expo `app.json` config maps these assets directly to native app launcher & splash screen binaries.
+4. **Theme-Aware `BrandLogo` Component**:
+   - A single shared component (`<BrandLogo variant="horizontal" | "icon" height={32} />`) auto-detects light/dark mode and renders the correct logo variant automatically on both Web and Mobile.
+
+---
+
 ## 9. Change Log
 - **v0.1** — Initial design direction: Modern/Minimal + Bold/Vibrant +
   Professional, explicitly rejecting rounded/soft aesthetics. Indigo/violet

@@ -334,4 +334,16 @@ This document records the complete chat history and step-by-step transcript star
 > 3. Updated [`backup/chat_conversation_fresh_start.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/backup/chat_conversation_fresh_start.md) with complete transcript history.
 > 4. Prepared git commit for staging and committing all 9 specification suite files.
 
+---
+
+### 19. Request: Brand Logo & Mobile Font Bundling Infrastructure
+
+**USER Prompt:**
+> dont you think we forgot to add logo and other thing setup deatils to be added in the docs and also there should be proper mentions about bundling font files and all in mobile app cause mobile app doesnt displays font properly cause mobile app cant get css and google font loaded and all that issue i dont know properly so all this is mentioned properly in the docs right cause i want my selected font for the mobile app not the mobile system given font
+
+**ASSISTANT Response:**
+> 1. Updated [`docs/rules.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/rules.md) **§14 (Mobile Custom Font Preloading & Zero-Fallback Infrastructure)**: Detailed why Web CSS `@import` fails on React Native JS runtimes (Hermes/JSC), mandated `@expo-google-fonts/inter` & `space-grotesk` package bundling, `expo-splash-screen` gating during `useFonts` preloading, and one-time global `Text.defaultProps` + `TextInput.defaultProps` override in `app/_layout.tsx` so ALL mobile text uses `Inter` automatically without fallback.
+> 2. Added **§17 (Brand Logo & Asset Architecture)** to `rules.md` and **§10** to [`docs/design.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/design.md): Documented horizontal light/dark logos (`logo-light`, `logo-dark`), icon marks (`logo-icon`), app icons (1024x1024), splash screens (1242x2436), adaptive icons, and the theme-aware `<BrandLogo>` component across Web (`public/assets/branding/`) and Mobile (`assets/branding/`).
+
+
 
