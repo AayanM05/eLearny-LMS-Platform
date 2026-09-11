@@ -10,5 +10,8 @@
   "workspaces": [
     "frontend/web",
     "frontend/mobile"
-  ]
+  ],
+  "devDependencies": {
+    "expo": "~57.0.22"
+  }
 }
