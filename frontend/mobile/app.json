@@ -7,6 +7,13 @@
     "icon": "./assets/images/icon.png",
     "scheme": "elearny",
     "userInterfaceStyle": "dark",
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.elearny.lms"
@@ -35,7 +42,8 @@
           "imageWidth": 76
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-updates"
     ],
     "experiments": {
       "typedRoutes": true,
