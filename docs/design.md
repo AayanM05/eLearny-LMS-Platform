@@ -281,7 +281,24 @@ looks.
 
 ---
 
+
+---
+
+## 11. Workspace Customization Skills & Benchmark Reference
+
+All UI/UX implementations must actively consult and adhere to the project's 6 custom workspace skills located in `.agents/skills/`:
+
+1. **[`taste-design-system`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/taste-design-system/SKILL.md)**: Governs visual excellence, Terracotta Orange (`#D96B43` / `HSL 17° 66% 56%`) token hierarchy, glassmorphism standards, and font pairing (`Inter`, `Space Grotesk`, `Anton`).
+2. **[`mobile-app-uiux-benchmarks`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/mobile-app-uiux-benchmarks/SKILL.md)**: Governs flagship mobile layout structures derived from Zomato, Swiggy, Instagram, DigiLocker, Duolingo, and Airbnb — including Floating Action Docks, Collapsible Location Headers, Verified Certificate Badges, and Tactile 3D Buttons (`border-b-5`).
+3. **[`gsap-animation-uiux`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/gsap-animation-uiux/SKILL.md)**: Governs Next.js GSAP 3 web animations (`useGSAP`, `ScrollTrigger`, `contextSafe` event handlers).
+4. **[`reanimated-mobile-gestures`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/reanimated-mobile-gestures/SKILL.md)**: Governs Expo React Native Reanimated 3 hardware-accelerated 60fps native gestures, spring physics, and pan gestures.
+5. **[`21st-dev-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/21st-dev-components/SKILL.md)**: Governs sourcing, installing, and customizing modern React component blocks via the `21st-dev` MCP server.
+6. **[`shadcn-ui-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/shadcn-ui-components/SKILL.md)**: Governs adding and extending Shadcn UI primitives (Radix UI + Tailwind CSS) via the `shadcn` MCP server.
+
+---
+
 ## 9. Change Log
+- **v0.7** — Added §11 explicitly mapping all 6 custom workspace skills (`taste-design-system`, `mobile-app-uiux-benchmarks`, `gsap-animation-uiux`, `reanimated-mobile-gestures`, `21st-dev-components`, `shadcn-ui-components`) into the design system specification.
 - **v0.1** — Initial design direction: Modern/Minimal + Bold/Vibrant +
   Professional, explicitly rejecting rounded/soft aesthetics. Indigo/violet
   primary. CSS-custom-property token architecture so the entire color

@@ -1,35 +1,14 @@
 {
-  "name": "elearny-monorepo",
+  "name": "elearny-lms-monorepo",
+  "version": "2.0.0",
   "private": true,
-  "version": "0.1.0",
-  "packageManager": "npm@10.5.0",
-  "workspaces": [
-    "frontend/*",
-    "packages/*"
-  ],
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "lint": "turbo run lint"
+    "dev:web": "npm --prefix frontend/web run dev",
+    "dev:mobile": "npm --prefix frontend/mobile run start",
+    "build:web": "npm --prefix frontend/web run build"
   },
-  "devDependencies": {
-    "expo": "~51.0.0",
-    "expo-constants": "~16.0.2",
-    "expo-linking": "~6.3.1",
-    "expo-router": "~3.5.0",
-    "expo-secure-store": "~13.0.2",
-    "expo-status-bar": "~1.12.1",
-    "expo-updates": "~0.25.27",
-    "react-native": "0.74.5",
-    "react-native-gesture-handler": "~2.16.1",
-    "react-native-safe-area-context": "4.10.5",
-    "react-native-screens": "3.31.1",
-    "turbo": "^2.0.0",
-    "typescript": "^5.4.5"
-  },
-  "overrides": {
-    "expo-linking": "$expo-linking",
-    "expo-constants": "$expo-constants"
-  }
+  "workspaces": [
+    "frontend/web",
+    "frontend/mobile"
+  ]
 }
-

@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "21st-dev": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@21st-dev/cli@latest",
+        "mcp",
+        "serve"
+      ]
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "shadcn@latest",
+        "mcp",
+        "serve"
+      ]
+    }
+  }
+}

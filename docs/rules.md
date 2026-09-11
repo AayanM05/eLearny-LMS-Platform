@@ -235,7 +235,7 @@
 
 - **No Deprecated Packages**: Do not install packages or SDK versions that emit deprecation warnings during `npm install`, `npx`, `expo start`, or `mvn compile`.
 - **Node & NPM Tooling**: Use current LTS versions of Node.js and modern NPM package managers.
-- **Expo & React Native**: Mobile applications use Expo SDK 51+ and React Native 0.74+ with NativeWind v4.
+- **Expo & React Native**: Mobile applications use the latest stable Expo SDK release (`npx create-expo-app@latest` — Expo SDK 52+ / latest stable) and modern React Native with NativeWind v4.
 - **Spring Boot**: Backend uses Spring Boot 3.3.x targeting Java 21 LTS.
 
 ---
@@ -262,7 +262,23 @@
 
 ---
 
+---
+
+## 18. Mandatory Workspace Customization Skills Integration
+
+Whenever creating or modifying web/mobile UI components, screens, layout structures, micro-interactions, or styling design tokens, AI tools MUST view and adhere to the project's 6 custom workspace skills in `.agents/skills/`:
+
+1. **[`taste-design-system`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/taste-design-system/SKILL.md)**: Governs visual excellence, Terracotta Orange (`#D96B43` / `HSL 17° 66% 56%`) token hierarchy, glassmorphism standards, and typography rules.
+2. **[`mobile-app-uiux-benchmarks`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/mobile-app-uiux-benchmarks/SKILL.md)**: Governs flagship mobile layout structures derived from Zomato, Swiggy, Instagram, DigiLocker, Duolingo, and Airbnb — including Floating Action Docks, Collapsible Location Headers, Verified Certificate Badges, and Tactile 3D Buttons (`border-b-5`).
+3. **[`gsap-animation-uiux`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/gsap-animation-uiux/SKILL.md)**: Governs Next.js GSAP 3 web animations (`useGSAP`, `ScrollTrigger`, `contextSafe` event handlers).
+4. **[`reanimated-mobile-gestures`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/reanimated-mobile-gestures/SKILL.md)**: Governs Expo React Native Reanimated 3 hardware-accelerated 60fps native gestures, spring physics, and pan gestures.
+5. **[`21st-dev-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/21st-dev-components/SKILL.md)**: Governs sourcing, installing, and customizing modern React component blocks via the `21st-dev` MCP server.
+6. **[`shadcn-ui-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/shadcn-ui-components/SKILL.md)**: Governs adding and extending Shadcn UI primitives (Radix UI + Tailwind CSS) via the `shadcn` MCP server.
+
+---
+
 ## 16. Change Log
+- **v1.1** — Added §18 ("Mandatory Workspace Customization Skills Integration") mandating that AI tools consult all 6 workspace skills in `.agents/skills/` before executing UI, UX, animation, or mobile layout tasks.
 - **v0.1** — Initial rules drafted covering backend/frontend/mobile library
   choices (with reasoning, including resolving the PDFBox vs. iText
   ambiguity left open in `architecture.md`), error handling conventions,

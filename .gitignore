@@ -16,6 +16,8 @@ frontend/mobile/ios/
 .turbo/
 
 # Java / Maven (Backend)
+target/
+**/target/
 backend/target/
 backend/.mvn/
 backend/*.iml

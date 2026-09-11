@@ -1,8 +1,8 @@
 # eLearny — Architecture Document (architecture.md)
 
-> Status: **v1.1 — living document.** Derived from `prd.md` v0.9 — every module here exists to
+> Status: **v1.2 — living document.** Derived from `prd.md` v0.9 — every module here exists to
 > serve a committed feature using modern, active, non-deprecated package standards
-> (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Expo SDK 51 / React Native 0.74+).
+> (Java 21 LTS, Spring Boot 3.3.x, Next.js 14.2+, Latest Stable Expo SDK / React Native).
 > eLearny is architected as a full-scale, production-grade platform — **high-level and large-scale by design, not a demo or MVP**.
 > All architectural modules and API flows synchronize directly with [`processflows.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/processflows.md) (Flows 01–18) and [`pages.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/docs/pages.md).
 > AI tools must double-check all implementation details to ensure maximum content density, zero deprecation warnings, and 100% Web & Mobile feature parity.
@@ -170,6 +170,17 @@ elearny/
 `backend/` which stays a flat top-level folder. This keeps every
 frontend-facing thing under one parent while still cleanly separating the
 Next.js app from the Expo app underneath it.
+
+### 3.1 Workspace Customization Skills Integration
+
+Both `frontend/web` and `frontend/mobile` actively consume the 6 project workspace skills in `.agents/skills/`:
+
+- **[`taste-design-system`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/taste-design-system/SKILL.md)**: Governs visual excellence, Terracotta Orange (`#D96B43`) color tokens, and font pairing (`Inter`, `Space Grotesk`, `Anton`).
+- **[`mobile-app-uiux-benchmarks`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/mobile-app-uiux-benchmarks/SKILL.md)**: Governs Zomato, Swiggy, Instagram, DigiLocker, Duolingo, and Airbnb mobile layout architectures (Floating Docks, Collapsible Headers, Verified Document Badges, 3D Tactile Buttons).
+- **[`gsap-animation-uiux`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/gsap-animation-uiux/SKILL.md)**: Governs GSAP 3 web animations for `frontend/web` (`useGSAP`, `ScrollTrigger`).
+- **[`reanimated-mobile-gestures`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/reanimated-mobile-gestures/SKILL.md)**: Governs React Native Reanimated 3 60fps gestures for `frontend/mobile`.
+- **[`21st-dev-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/21st-dev-components/SKILL.md)**: Sourcing React component blocks via the `21st-dev` MCP server.
+- **[`shadcn-ui-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/shadcn-ui-components/SKILL.md)**: Extending Shadcn UI primitives via the `shadcn` MCP server.
 
 ---
 

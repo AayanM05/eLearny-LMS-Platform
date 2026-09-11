@@ -20,10 +20,17 @@
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
+- **Workspace Customization Skills (`.agents/skills/`)**:
+  - [`taste-design-system`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/taste-design-system/SKILL.md) — Terracotta Orange (`#D96B43`) token hierarchy & visual taste standards.
+  - [`mobile-app-uiux-benchmarks`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/mobile-app-uiux-benchmarks/SKILL.md) — Zomato, Swiggy, Instagram, DigiLocker, Duolingo, Airbnb UI architectures.
+  - [`gsap-animation-uiux`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/gsap-animation-uiux/SKILL.md) — GSAP 3 web animations for Next.js App Router (`useGSAP`, `ScrollTrigger`).
+  - [`reanimated-mobile-gestures`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/reanimated-mobile-gestures/SKILL.md) — React Native Reanimated 3 mobile gestures for Expo SDK.
+  - [`21st-dev-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/21st-dev-components/SKILL.md) — 21st.dev component sourcing & MCP server integration.
+  - [`shadcn-ui-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/shadcn-ui-components/SKILL.md) — Shadcn UI primitives & MCP server integration.
 - **Live deployment:** `https://elearny-web.vercel.app` (Vercel) +
   Render backend + Supabase (session-mode pooler connection).
-- **Doc versions:** `prd.md` v0.9, `architecture.md` v1.1, `rules.md`
-  v1.0, `design.md` v0.5, `pages.md` v1.0, `processflows.md` v1.0, `phases.md` v0.8, `deployment.md` v0.8. If any of these numbers don't match what's actually in
+- **Doc versions:** `prd.md` v0.9, `architecture.md` v1.2, `rules.md`
+  v1.1, `design.md` v0.7, `pages.md` v1.0, `processflows.md` v1.0, `phases.md` v0.8, `deployment.md` v0.8, `wireframes.md` v1.0. If any of these numbers don't match what's actually in
   the file when you read this, something changed since this entry was
   written — check that doc's own changelog for what happened.
 

@@ -4,40 +4,15 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: elearny-postgres
-    restart: always
     environment:
-      POSTGRES_DB: elearny
+      POSTGRES_DB: elearny_db
       POSTGRES_USER: elearny_user
-      POSTGRES_PASSWORD: elearny_pass
+      POSTGRES_PASSWORD: elearny_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U elearny_user -d elearny"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: elearny-backend
-    restart: on-failure
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: elearny
-      DB_USER: elearny_user
-      DB_PASSWORD: elearny_pass
-      CORS_ALLOWED_ORIGINS: http://localhost:3000
+    restart: unless-stopped
 
 volumes:
   postgres_data:
