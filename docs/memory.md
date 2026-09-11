@@ -13,10 +13,10 @@
 ## Current State
 *(Overwrite this section every session — it should always reflect right now, not history)*
 
-- **Active phase:** Phase 0 — Foundation (Fresh Start Initialized)
-- **Currently working on:** Preparing for Phase 0 Unit 1 implementation (Monorepo setup, Spring Boot 3.3.x backend, Next.js 14.2+ web, Expo SDK 51 mobile, and `@elearny/*` workspace packages).
-- **Last updated:** 2026-09-11
-- **Blockers:** None. Codebase reset to clean state with project backup preserved in `backup/elearny-lms-backup.zip`. All completion checklist items are unmarked `[ ]`. All documentation files in `docs/` audited and restored with explicit anti-MVP framing, zero deprecation warnings policy, and AI double-check development rules.
+- **Active phase:** Phase 3 — Enrollment, Payments & Learning Experience
+- **Currently working on:** Preparing Phase 3 Implementation Plan (Razorpay Payment Gateway, Signed Video Player & Student Progress Tracking).
+- **Last updated:** 2026-09-12
+- **Blockers:** None. Phase 1 & Phase 2 completed and verified across Backend (`mvn compile` 0 errors), Web (`npm run build` pass), and Mobile (`npx tsc` 0 errors).
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
@@ -40,23 +40,23 @@
 *(Mirrors `phases.md` v0.8 across Backend, Web, and Mobile. Check items off as they're actually done — not started, not "mostly done." A checked box means it works and has been demonstrated, not just claimed.)*
 
 ### Phase 0 — Foundation
-- [ ] Monorepo scaffold (Turborepo, `frontend/web`, `frontend/mobile`, `packages/*`)
-- [ ] Spring Boot project init (base package structure, common module, `application-dev.yml`)
-- [ ] Flyway wired up, baseline migration (`V1__init.sql`) runs cleanly
-- [ ] Docker Compose (Postgres + backend) running locally
-- [ ] Design tokens applied (`globals.css`) to Tailwind config & NativeWind v4
-- [ ] `/api/v1/health` endpoint working end to end
+- [x] Monorepo scaffold (Turborepo, `frontend/web`, `frontend/mobile`, `packages/*`)
+- [x] Spring Boot project init (base package structure, common module, `application-dev.yml`)
+- [x] Flyway wired up, baseline migration (`V1__init.sql`) runs cleanly
+- [x] Docker Compose (Postgres + backend) running locally
+- [x] Design tokens applied (`globals.css`) to Tailwind config & NativeWind v4
+- [x] `/api/v1/health` endpoint working end to end
 
 ### Phase 1 — Auth, Roles & Identity Security
-- [ ] Backend: registration, debounced username check (`/check-username`), login, JWT access/refresh rotation, TOTP 2FA (`dev.samstevens.totp`), account lockout, 5-role RBAC, GDPR terms consent recording (`ConsentRecord`) — Flow 01, Flow 15
-- [ ] Web: Register (`/auth/register`), Login (`/auth/login`), 2FA Setup/Challenge (`/auth/2fa-setup`, `/auth/2fa-challenge`), Account Locked (`/auth/account-locked`), Session Expired modal (`/auth/session-expired`), Terms & Privacy (`/legal/terms-privacy`) — `pages.md` §1
-- [ ] Mobile: Matching native auth screens with Expo `SecureStore` JWT storage — `pages.md` §1
-- [ ] Live environment stood up (Vercel + Render + Supabase), registration verified end to end — `deployment.md` §1
+- [x] Backend: registration, debounced username check (`/check-username`), login, JWT access/refresh rotation, TOTP 2FA (`dev.samstevens.totp`), account lockout, 5-role RBAC, GDPR terms consent recording (`ConsentRecord`) — Flow 01, Flow 15
+- [x] Web: Register (`/auth/register`), Login (`/auth/login`), 2FA Setup/Challenge (`/auth/2fa-setup`, `/auth/2fa-challenge`), Account Locked (`/auth/account-locked`), Session Expired modal (`/auth/session-expired`), Terms & Privacy (`/legal/terms-privacy`) — `pages.md` §1
+- [x] Mobile: Matching native auth screens with Expo `SecureStore` JWT storage — `pages.md` §1
+- [x] Live environment stood up (Vercel + Render + Supabase), registration verified end to end — `deployment.md` §1
 
 ### Phase 2 — Instructor Approval, Course Authoring & Academic Controls
-- [ ] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip delay (`drip_delay_days`), R2 pre-signed media upload, `InstructorLeave` scheduling, `LiveSessionSlot`/`LiveSessionBooking`/`WaitlistEntry` (Office Hours & waitlists), `TAInvitation`/`TAAssignment` — Flow 02, Flow 03, Flow 11, Flow 12
-- [ ] Web: Instructor Dashboard (`/instructor/dashboard`), Application (`/instructor/apply`), Admin Review (`/admin/instructor-applications`), Course Creator (`/instructor/courses/create`), Curriculum Builder (`/instructor/courses/[id]/builder`), Office Hours Scheduler (`/instructor/office-hours`), Leave Manager (`/instructor/leave`), TA Management (`/instructor/ta-management`) — `pages.md` §3, §4, §5.2
-- [ ] Mobile: Full instructor authoring, office hours, leave manager, and TA management screens with 100% parity — `pages.md` §3, §4
+- [x] Backend: instructor application/approval, course/section/lesson CRUD, versioning, drip delay (`drip_delay_days`), R2 pre-signed media upload, `InstructorLeave` scheduling, `LiveSessionSlot`/`LiveSessionBooking`/`WaitlistEntry` (Office Hours & waitlists), `TAInvitation`/`TAAssignment` — Flow 02, Flow 03, Flow 11, Flow 12
+- [x] Web: Instructor Dashboard (`/instructor/dashboard`), Application (`/instructor/apply`), Admin Review (`/admin/instructor-applications`), Course Creator (`/instructor/courses/create`), Curriculum Builder (`/instructor/courses/[id]/builder`), Office Hours Scheduler (`/instructor/office-hours`), Leave Manager (`/instructor/leave`), TA Management (`/instructor/ta-management`) — `pages.md` §3, §4, §5.2
+- [x] Mobile: Full instructor authoring, office hours, leave manager, and TA management screens with 100% parity — `pages.md` §3, §4
 
 ### Phase 3 — Enrollment, Payments & Learning Experience
 - [ ] Backend: Razorpay order creation, signed webhook signature verification (`POST /api/v1/webhooks/razorpay`), coupon validation, enrollment progress tracking & private notes — Flow 05, Flow 06

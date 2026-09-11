@@ -1,0 +1,119 @@
+-- Phase 2 Database Schema: Instructor Applications, Course Authoring, Leave, Live Sessions, Waitlists & TA Management
+
+CREATE TABLE IF NOT EXISTS instructor_applications (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    bio TEXT NOT NULL,
+    experience_years INT NOT NULL DEFAULT 0,
+    expertise_tags VARCHAR(500) NOT NULL,
+    portfolio_url VARCHAR(500) NULL,
+    resume_url VARCHAR(500) NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    rejection_reason TEXT NULL,
+    reviewed_by BIGINT REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS courses (
+    id BIGSERIAL PRIMARY KEY,
+    instructor_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    subtitle VARCHAR(500) NULL,
+    description TEXT NULL,
+    thumbnail_url VARCHAR(500) NULL,
+    promo_video_url VARCHAR(500) NULL,
+    price NUMERIC(10,2) NOT NULL DEFAULT 0.00,
+    currency VARCHAR(10) NOT NULL DEFAULT 'USD',
+    level VARCHAR(30) NOT NULL DEFAULT 'BEGINNER',
+    category VARCHAR(100) NOT NULL,
+    tags VARCHAR(500) NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'DRAFT',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS course_sections (
+    id BIGSERIAL PRIMARY KEY,
+    course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL,
+    order_index INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS course_lessons (
+    id BIGSERIAL PRIMARY KEY,
+    section_id BIGINT NOT NULL REFERENCES course_sections(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    lesson_type VARCHAR(30) NOT NULL DEFAULT 'VIDEO',
+    content_url VARCHAR(500) NULL,
+    text_content TEXT NULL,
+    duration_seconds INT NOT NULL DEFAULT 0,
+    is_free_preview BOOLEAN NOT NULL DEFAULT FALSE,
+    order_index INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS instructor_leave (
+    id BIGSERIAL PRIMARY KEY,
+    instructor_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    reason VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS live_session_slots (
+    id BIGSERIAL PRIMARY KEY,
+    instructor_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    course_id BIGINT REFERENCES courses(id) ON DELETE SET NULL,
+    title VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    max_capacity INT NOT NULL DEFAULT 1,
+    meeting_link VARCHAR(500) NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'AVAILABLE',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS live_session_bookings (
+    id BIGSERIAL PRIMARY KEY,
+    slot_id BIGINT NOT NULL REFERENCES live_session_slots(id) ON DELETE CASCADE,
+    student_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(30) NOT NULL DEFAULT 'CONFIRMED',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_slot_student UNIQUE (slot_id, student_id)
+);
+
+CREATE TABLE IF NOT EXISTS waitlist_entries (
+    id BIGSERIAL PRIMARY KEY,
+    course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    student_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_course_waitlist_student UNIQUE (course_id, student_id)
+);
+
+CREATE TABLE IF NOT EXISTS ta_invitations (
+    id BIGSERIAL PRIMARY KEY,
+    course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    invited_by BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    email VARCHAR(100) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    token VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ta_assignments (
+    id BIGSERIAL PRIMARY KEY,
+    course_id BIGINT NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    ta_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    assigned_by BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    permissions VARCHAR(500) NOT NULL DEFAULT 'GRADING,QNA',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_course_ta UNIQUE (course_id, ta_id)
+);
