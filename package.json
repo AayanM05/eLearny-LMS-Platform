@@ -12,6 +12,7 @@
     "frontend/mobile"
   ],
   "devDependencies": {
-    "expo": "~57.0.22"
+    "expo": "~57.0.22",
+    "fs-extra": "^11.4.0"
   }
 }
