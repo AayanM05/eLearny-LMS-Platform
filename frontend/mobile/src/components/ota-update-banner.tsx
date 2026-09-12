@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Updates from 'expo-updates';
 
-export default function OTAUpdateBanner() {
+export function OTAUpdateBanner() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 

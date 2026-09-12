@@ -1,98 +1,239 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Image, ScrollView, TouchableOpacity, Text, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
+import { OTAUpdateBanner } from '@/components/ota-update-banner';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* OTA Update Banner */}
+        <OTAUpdateBanner />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+        {/* Top Header with Branding Logo */}
+        <View style={styles.header}>
+          <Image
+            source={require('../../assets/branding/logo-dark.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <View style={styles.badgePill}>
+            <Text style={styles.badgeText}>v2.0.0 Live</Text>
+          </View>
+        </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Hero Section */}
+        <View style={styles.heroCard}>
+          <Text style={styles.heroTag}>PRODUCTION MASTERCLASSES</Text>
+          <Text style={styles.heroTitle}>Master Software Engineering on Mobile</Text>
+          <Text style={styles.heroSub}>
+            Interactive curricula, 4K video streaming, live instructor office hours, and verified certificates.
+          </Text>
+
+          <TouchableOpacity style={styles.primaryButton} activeOpacity={0.8}>
+            <Text style={styles.primaryButtonText}>Explore Masterclasses</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Featured Courses Header */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Featured Curricula</Text>
+          <Text style={styles.sectionLink}>View All</Text>
+        </View>
+
+        {/* Course Card 1 */}
+        <View style={styles.courseCard}>
+          <View style={styles.courseHeader}>
+            <Text style={styles.categoryBadge}>SOFTWARE ENGINEERING</Text>
+            <Text style={styles.ratingText}>★ 4.92</Text>
+          </View>
+          <Text style={styles.courseTitle}>Master Spring Boot 3 & Distributed Microservices</Text>
+          <Text style={styles.courseDesc}>
+            Build production microservices with Spring Cloud, OAuth2 JWT, Docker, Kafka, and Supabase Postgres.
+          </Text>
+          <View style={styles.courseFooter}>
+            <Text style={styles.priceText}>$49.99</Text>
+            <TouchableOpacity style={styles.enrollBtn}>
+              <Text style={styles.enrollBtnText}>Enroll</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Course Card 2 */}
+        <View style={styles.courseCard}>
+          <View style={styles.courseHeader}>
+            <Text style={[styles.categoryBadge, { backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA' }]}>
+              MOBILE APPS
+            </Text>
+            <Text style={styles.ratingText}>★ 4.96</Text>
+          </View>
+          <Text style={styles.courseTitle}>React Native & Expo SDK 57 Masterclass</Text>
+          <Text style={styles.courseDesc}>
+            Build 60fps native iOS & Android applications with Reanimated 4, Gesture Handler, and OTA Updates.
+          </Text>
+          <View style={styles.courseFooter}>
+            <Text style={styles.priceText}>$59.99</Text>
+            <TouchableOpacity style={styles.enrollBtn}>
+              <Text style={styles.enrollBtnText}>Enroll</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#090D16',
   },
-  safeArea: {
-    flex: 1,
+  scrollContent: {
     paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    paddingBottom: BottomTabInset + Spacing.four,
     gap: Spacing.four,
+    maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    width: '100%',
   },
-  title: {
-    textAlign: 'center',
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Spacing.two,
   },
-  code: {
-    textTransform: 'uppercase',
+  logoImage: {
+    height: 38,
+    width: 150,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  badgePill: {
+    backgroundColor: 'rgba(217, 107, 67, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(217, 107, 67, 0.3)',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  badgeText: {
+    color: '#D96B43',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  heroCard: {
+    backgroundColor: '#0F172A',
+    borderRadius: 24,
+    padding: Spacing.four,
+    borderWidth: 1,
+    borderColor: 'rgba(30, 41, 59, 0.8)',
+    gap: 10,
+  },
+  heroTag: {
+    color: '#D96B43',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+  },
+  heroTitle: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: '800',
+    lineHeight: 28,
+  },
+  heroSub: {
+    color: '#94A3B8',
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  primaryButton: {
+    backgroundColor: '#D96B43',
+    borderRadius: 14,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  primaryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  sectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  sectionLink: {
+    color: '#D96B43',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  courseCard: {
+    backgroundColor: '#0F172A',
+    borderRadius: 20,
+    padding: Spacing.four,
+    borderWidth: 1,
+    borderColor: '#1E293B',
+    gap: 10,
+  },
+  courseHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  categoryBadge: {
+    backgroundColor: 'rgba(217, 107, 67, 0.15)',
+    color: '#D96B43',
+    fontSize: 10,
+    fontWeight: '800',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  ratingText: {
+    color: '#F59E0B',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  courseTitle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 22,
+  },
+  courseDesc: {
+    color: '#94A3B8',
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  courseFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(30, 41, 59, 0.6)',
+  },
+  priceText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  enrollBtn: {
+    backgroundColor: '#1E293B',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  enrollBtnText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

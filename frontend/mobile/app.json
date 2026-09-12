@@ -4,7 +4,7 @@
     "slug": "elearny-lms",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/branding/logo-icon.png",
     "scheme": "elearny",
     "userInterfaceStyle": "dark",
     "updates": {
@@ -15,22 +15,22 @@
       "policy": "appVersion"
     },
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/branding/logo-icon.png",
       "bundleIdentifier": "com.elearny.lms"
     },
     "android": {
       "package": "com.elearny.lms",
       "adaptiveIcon": {
         "backgroundColor": "#020617",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "foregroundImage": "./assets/branding/logo-icon.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "monochromeImage": "./assets/branding/logo-icon.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/branding/logo-icon.png"
     },
     "plugins": [
       "expo-router",
