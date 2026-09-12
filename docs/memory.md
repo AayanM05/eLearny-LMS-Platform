@@ -14,9 +14,11 @@
 *(Overwrite this section every session — it should always reflect right now, not history)*
 
 - **Active phase:** Phase 3 — Enrollment, Payments & Learning Experience
-- **Currently working on:** Preparing Phase 3 Implementation Plan (Razorpay Payment Gateway, Signed Video Player & Student Progress Tracking).
+- **Currently working on:** Preparing Phase 3 Implementation Plan (Razorpay Payment Gateway, Signed R2 Video Player & Student Progress Tracking).
 - **Last updated:** 2026-09-12
-- **Blockers:** None. Phase 1 & Phase 2 completed and verified across Backend (`mvn compile` 0 errors), Web (`npm run build` pass), and Mobile (`npx tsc` 0 errors).
+- **Blockers:** None. Phase 1 & Phase 2 completed and deployed live across Backend (Render + Supabase), Web (Vercel), and Mobile (EAS Build APK + EAS Update OTA).
+- **UI/UX & Branding Milestone**: Rebuilt Web Landing Page with Light-mode default theme (`#FAFAFA` background, `#FFFFFF` cards, `#0F172A` deep charcoal text, Terracotta Orange `#D96B43` brand accents), animated `ThemeToggle` Sun/Moon switcher, `Space Grotesk` & `Inter` Google Fonts, interactive hero code snippet card, 4K video preview badge, course catalog category filters, and high-taste design tokens (`taste-design-system`, `gsap-animation-uiux`).
+- **Mobile Branding, Splash Screen & OTA Engine**: Integrated official eLearny branding logos (`logo-light.png`, `logo-dark.png`, `logo-icon.png`) across Web headers and Mobile launcher icons. Implemented a custom branded animated splash screen overlay in `_layout.tsx` holding the centered horizontal logo image on `#FAFAFA` light background default for 3 full seconds. Implemented **Interactive OTA Update Modal** (`OTAUpdateModal.tsx`) with `checkAutomatically: "NEVER"` in `app.json` presenting the `[ 🚀 Download & Install Update ]` CTA button with custom Space Grotesk and Inter fonts.
 - **Folder structure reminder:** `frontend/web` (Next.js), `frontend/mobile`
   (Expo), `backend/` (Spring Boot), `packages/*` (shared) — all siblings
   under the repo root except `web`/`mobile` which nest under `frontend/`.
@@ -28,7 +30,7 @@
   - [`21st-dev-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/21st-dev-components/SKILL.md) — 21st.dev component sourcing & MCP server integration.
   - [`shadcn-ui-components`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/.agents/skills/shadcn-ui-components/SKILL.md) — Shadcn UI primitives & MCP server integration.
 - **Live deployment:** `https://elearny-web.vercel.app` (Vercel) +
-  Render backend + Supabase (session-mode pooler connection).
+  Render backend (`https://elearny-lms-platform.onrender.com/api/v1`) + Supabase (session-mode pooler connection) + EAS Mobile (`preview` channel OTA updates).
 - **Doc versions:** `prd.md` v0.9, `architecture.md` v1.2, `rules.md`
   v1.1, `design.md` v0.7, `pages.md` v1.0, `processflows.md` v1.0, `phases.md` v0.8, `deployment.md` v0.8, `wireframes.md` v1.0. If any of these numbers don't match what's actually in
   the file when you read this, something changed since this entry was
@@ -254,6 +256,12 @@ items get their resolution noted, not deleted.)*
 - **2026-09-11** — Expanded `rules.md` to **v1.0**: Updated §12 ("Build High-Density, Production-Grade Pages — No Thin / Minimal Output") to strictly forbid minimal 2-field screens, requiring rich multi-widget card grids, status badges, live field requirements, and multi-state rendering. Updated §13 ("Strict 100% Web & Mobile Feature & Content Parity") to mandate that every feature, input, and creation workflow on Web is 100% available on Mobile.
 - **2026-09-11** — Supercharged documentation suite (`prd.md` v0.9, `architecture.md` v1.1, `rules.md` v1.0, `design.md` v0.5, `phases.md` v0.7, `deployment.md` v0.8, `pages.md` v0.5). Integrated architectural research for Judge0 Sandbox Code Execution Queue, Duolingo Gamification Engine (Loss Aversion Streaks, Freeze, XP Podium), Canvas LMS 5-Role Academic Control (Student, Instructor, TA, Admin, Super Admin), and AI Assistant/Authoring layer.
 - **2026-09-11** — Created `processflows.md` **v1.0** (18 exhaustive process flows covering Auth, Instructor Elevation, Authoring/Drip Release, Razorpay Webhook Checkout, Judge0 Sandbox Execution Queue, Duolingo Gamification, TA Scoped Operations, Office Hours/Waitlists, Audit Logging, and 2-Tier AI) and expanded `pages.md` to **v1.0** (40+ detailed screen specifications across 5 roles with component trees, navigation links, empty-state CTAs, and Web/Mobile layout rules).
+- **2026-09-12** — EAS Build Fixes, Web Landing Redesign, Branding Integration & Mandatory OTA Update Engine:
+  - Fixed Expo EAS Android APK build failures (`7a64bea3-de3c-4acb-94cf-fae7cba34dee` and `5da98545-db4f-4b19-ad4f-99df641fcf1f`) by updating `frontend/mobile/package.json` dependencies (`react-native-reanimated` 4.5.1, `expo-font` ~57.0.4, `expo-splash-screen` ~57.0.9, `expo-updates` ~57.0.22, `@react-navigation/native` ^7.3.18) and re-synchronizing root `package-lock.json`. Verified `npm run build` (Next.js 16) and `npx expo export --platform android` (0 errors).
+  - Web UI Redesign: Implemented `ThemeProvider` and `ThemeToggle` using `next-themes` with Light theme default (`#FAFAFA` bg, `#FFFFFF` cards, Terracotta Orange `#D96B43` accents). Overhauled `frontend/web/src/app/page.tsx` with high-density components, Space Grotesk typography, animated hero code preview, 4K video badge, course category filter tabs, 4-column proof stats bar, feature grid, enterprise CTAs, and branded footer.
+  - Mobile Branding & Mandatory OTA Engine: Wired official eLearny logos (`logo-light.png`, `logo-dark.png`, `logo-icon.png`) into app icon, splash screen, and header. Built non-dismissible `OTAUpdateModal.tsx` overlay in root `_layout.tsx` to detect, download, and auto-reload app updates on launch.
+  - Verification & Release: Verified live Render backend health endpoint (`https://elearny-lms-platform.onrender.com/api/v1/health`), committed changes (`c19b13d`, `77942af`), user pushed to GitHub main, and user published EAS OTA Update on `preview` channel (`npx eas-cli update --branch preview`).
+
 
 
 

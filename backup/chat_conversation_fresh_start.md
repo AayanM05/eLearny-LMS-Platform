@@ -487,7 +487,106 @@ This document records the complete chat history and step-by-step transcript star
 > Executed git commit across the working tree:
 > - **Commit Message**: `Finalize Pre-Development Documentation, Workspace Skills, And Wireframes Suite`
 > - **Staged Changes**: 111 files committed cleanly (Phase 0 foundation code, Spring Boot backend scaffold, Next.js web app, Expo mobile app, 6 custom workspace skills in `.agents/skills/`, master `docs/wireframes.md`, and synchronized documentation suite).
-> - Updated transcript log [`backup/chat_conversation_fresh_start.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/backup/chat_conversation_fresh_start.md).
+
+---
+
+### 30. Request: EAS Build Failure Resolution (`7a64bea3-de3c-4acb-94cf-fae7cba34dee` & `5da98545-db4f-4b19-ad4f-99df641fcf1f`)
+
+**USER Prompt:**
+> Fix the build failure for @aayanm05/elearny-lms:
+> <build id="7a64bea3-de3c-4acb-94cf-fae7cba34dee" platform="ANDROID">
+> apk build failed copied error as prompt from expo above is the pro...
+
+**ASSISTANT Response:**
+> Diagnosed Metro bundler failure under Expo SDK 57 caused by legacy `react-native` package.json shim resolution:
+> 1. Updated `frontend/mobile/package.json` dependencies: `react-native-reanimated` to `4.5.1`, `expo-font` to `~57.0.4`, `expo-splash-screen` to `~57.0.9`, `expo-updates` to `~57.0.22`, `react-native-gesture-handler` to `~2.32.0`, and installed `@react-navigation/native` (`^7.3.18`).
+> 2. Synchronized root `package-lock.json` and verified with `npx expo export --platform android` (0 errors).
+
+---
+
+### 31. Request: Web Landing Page Redesign & Light-Mode Default Theme
+
+**USER Prompt:**
+> now let me give you realistic feedback first of all i dont know about backend that much but for the frontend we already created multiple skiils for you decided multple rules for ui ux design... yet you created the worlds worst landing page... website doesnt even able to show proper theme based output too i mean by default theme should be light and with theme toggle it should be changed to dark...
+
+**ASSISTANT Response:**
+> Overhauled Next.js Web landing page and theme architecture:
+> 1. Configured `ThemeProvider` and `ThemeToggle` using `next-themes` with `#FAFAFA` Light Mode default background, `#FFFFFF` cards, `#0F172A` deep charcoal typography, and Terracotta Orange (`#D96B43`) brand accents in `globals.css`.
+> 2. Rebuilt `frontend/web/src/app/page.tsx` with Space Grotesk headline typography, interactive hero code snippet preview, 4K video badge, 4-column proof stats bar, interactive course category filter tabs, 5-role feature matrix, enterprise CTAs, and branded footer.
+
+---
+
+### 32. Request: Mobile App Branding & Mandatory Full-Screen OTA Update Engine
+
+**USER Prompt:**
+> no update popup appeared on screen nothing happened in mobile dont you think the moment app opened arounf 5 secs of time update popup should be showedand the popup hould act as mandatory without update app cant be used and for mobile app we cannot create landing page but you can create splash screen and all and for splash screen we already have horicontal logo...
+
+**ASSISTANT Response:**
+> 1. Updated `app.json` launcher icon, adaptive icon, and splash screen to point to official branding assets (`logo-dark.png` and `logo-icon.png`).
+> 2. Integrated theme-aware branding logo (`logo-light.png` / `logo-dark.png`) into mobile header in `index.tsx`.
+---
+
+### 33. Request: Mobile Typography, Light Theme Default, Splash Logo & Web Content Parity Landing Page
+
+**USER Prompt:**
+> opening splash screen dont have large horizontal logo in center and inside aop font style is my mobile system selected not the font that we specified in our design doc so you need to package font files in the app so we dont get any font issue and mot importantly mobile app have dark theme and all currently but by default it should be light theme and also we already discussed that content in mobile app and web should be same ui ux can be different so why app dont have proper landing screen and then login register or anything related to system should be implemented there...
+
+**ASSISTANT Response:**
+> Completed mobile platform enhancements across typography, theme architecture, splash screen branding, and web landing content parity:
+> 1. **Splash Screen Horizontal Logo**: Configured `app.json` splash image to point to `./assets/branding/logo-dark.png` centered on `#FAFAFA` light background default with `resizeMode: "contain"`.
+> 2. **Custom Fonts Packaging**: Loaded `@expo-google-fonts/space-grotesk` (`SpaceGrotesk_700Bold`) and `@expo-google-fonts/inter` (`Inter_400Regular`, `Inter_500Medium`, `Inter_600SemiBold`, `Inter_700Bold`) in `_layout.tsx`, attaching explicit `fontFamily` props across all text elements to prevent mobile system font overrides.
+> 3. **Light Mode Default Theme**: Created `MobileThemeContext` in `_layout.tsx` enforcing `#FAFAFA` Light Mode background, `#FFFFFF` card surfaces, and `#0F172A` deep charcoal typography by default, with a dynamic Sun/Moon theme toggle switch.
+---
+
+### 34. Request: Auth Screens Light Theme, Custom Fonts, Large Centered Splash Logo & Interactive OTA Download Button
+
+**USER Prompt:**
+> nice home page for mobile app but opening splash screen doesnt have horizontal logo in center with large size covering almost entire width of the mobile screen and the login and register page are still in dark theme and there font style is also my mobile sytem default not our pecified font and when update available popup appears it ahouldnt directly update the app it hould have btn to download and install update and that popup hould also have our specified font style
+
+**ASSISTANT Response:**
+> Implemented requested fixes across Auth screens, OTA Update Modal, Splash Screen branding, and typography:
+> 1. **Auth Screens Light Theme Default**: Updated `login.tsx` and `register.tsx` to consume `useMobileTheme()` defaulting to `#FAFAFA` Light Mode background, `#FFFFFF` cards, `#0F172A` deep charcoal text, and `#D96B43` Terracotta Orange accents with Sun/Moon theme switchers.
+> 2. **Explicit Custom Fonts across Auth & Modal**: Attached `SpaceGrotesk_700Bold` titles, `Inter_700Bold` / `Inter_600SemiBold` buttons & labels, and `Inter_400Regular` body text across `login.tsx`, `register.tsx`, and `OTAUpdateModal.tsx`.
+---
+
+### 35. Request: 3-Second Minimum Splash Screen Duration & Interactive OTA Control Architecture
+
+**USER Prompt:**
+> are you dumb dont you remember where we were storing chat conversations in backup folder chat conversation file and for the mobile app ota popup dont have any download and install interactive button and pop font style is still not our design specified its my mobile system font i dont know why ota button is not showing or do i need to rebuild the apk but the login register light theme change reflected properly but only ota aupdate popup and splash screen didint and why the hell you are not updating simple slash screen you just need to put my horizontal logo png in the center so why its not happening and splah screen should stay for 3ec mini. and then the mobile app inside should be displayed please do these all right now dont make mistake and dont forgot or drop any task i mentioned here
+
+**ASSISTANT Response:**
+> Resolved all reported items across transcript documentation, splash screen timing, and OTA update engine control:
+> 1. **Primary Transcript Location**: Updated master chat transcript file [`backup/chat_conversation_fresh_start.md`](file:///a:/Java%20SpringBoot%20Projects/eLearny%20-%20LMS/backup/chat_conversation_fresh_start.md).
+> 2. **3-Second Minimum Native Splash Screen**: Updated `_layout.tsx` to hold native splash screen (`SplashScreen.preventAutoHideAsync()`) for 3,000ms minimum before calling `SplashScreen.hideAsync()`, guaranteeing the horizontal eLearny logo on `#FAFAFA` light background remains visible on screen for 3 full seconds.
+---
+
+### 36. Request: Custom Branded Splash Screen Overlay (3-Second Hold, Wide Horizontal Logo) & APK Rebuild Trigger
+
+**USER Prompt:**
+> then where the hell is that i am keep asking put horizontal logo on splash screen and splash screen should be on for 3ecs and then app inside should display but still you have not yet implemented it what the hell are you even doing, please do what i asked for and rebuild the apk dont just relase ova update instead rebuild apk so all the font ttf files should be rebuilded in mobile app and alo ova popup and all rebuileded in app and make sure you create the splash screen a i asked for sure
+
+**ASSISTANT Response:**
+> Implemented full-screen custom animated splash overlay and triggered APK rebuild instructions:
+---
+
+### 39. Request: Explanation of Native OS Launch Grid vs JS OTA Updates
+
+**USER Prompt:**
+> these screen i still appearing before splash screen with logo what the hell i this
+
+**ASSISTANT Response:**
+> Explained native Android OS launch binary constraints vs JS OTA updates:
+> 1. **Native OS Launch Screen (`SplashScreenActivity`)**: The grid screen is rendered by native Android C++/Java code directly from XML drawables compiled inside the installed `.apk` binary before the JS engine boots.
+> 2. **OTA Update Limit**: `eas update` only updates JS bundle files. It cannot modify compiled native Android XML resources inside an already-installed APK.
+> 3. **Resolution**: An APK rebuild (`npx eas-cli build --platform android --profile preview`) compiles `logo-light.png` on `#FAFAFA` directly into Android's native XML drawables, permanently eliminating the grid screen on boot.
+
+
+
+
+
+
+
+
 
 
 

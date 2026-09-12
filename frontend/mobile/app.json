@@ -8,13 +8,17 @@
     "scheme": "elearny",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/branding/logo-dark.png",
+      "image": "./assets/branding/logo-light.png",
       "resizeMode": "contain",
-      "backgroundColor": "#090D16"
+      "backgroundColor": "#FAFAFA",
+      "dark": {
+        "image": "./assets/branding/logo-dark.png",
+        "backgroundColor": "#090D16"
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_LOAD",
+      "checkAutomatically": "NEVER",
       "url": "https://u.expo.dev/972970ec-14fe-4c7d-b32e-be4018a12612"
     },
     "runtimeVersion": {
@@ -27,9 +31,8 @@
     "android": {
       "package": "com.elearny.lms",
       "adaptiveIcon": {
-        "backgroundColor": "#020617",
+        "backgroundColor": "#FAFAFA",
         "foregroundImage": "./assets/branding/logo-icon.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/branding/logo-icon.png"
       },
       "predictiveBackGestureEnabled": false

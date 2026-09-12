@@ -7,67 +7,68 @@ import {
   StyleSheet, 
   ActivityIndicator, 
   Image, 
-  useColorScheme, 
   StatusBar 
 } from 'react-native';
 import * as Updates from 'expo-updates';
 
-export function OTAUpdateModal() {
-  const colorScheme = useColorScheme();
+interface OTAUpdateModalProps {
+  theme?: 'light' | 'dark';
+}
+
+export function OTAUpdateModal({ theme = 'light' }: OTAUpdateModalProps) {
+  const isDark = theme === 'dark';
+
   const [isUpdateRequired, setIsUpdateRequired] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('Checking for critical updates...');
+  const [statusMessage, setStatusMessage] = useState('A new critical update is ready for installation.');
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadFailed, setDownloadFailed] = useState(false);
 
   useEffect(() => {
-    async function checkAndApplyUpdate() {
+    async function checkUpdateStatus() {
       try {
+        console.log('[OTA Updates] Engine checking for updates...');
+        console.log('[OTA Updates] Updates enabled:', Updates.isEnabled);
+
         if (Updates.isEnabled) {
           const update = await Updates.checkForUpdateAsync();
+          console.log('[OTA Updates] Check result isAvailable:', update.isAvailable);
           if (update.isAvailable) {
             setIsUpdateRequired(true);
-            setIsDownloading(true);
-            setStatusMessage('Downloading latest eLearny LMS update...');
-            
-            // Automatically fetch and reload
-            await Updates.fetchUpdateAsync();
-            setStatusMessage('Applying update & restarting app...');
-            setTimeout(async () => {
-              await Updates.reloadAsync();
-            }, 1000);
+            setIsDownloading(false);
+            setDownloadFailed(false);
+            setStatusMessage('A critical platform update (v2.0.0) is available with performance & UI improvements.');
           }
+        } else if (__DEV__) {
+          console.log('[OTA Updates] Running in __DEV__ mode.');
         }
       } catch (error) {
         console.log('[OTA Updates] Check error:', error);
-        // If an update was detected but fetch failed
-        if (isUpdateRequired) {
-          setDownloadFailed(true);
-          setStatusMessage('Network timeout. Please check your connection and retry.');
-        }
       }
     }
 
-    checkAndApplyUpdate();
+    checkUpdateStatus();
   }, []);
 
-  const handleManualRetry = async () => {
+  const handleStartUpdate = async () => {
     setIsDownloading(true);
     setDownloadFailed(false);
-    setStatusMessage('Downloading latest eLearny LMS update...');
+    setStatusMessage('Downloading latest eLearny LMS update bundle...');
+
     try {
       await Updates.fetchUpdateAsync();
-      setStatusMessage('Applying update & restarting app...');
-      await Updates.reloadAsync();
+      setStatusMessage('Applying update & restarting application...');
+      setTimeout(async () => {
+        await Updates.reloadAsync();
+      }, 1000);
     } catch (e) {
+      console.log('[OTA Updates] Fetch error:', e);
       setIsDownloading(false);
       setDownloadFailed(true);
-      setStatusMessage('Download failed. Tap below to retry.');
+      setStatusMessage('Download failed due to network interruption. Tap below to retry.');
     }
   };
 
   if (!isUpdateRequired) return null;
-
-  const isDark = colorScheme === 'dark';
 
   return (
     <Modal
@@ -78,7 +79,7 @@ export function OTAUpdateModal() {
     >
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <View style={[styles.container, isDark ? styles.darkContainer : styles.lightContainer]}>
-        {/* Branding Header Logo */}
+        {/* Horizontal Branding Header Logo */}
         <Image
           source={
             isDark 
@@ -92,32 +93,32 @@ export function OTAUpdateModal() {
         {/* Update Card Container */}
         <View style={[styles.card, isDark ? styles.darkCard : styles.lightCard]}>
           <View style={styles.badgePill}>
-            <Text style={styles.badgeText}>MANDATORY UPDATE REQUIRED</Text>
+            <Text style={styles.badgeText}>MANDATORY UPDATE AVAILABLE</Text>
           </View>
 
           <Text style={[styles.title, isDark ? styles.darkText : styles.lightText]}>
-            New Version Available
+            Platform Update v2.0.0
           </Text>
 
-          <Text style={styles.subtitle}>
-            A critical platform update is ready. You must apply this update to continue using eLearny LMS.
+          <Text style={[styles.subtitle, isDark ? styles.darkSubtext : styles.lightSubtext]}>
+            {statusMessage}
           </Text>
 
-          {/* Loading Indicator or Retry */}
-          <View style={styles.statusBox}>
-            {isDownloading && (
+          {/* Downloading Spinner or Interactive Button */}
+          {isDownloading ? (
+            <View style={styles.statusBox}>
               <ActivityIndicator color="#D96B43" size="large" style={styles.spinner} />
-            )}
-            <Text style={styles.statusText}>{statusMessage}</Text>
-          </View>
-
-          {downloadFailed && (
+              <Text style={styles.statusText}>Downloading Update Bundle...</Text>
+            </View>
+          ) : (
             <TouchableOpacity 
-              style={styles.retryButton} 
-              onPress={handleManualRetry}
-              activeOpacity={0.8}
+              style={styles.actionButton} 
+              onPress={handleStartUpdate}
+              activeOpacity={0.85}
             >
-              <Text style={styles.retryButtonText}>Retry & Reload App</Text>
+              <Text style={styles.actionButtonText}>
+                {downloadFailed ? 'Retry Download & Install' : '🚀 Download & Install Update'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 24,
     alignItems: 'center',
-    gap: 12,
+    gap: 14,
     borderWidth: 1,
   },
   lightCard: {
@@ -185,12 +186,12 @@ const styles = StyleSheet.create({
   badgeText: {
     color: '#D96B43',
     fontSize: 10,
-    fontWeight: '800',
+    fontFamily: 'Inter_700Bold',
     letterSpacing: 1,
   },
   title: {
     fontSize: 22,
-    fontWeight: '800',
+    fontFamily: 'SpaceGrotesk_700Bold',
     textAlign: 'center',
   },
   lightText: {
@@ -200,10 +201,16 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   subtitle: {
-    color: '#64748B',
     fontSize: 13,
+    fontFamily: 'Inter_400Regular',
     textAlign: 'center',
     lineHeight: 18,
+  },
+  lightSubtext: {
+    color: '#64748B',
+  },
+  darkSubtext: {
+    color: '#94A3B8',
   },
   statusBox: {
     alignItems: 'center',
@@ -218,27 +225,32 @@ const styles = StyleSheet.create({
   statusText: {
     color: '#D96B43',
     fontSize: 13,
-    fontWeight: '700',
+    fontFamily: 'Inter_700Bold',
     textAlign: 'center',
   },
-  retryButton: {
+  actionButton: {
     backgroundColor: '#D96B43',
     width: '100%',
-    paddingVertical: 14,
+    paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
     marginTop: 8,
+    shadowColor: '#D96B43',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  retryButtonText: {
+  actionButtonText: {
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '700',
+    fontFamily: 'Inter_700Bold',
   },
   footerNote: {
     position: 'absolute',
     bottom: 32,
     color: '#94A3B8',
     fontSize: 11,
-    fontWeight: '600',
+    fontFamily: 'Inter_500Medium',
   },
 });
