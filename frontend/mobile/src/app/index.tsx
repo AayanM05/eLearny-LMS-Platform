@@ -1,21 +1,24 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView, TouchableOpacity, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, TouchableOpacity, Text, StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OTAUpdateBanner } from '@/components/ota-update-banner';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
 export default function HomeScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* OTA Update Banner */}
-        <OTAUpdateBanner />
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
-        {/* Top Header with Branding Logo */}
+  return (
+    <SafeAreaView style={[styles.container, isDark ? styles.darkBg : styles.lightBg]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* Top Header with Horizontal Branding Logo */}
         <View style={styles.header}>
           <Image
-            source={require('../../assets/branding/logo-dark.png')}
+            source={
+              isDark 
+                ? require('../../assets/branding/logo-dark.png') 
+                : require('../../assets/branding/logo-light.png')
+            }
             style={styles.logoImage}
             resizeMode="contain"
           />

@@ -6,10 +6,16 @@
     "orientation": "portrait",
     "icon": "./assets/branding/logo-icon.png",
     "scheme": "elearny",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/branding/logo-dark.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#090D16"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_LOAD"
+      "checkAutomatically": "ON_LOAD",
+      "url": "https://u.expo.dev/972970ec-14fe-4c7d-b32e-be4018a12612"
     },
     "runtimeVersion": {
       "policy": "appVersion"

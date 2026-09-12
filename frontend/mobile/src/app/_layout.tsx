@@ -10,6 +10,8 @@ import { Slot } from 'expo-router';
 // Prevent splash screen from auto-hiding before custom fonts are loaded
 SplashScreen.preventAutoHideAsync();
 
+import { OTAUpdateModal } from '@/components/ota-update-modal';
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -45,6 +47,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <OTAUpdateModal />
       <Slot />
     </ThemeProvider>
   );
