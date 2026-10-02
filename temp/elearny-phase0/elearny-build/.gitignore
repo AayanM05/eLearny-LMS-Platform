@@ -1,0 +1,28 @@
+# Node
+node_modules/
+.next/
+.expo/
+dist/
+web-build/
+
+# Java / Maven
+target/
+*.class
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug logs from scripts/run-logged.ps1 — keep the folder, not the contents
+logs/*.log
+!logs/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.iml

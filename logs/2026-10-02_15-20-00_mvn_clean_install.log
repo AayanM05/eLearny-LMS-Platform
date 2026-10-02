@@ -1,0 +1,171 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.elearny:elearny >-------------------------
+[INFO] Building eLearny 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ elearny ---
+[INFO] Deleting A:\eLearny Java\eLearny v1.1\backend\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ elearny ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ elearny ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 213 source files with javac [debug parameters release 21] to target\classes
+[INFO] /A:/eLearny Java/eLearny v1.1/backend/src/main/java/com/elearny/auth/security/JwtService.java: Some input files use or override a deprecated API.
+[INFO] /A:/eLearny Java/eLearny v1.1/backend/src/main/java/com/elearny/auth/security/JwtService.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ elearny ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ elearny ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ elearny ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.elearny.auth.AuthServiceTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\itsaa\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.6\byte-buddy-agent-1.17.6.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.382 s -- in com.elearny.auth.AuthServiceTest
+[INFO] Running com.elearny.community.ForumServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.447 s -- in com.elearny.community.ForumServiceTest
+[INFO] Running com.elearny.course.CourseServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s -- in com.elearny.course.CourseServiceTest
+[INFO] Running com.elearny.enrollment.EnrollmentServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in com.elearny.enrollment.EnrollmentServiceTest
+[INFO] Running com.elearny.exam.QuizServiceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.565 s -- in com.elearny.exam.QuizServiceTest
+[INFO] Running com.elearny.payment.CouponServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.097 s -- in com.elearny.payment.CouponServiceTest
+[INFO] Running com.elearny.review.ReviewServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in com.elearny.review.ReviewServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ elearny ---
+[INFO] Building jar: A:\eLearny Java\eLearny v1.1\backend\target\elearny-1.0.0.jar
+[INFO] 
+[INFO] --- spring-boot:3.5.4:repackage (repackage) @ elearny ---
+[INFO] Replacing main artifact A:\eLearny Java\eLearny v1.1\backend\target\elearny-1.0.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to A:\eLearny Java\eLearny v1.1\backend\target\elearny-1.0.0.jar.original
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ elearny ---
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/resolver/maven-resolver-util/1.9.22/maven-resolver-util-1.9.22.jar
+Progress (1): 0.9/196 kB
+Progress (1): 2.3/196 kB
+Progress (1): 3.6/196 kB
+Progress (1): 5.0/196 kB
+Progress (1): 6.4/196 kB
+Progress (1): 7.7/196 kB
+Progress (1): 9.1/196 kB
+Progress (1): 10/196 kB 
+Progress (1): 11/196 kB
+Progress (1): 13/196 kB
+Progress (1): 14/196 kB
+Progress (1): 15/196 kB
+Progress (1): 17/196 kB
+Progress (1): 18/196 kB
+Progress (1): 20/196 kB
+Progress (1): 21/196 kB
+Progress (1): 22/196 kB
+Progress (1): 24/196 kB
+Progress (1): 25/196 kB
+Progress (1): 26/196 kB
+Progress (1): 28/196 kB
+Progress (1): 29/196 kB
+Progress (1): 31/196 kB
+Progress (1): 32/196 kB
+Progress (1): 33/196 kB
+Progress (1): 35/196 kB
+Progress (1): 36/196 kB
+Progress (1): 37/196 kB
+Progress (1): 39/196 kB
+Progress (1): 40/196 kB
+Progress (1): 41/196 kB
+Progress (1): 43/196 kB
+Progress (1): 44/196 kB
+Progress (1): 46/196 kB
+Progress (1): 47/196 kB
+Progress (1): 48/196 kB
+Progress (1): 50/196 kB
+Progress (1): 51/196 kB
+Progress (1): 52/196 kB
+Progress (1): 54/196 kB
+Progress (1): 55/196 kB
+Progress (1): 59/196 kB
+Progress (1): 64/196 kB
+Progress (1): 68/196 kB
+Progress (1): 72/196 kB
+Progress (1): 76/196 kB
+Progress (1): 81/196 kB
+Progress (1): 85/196 kB
+Progress (1): 89/196 kB
+Progress (1): 93/196 kB
+Progress (1): 97/196 kB
+Progress (1): 102/196 kB
+Progress (1): 106/196 kB
+Progress (1): 110/196 kB
+Progress (1): 114/196 kB
+Progress (1): 119/196 kB
+Progress (1): 123/196 kB
+Progress (1): 127/196 kB
+Progress (1): 131/196 kB
+Progress (1): 136/196 kB
+Progress (1): 140/196 kB
+Progress (1): 142/196 kB
+Progress (1): 147/196 kB
+Progress (1): 151/196 kB
+Progress (1): 155/196 kB
+Progress (1): 159/196 kB
+Progress (1): 164/196 kB
+Progress (1): 168/196 kB
+Progress (1): 172/196 kB
+Progress (1): 176/196 kB
+Progress (1): 181/196 kB
+Progress (1): 185/196 kB
+Progress (1): 189/196 kB
+Progress (1): 193/196 kB
+Progress (1): 196 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/resolver/maven-resolver-util/1.9.22/maven-resolver-util-1.9.22.jar (196 kB at 170 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/resolver/maven-resolver-api/1.9.22/maven-resolver-api-1.9.22.jar
+Progress (1): 3.8/157 kB
+Progress (1): 8.0/157 kB
+Progress (1): 12/157 kB 
+Progress (1): 16/157 kB
+Progress (1): 21/157 kB
+Progress (1): 25/157 kB
+Progress (1): 41/157 kB
+Progress (1): 57/157 kB
+Progress (1): 74/157 kB
+Progress (1): 90/157 kB
+Progress (1): 106/157 kB
+Progress (1): 123/157 kB
+Progress (1): 139/157 kB
+Progress (1): 156/157 kB
+Progress (1): 157 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/resolver/maven-resolver-api/1.9.22/maven-resolver-api-1.9.22.jar (157 kB at 1.3 MB/s)
+[INFO] Installing A:\eLearny Java\eLearny v1.1\backend\pom.xml to C:\Users\itsaa\.m2\repository\com\elearny\elearny\1.0.0\elearny-1.0.0.pom
+[INFO] Installing A:\eLearny Java\eLearny v1.1\backend\target\elearny-1.0.0.jar to C:\Users\itsaa\.m2\repository\com\elearny\elearny\1.0.0\elearny-1.0.0.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  29.439 s
+[INFO] Finished at: 2026-10-02T15:20:33+05:30
+[INFO] ------------------------------------------------------------------------

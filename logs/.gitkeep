@@ -1,0 +1,2 @@
+# Keep logs folder structure in git, ignore log files
+*.log

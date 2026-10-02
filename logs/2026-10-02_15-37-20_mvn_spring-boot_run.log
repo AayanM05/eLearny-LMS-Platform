@@ -1,0 +1,156 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.elearny:elearny >-------------------------
+[INFO] Building eLearny 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.5.4:run (default-cli) > test-compile @ elearny >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ elearny ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ elearny ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ elearny ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ elearny ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:3.5.4:run (default-cli) < test-compile @ elearny <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.5.4:run (default-cli) @ elearny ---
+[INFO] Attaching agents: []
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.4)
+
+2026-10-02T15:37:29.664+05:30  INFO 17784 --- [elearny] [           main] com.elearny.ElearnyApplication           : Starting ElearnyApplication using Java 23.0.1 with PID 17784 (A:\eLearny Java\eLearny v1.1\backend\target\classes started by itsaa in A:\eLearny Java\eLearny v1.1\backend)
+2026-10-02T15:37:29.669+05:30  INFO 17784 --- [elearny] [           main] com.elearny.ElearnyApplication           : The following 1 profile is active: "dev"
+2026-10-02T15:37:31.759+05:30  INFO 17784 --- [elearny] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-02T15:37:31.960+05:30  INFO 17784 --- [elearny] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 190 ms. Found 31 JPA repository interfaces.
+2026-10-02T15:37:33.211+05:30  INFO 17784 --- [elearny] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-10-02T15:37:33.236+05:30  INFO 17784 --- [elearny] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-02T15:37:33.236+05:30  INFO 17784 --- [elearny] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2026-10-02T15:37:33.372+05:30  INFO 17784 --- [elearny] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-10-02T15:37:33.373+05:30  INFO 17784 --- [elearny] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3613 ms
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+2026-10-02T15:37:33.826+05:30  INFO 17784 --- [elearny] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-10-02T15:37:33.907+05:30  INFO 17784 --- [elearny] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.22.Final
+2026-10-02T15:37:33.962+05:30  INFO 17784 --- [elearny] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-10-02T15:37:34.385+05:30  INFO 17784 --- [elearny] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-02T15:37:34.433+05:30  INFO 17784 --- [elearny] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-02T15:37:34.722+05:30  INFO 17784 --- [elearny] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:elearny_dev user=SA
+2026-10-02T15:37:34.725+05:30  INFO 17784 --- [elearny] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-02T15:37:34.762+05:30  WARN 17784 --- [elearny] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-10-02T15:37:34.797+05:30  INFO 17784 --- [elearny] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-02T15:37:37.288+05:30  INFO 17784 --- [elearny] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-02T15:37:37.531+05:30  INFO 17784 --- [elearny] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-02T15:37:38.000+05:30  INFO 17784 --- [elearny] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-02T15:37:44.060+05:30  INFO 17784 --- [elearny] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-02T15:37:44.164+05:30  WARN 17784 --- [elearny] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-10-02T15:37:45.203+05:30  INFO 17784 --- [elearny] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-10-02T15:37:45.234+05:30  INFO 17784 --- [elearny] [           main] com.elearny.ElearnyApplication           : Started ElearnyApplication in 16.46 seconds (process running for 17.146)
+2026-10-02T15:37:45.519+05:30  INFO 17784 --- [elearny] [           main] com.elearny.common.config.DataSeeder     : DataSeeder: seeding test accounts and sample courses...
+2026-10-02T15:37:49.205+05:30  INFO 17784 --- [elearny] [           main] com.elearny.common.config.DataSeeder     : DataSeeder: done. See TESTING_GUIDE.md for test account credentials and scenarios.
+
+========================================================================
+  eLearny started successfully!
+========================================================================
+  App:            http://localhost:8080
+  Swagger / API:  http://localhost:8080/swagger-ui.html
+  Database:       MySQL at localhost:3306/elearny_dev (user: root)
+                  Not connecting? Make sure a local MySQL server is running �
+                  see application-dev.yml or set DB_HOST/DB_PORT/DB_USERNAME/
+                  DB_PASSWORD env vars if your setup differs from the defaults.
+------------------------------------------------------------------------
+  Test accounts (see TESTING_GUIDE.md for full scenarios):
+    Admin       admin@elearny.com          / Admin@123
+    Instructor  instructor@elearny.com     / Instructor@123
+    Student     student@elearny.com        / Student@123
+    Student 2   student2@elearny.com       / Student@123
+    TA          ta@elearny.com             / Ta@12345
+    (Admin/Instructor logins will prompt for 2FA setup on first login �
+     that's expected, scan the QR code with any authenticator app.)
+    (These are only re-created if the database was empty at startup �
+     MySQL persists between runs, unlike the old H2 in-memory setup.)
+========================================================================
+
+2026-10-02T15:37:49.229+05:30  INFO 17784 --- [elearny] [           main] c.elearny.common.config.StartupBanner    : eLearny is running at http://localhost:8080
+2026-10-02T15:39:09.031+05:30  INFO 17784 --- [elearny] [nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-02T15:39:09.031+05:30  INFO 17784 --- [elearny] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-02T15:39:09.038+05:30  INFO 17784 --- [elearny] [nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2026-10-02T15:39:09.395+05:30  WARN 17784 --- [elearny] [nio-8080-exec-2] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-10-02T15:45:49.093+05:30 ERROR 17784 --- [elearny] [  notif-async-1] c.e.n.sender.EmailNotificationSender     : Email delivery permanently failed after retries for studenttemp@gmail.com / welcome:7
+
+java.lang.RuntimeException: Email send failed, will retry: Authentication failed
+	at com.elearny.notification.sender.EmailNotificationSender.send(EmailNotificationSender.java:70) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.retry.interceptor.RetryOperationsInterceptor$1.doWithRetry(RetryOperationsInterceptor.java:114) ~[spring-retry-2.0.12.jar:na]
+	at org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:357) ~[spring-retry-2.0.12.jar:na]
+	at org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:246) ~[spring-retry-2.0.12.jar:na]
+	at org.springframework.retry.interceptor.RetryOperationsInterceptor.invoke(RetryOperationsInterceptor.java:135) ~[spring-retry-2.0.12.jar:na]
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:162) ~[spring-retry-2.0.12.jar:na]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:114) ~[spring-aop-6.2.9.jar:6.2.9]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+Caused by: org.springframework.mail.MailAuthenticationException: Authentication failed
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:402) ~[spring-context-support-6.2.9.jar:6.2.9]
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:350) ~[spring-context-support-6.2.9.jar:6.2.9]
+	at org.springframework.mail.javamail.JavaMailSender.send(JavaMailSender.java:101) ~[spring-context-support-6.2.9.jar:6.2.9]
+	at com.elearny.notification.sender.EmailNotificationSender.send(EmailNotificationSender.java:64) ~[classes/:na]
+	... 16 common frames omitted
+Caused by: jakarta.mail.AuthenticationFailedException: failed to connect, no password specified?
+	at jakarta.mail.Service.connect(Service.java:379) ~[jakarta.mail-2.0.3.jar:na]
+	at org.springframework.mail.javamail.JavaMailSenderImpl.connectTransport(JavaMailSenderImpl.java:480) ~[spring-context-support-6.2.9.jar:6.2.9]
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:399) ~[spring-context-support-6.2.9.jar:6.2.9]
+	... 19 common frames omitted
+
+2026-10-02T15:48:55.195+05:30 ERROR 17784 --- [elearny] [    pdf-async-1] .a.i.SimpleAsyncUncaughtExceptionHandler : Unexpected exception occurred invoking async method: public void com.elearny.certificate.CertificateService.onCertificateIssued(com.elearny.notification.event.CertificateIssuedEvent)
+
+org.hibernate.LazyInitializationException: Could not initialize proxy [com.elearny.enrollment.Enrollment#4] - no session
+	at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:174) ~[hibernate-core-6.6.22.Final.jar:6.6.22.Final]
+	at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:328) ~[hibernate-core-6.6.22.Final.jar:6.6.22.Final]
+	at org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor.intercept(ByteBuddyInterceptor.java:44) ~[hibernate-core-6.6.22.Final.jar:6.6.22.Final]
+	at org.hibernate.proxy.ProxyConfiguration$InterceptorDispatcher.intercept(ProxyConfiguration.java:102) ~[hibernate-core-6.6.22.Final.jar:6.6.22.Final]
+	at com.elearny.enrollment.Enrollment$HibernateProxy.getUser(Unknown Source) ~[classes/:na]
+	at com.elearny.certificate.CertificateService.onCertificateIssued(CertificateService.java:76) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.9.jar:6.2.9]
+	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:114) ~[spring-aop-6.2.9.jar:6.2.9]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1575) ~[na:na]
+

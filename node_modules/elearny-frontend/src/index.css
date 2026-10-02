@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Color tokens: violet ties back to the eLearny certificate/brand mark ---- */
+  --color-ink: #14121f;
+  --color-ink-soft: #4a4560;
+  --color-violet: #5b3fd6;
+  --color-violet-deep: #3f2a9e;
+  --color-violet-pale: #efeaff;
+  --color-coral: #ff6b4a;
+  --color-coral-deep: #e14f2f;
+  --color-canvas: #fafafc;
+  --color-surface: #ffffff;
+  --color-line: #e7e4f2;
+  --color-success: #1fa96a;
+  --color-warn: #d97706;
+
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-stat {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Signature element: the progress ring, reused across course cards, dashboard, certificates */
+.progress-ring circle {
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Signature element: the learning-path spine in the course curriculum/player */
+.spine-node {
+  position: relative;
+}
+.spine-node::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 28px;
+  bottom: -20px;
+  width: 2px;
+  background: var(--color-line);
+}
+.spine-node:last-child::before {
+  display: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-violet);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

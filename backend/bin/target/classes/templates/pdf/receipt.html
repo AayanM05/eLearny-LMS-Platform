@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; padding: 40px; }
+        h1 { color: #5b3fd6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>eLearny — Payment Receipt</h1>
+    <p>Receipt for: <span th:text="${studentName}">Name</span></p>
+    <table>
+        <tr><th>Course</th><td th:text="${courseTitle}">Course</td></tr>
+        <tr><th>Amount Paid</th><td th:text="${amount}">0.00</td></tr>
+        <tr><th>Coupon Applied</th><td th:text="${couponCode} ?: 'None'">None</td></tr>
+        <tr><th>Payment Reference</th><td th:text="${paymentReferenceId}">REF</td></tr>
+        <tr><th>Date</th><td th:text="${paidAt}">Date</td></tr>
+    </table>
+</body>
+</html>
